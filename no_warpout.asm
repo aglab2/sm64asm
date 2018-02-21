@@ -1,0 +1,2 @@
+.org 0x8C4C
+	ADDIU T0, R0, 1
