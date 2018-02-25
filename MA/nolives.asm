@@ -1,0 +1,16 @@
+;Set lives to 69, no HUD
+
+.orga 0x9E758
+.area 0x4
+LUI T0, 0x8034
+.endarea
+
+.orga 0x9E76C
+.area 0x4
+ADDIU T1, R0, 0x45
+.endarea
+
+.orga 0x9E788
+.area 0x4
+SB T1, 0xB21D(T0)
+.endarea
