@@ -1,0 +1,15 @@
+;save object 2C-2F
+.org 0x49E100
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+.dw 0x03000000
+
+;save object 7B
+.org 0x4EB5FC
+.dw 0x03000000
+.dw 0x03000000
