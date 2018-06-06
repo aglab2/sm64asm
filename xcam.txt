@@ -1,0 +1,85 @@
+;this enables timer
+.orga 0x4688
+.dh 0xA03B
+.orga 0x4690
+.dh 0x2400
+.orga 0x6197
+.db 0x40
+.orga 0x5024
+.dh 0x1000
+
+;this line is removed in some hacks, I need my func to be called
+.orga 0x21CCDC
+.dw 0x0C000000
+.dw 0x802CB1C0
+
+;bunch of JALs to stop timer
+.orga 0x18960
+	JAL 0x802CB200
+;.orga 0x18974
+;	JAL 0x802CB200
+.orga 0x18988
+	JAL 0x802CB200
+
+;Function to do L press thing + star select
+.orga 0x861C0
+.area 0x40
+	LUI V1, 0x8034
+	
+	;Test L press
+	LB T0, 0xAFA1(V1)
+	ANDI T1, T0, 0x20
+	
+	BNE T1, R0, testinput_resettimer
+	
+	LUI T9, 0x8041
+	LB T0, 0xB249(V1)
+	LB T1, 0x0100(T9)
+	SB T0, 0x0100(T9)
+	
+	BNE T0, T1, testinput_resettimer
+	NOP
+	
+	B testinput_end
+	NOP
+
+testinput_resettimer:
+	SH R0, 0xB26C(V1)
+testinput_end:
+	JR RA
+	NOP
+.endarea
+
+;Function to stop timer
+.orga 0x86200
+.area 0x50
+	LUI T1, 0x8034
+	LHU T2, 0xB18A (T1)
+	ORI T3, R0, 1
+	BNE T3, T2, timerstop_no
+	SB R0, 0xB25E (T1)
+	ORI T2, R0, 0x7F
+	SH T2, 0xB26A (T1)
+timerstop_no:
+	J 0x8025DD14
+	NOP
+.endarea
+
+;Reset timer on level select
+.orga 0x227298
+	LUI T0, 0x8034
+	SH R0, 0xB26C(T0)
+
+;Infinite timer
+.orga 0x64C8
+	NOP
+	NOP
+.orga 0x9EA36
+	.dh 0x00D8
+.orga 0xF33A8
+	NOP
+	
+;Slide timer fix
+.orga 0xB736
+	.dw 0xB26C29CF
+	.dh 0x0006

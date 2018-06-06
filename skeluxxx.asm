@@ -1,0 +1,24 @@
+;c.lt.s patch by kaze
+
+.orga 0xFDF94
+	MTC1 R0, F8
+	SUB.S F6, F10, F16
+	C.LT.S F8, F6
+	NOP
+	BC1F 0xFDFB0
+	NOP
+	BEQ R0, R0, 0xFDFC4
+	LWC1 F18, 0x04(SP)
+	LW T8, 0x48(SP)
+	SWC1 F18, 0x0(T8)
+	B 0xFDFCC
+	SW T0, 0x18(SP)
+
+.orga 0xFD480
+	C.LT.S F18, F6
+	NOP
+	BC1T 0xFD4AC
+	NOP
+	LH T7, 0x08(A2)
+	MTC1 T7, F8
+	
