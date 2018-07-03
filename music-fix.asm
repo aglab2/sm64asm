@@ -1,0 +1,20 @@
+.orga 0x8593C
+	J 0x80402A00
+	OR A0, R0, R0
+
+.orga 0x1202A00
+	LUI T0, 0x8036
+	LB T1, 0x4B89(T0)
+	
+	BEQ T1, R0, no_temp_music
+	NOP
+
+	J 0x802CA944
+	SB A1, 0x4B8A(T0)
+	
+no_temp_music:
+
+	JAL 0x80320544
+	SB A1, 0x4B88(T0)
+	J 0x802CA944
+	NOP

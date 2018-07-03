@@ -1,0 +1,28 @@
+.orga 0x21E280
+.dw 0x80402500
+
+.orga 0x1202500 ;80402500
+.area 0x200
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LUI T0, 0x8020
+	LH T0, 0x6A80(T0)
+.f_PrintReg 10, 40, 0x80402C00, T0
+	
+	LUI T0, 0x8020
+	LH T0, 0x6A84(T0)
+.f_PrintReg 10, 60, 0x80402C00, T0
+
+	LUI T0, 0x8020
+	LH T0, 0x6A88(T0)
+.f_PrintReg 10, 80, 0x80402C00, T0
+
+	LW RA, 0x14(SP)
+	J 0x8041F140
+	ADDIU SP, SP, 0x18
+.endarea
+	
+	
+.orga 0x1202C00 ;80402C00
+.asciiz "%x"
