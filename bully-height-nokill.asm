@@ -1,0 +1,2 @@
+.orga 0xA67C4
+	NOP
