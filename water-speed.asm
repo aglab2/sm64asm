@@ -2,4 +2,7 @@
 ; 40.0 = 4220
 
 .orga 0x2C2B54
+	.dw 0x0D251AB1
+
+.orga 0x7DB54
 	LUI A2, 0x4220

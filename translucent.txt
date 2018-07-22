@@ -1,0 +1,6 @@
+
+Two ways to handle translucency:
+Use environment colour combiner with a new alpha set on an 0xFB opcode, then use that in the setcombine (0xFC). In single cycle this means goodbye vertex alpha.
+
+Or...
+Just use vertex alpha which works both in vector light and vertex RGBA mode and use my setcombine with no 0xFB needed, and supports alpha gradients
