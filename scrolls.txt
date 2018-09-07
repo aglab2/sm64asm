@@ -1,0 +1,20 @@
+A0 - address of 80400000 offset
+
+X: 0x46030000
+2nd byte of float X
+
+Y: 0x46640000
+2nd byte of float Y
+
+Z: 0x46080000
+2nd byte of float Z
+
+bparam1 & 2 - counts as the same
+
+A0 = 80400000 + X2 * 0x10000 + Bparam //address
+A1 = Y2 * 3							  //count
+A2 = Z2								  //size
+A3 = (0x1000 / Z2) * Z2				  //reset to 0
+
+
+bank E starts at 80420000

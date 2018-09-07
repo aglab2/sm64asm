@@ -1,0 +1,11 @@
+;803302DC
+;802AD828
+
+;802AD53C
+
+
+.orga 0x6884C
+	LUI AT, 0x45FA
+
+.orga 0x687A8
+	LUI AT, 0x45FB

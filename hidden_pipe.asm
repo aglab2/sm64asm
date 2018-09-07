@@ -1,22 +1,12 @@
-;replaces ukiki behaviour, behav 1CB0
-
-.orga 0x21BAB0
-.area 0x58
+.orga 0x21A4A4 ;06A4
 .dw 0x00090000
-.dw 0x11010009
-.dw 0x102A2000
 .dd 0x2A00000003009AC8
-.dw 0x0E453E80
-.dw 0x10050000
-.dd 0x2300000000460032
-.dd 0x0C000000802BBB98
 .dw 0x08000000
-.dd 	0x0C000000802AAA60
+.dd 	0x0C000000802AA700
 .dd 	0x0C000000803839CC
 .dw 0x09000000
-.endarea
 
-.orga 0x76B98
+.orga 0x65700
 .area 0x74
 	//SHOWN
 	ADDIU SP, SP, 0xFFE8
@@ -34,7 +24,7 @@
 	LBU T5, 0x0188 (T6)
 
 	SLT AT, V0, T5
-	BEQ AT, R0, End2
+	BNEZ AT, End2
 	NOP
 	SH R0, 0x74 (T6)
 
