@@ -5,7 +5,7 @@
 
 
 .orga 0x6884C
-	LUI AT, 0x45FA
+	LUI AT, 0x457a
 
 .orga 0x687A8
-	LUI AT, 0x45FB
+	LUI AT, 0x457e

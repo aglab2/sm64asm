@@ -1,0 +1,38 @@
+.orga 0x21E788 ;4988
+.dw 0x00090000
+.dw 0x08000000
+.dd 0x0C00000080403700
+.dw 0x09000000
+
+.orga 0x1203700
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LI.u A0, 0x13003EAC
+	JAL 0x8029F95C
+	LI.l A0, 0x13003EAC
+	
+	BEQ V0, R0, end
+	
+	ADDU A0, R0, V0
+	LUI T9, 0x8034
+	LW A1, 0xB1F8(T9)
+
+	JAL 0x8029E2F8
+	NOP
+	
+	CVT.W.S F2, F0
+	MFC1 T0, F2
+	SRL T0, T0, 7
+.f_PrintReg 10, 10, 0x804036F0, T0
+	
+end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+.orga 0x12036F0
+.area 0x10
+.asciiz "red: %d"
+.endarea
+	

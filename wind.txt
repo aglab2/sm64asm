@@ -1,0 +1,11 @@
+8025598C - standing
+
+803366AC - add up
+8025587C - wind speed
+
+8026ACBC - regular falling
+
+8033B1CC - another speed for flying?
+80336C14 - wind flying amplifier
+
+flying speed: 8026B410
