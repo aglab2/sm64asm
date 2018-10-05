@@ -34,17 +34,16 @@
 	LUI V0, 0x8034
 	LUI V1, 0x8040
 	
-	;quicksand don't allow stating
+	;quicksand should trigger unconditional savestate load
 	LW T0, 0xB17C (V0)
 	LI T1, 0xFFFFF000
 	AND T0, T0, T1
 	LI T1, 0x00021000
-	BEQ T1, T0, finish
+	BEQ T1, T0, loadstate
 	NOP
 	
 	;count all the states and drop if too many
 	; TODO
-	
 	
 	LH T0, 0xAFA0 (V0)
 	LH T2, 0xAFA2 (V0)
@@ -54,6 +53,7 @@
 	BEQ T1, R0, noload
 	NOP
 
+loadstate:
 	LW T0, 0x18(V1)
 	BEQ T0, R0, finish
 	NOP
