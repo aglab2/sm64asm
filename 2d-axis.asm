@@ -13,9 +13,32 @@
 	LUI T0, 0x8034
 	
 	LW T1, 0x0A8 (V1)
-;set mario position, lakitu cam angle
+;set mario position
 	SW T1, 0xB1B4(T0)
-	SH R0, 0xC778(T0)
+
+;lakitu cam angle
+	LH T1, 0xAFA2(T0)
+	ANDI T1, T1, 0xFFF3
+
+	LH T8, 0xC778(T0)
+	LI T9, 0x2000
+	BGE T8, T9, setangle
+	ADDIU T2, R0, 0xFFF2
+	LI T9, -0x2000
+	BGE T9, T8, setangle
+	ADDIU T2, R0, 0xFFF1
+	
+	B nosetangle
+	NOP
+	
+	;SH R0, 0xC778(T0)
+
+setangle:
+	SH T9, 0xC778(T0)
+	AND T1, T1, T2
+
+nosetangle:
+	SH T1, 0xAFA2(T0)
 
 ;fix lakitu cam state
 	LUI T1, 0x0
