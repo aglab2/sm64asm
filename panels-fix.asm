@@ -23,7 +23,6 @@ wrong_object:
     NOP
 
 
-
 .orga 0x63CE8
     NOP
     NOP

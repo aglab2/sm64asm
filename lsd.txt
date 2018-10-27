@@ -1,0 +1,1 @@
+its really dumb, i set the normals to like 1,0,0 to every vertex on the main mesh, 0,1,0 on the wireframe and 0,0,1 on the skybox, then used a colorful texture and G_TEXTURE_GEN geom mode(edited)
