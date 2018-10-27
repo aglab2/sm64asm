@@ -22,6 +22,12 @@
 	ANDI T1, T1, 0xFFF3
 	ANDI T3, T3, 0xFFF3
 	
+; handle dup properly
+	ANDI AT, T3, 0x0800
+	BEQZ AT, nofilter
+	NOP
+
+; check if normal dup will work fine
 	LUI T5, 0x8033
 	LW T5, 0xDF60 (T5)
 	LH T5, 0x0012 (T5)
@@ -31,11 +37,25 @@
 	ADDI T6, R0, -0x6000
 	BGE T6, T5, nofilter
 	NOP
-	
+
 	ANDI T1, T1, 0xF7FF
 	ANDI T3, T3, 0xF7FF
+	
+; also ignore small angles to avoid weird stuttering
+	abs T6, T5
+	LI T7, 0x1010
+	BGE T7, T6, nofilter
+
+; emulate dup myself by setting best angle + filtering cstick and dpad
+	LI T9, 0x2000
+	BGE R0, T5, setangle
+	ADDIU T2, R0, 0xF6F2
+	LI T9, -0x2000
+	B setangle
+	ADDIU T2, R0, 0xF5F1
 
 nofilter:
+; allow for some angles in between with filtering for c-stick
 	LH T8, 0xC778(T0)
 	LI T9, 0x2000
 	BGE T8, T9, setangle
@@ -46,8 +66,6 @@ nofilter:
 	
 	B nosetangle
 	NOP
-	
-	;SH R0, 0xC778(T0)
 
 setangle:
 	SH T9, 0xC778(T0)
