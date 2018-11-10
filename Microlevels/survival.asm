@@ -36,8 +36,7 @@ NOP
 
 ANDI V0, V0, 3
 
-ADDIU T8, RA, 0x18 ;RA shows to ANDI V0, V0, 3l we need ptr to first cmd
-
+LI T8, 0x802B75F8
 SLL V0, V0, 4
 ADDU T8, T8, V0
 
@@ -62,15 +61,15 @@ LUI A2, 0x1300
 B spawn_spawn
 ADDIU A2, A2, 0x3354
 
-;spawn koopa star
-ADDIU A1, R0, 122
+;spawn goomber ; koopa star
+ADDIU A1, R0, 192
 LUI A2, 0x1300
-B spawn_spawn
-ADDIU A2, A2, 0x4580
+NOP
+ADDIU A2, A2, 0x472C
 
+spawn_spawn:
 
 ;spawn chuckya
-spawn_spawn:
 JAL 0x8029EDCC
 ADD A0, R0, V1
 
