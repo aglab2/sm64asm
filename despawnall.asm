@@ -28,6 +28,11 @@
 	JAL 0x277F50
 	ORI A0, A0, 0x4898
 	SW V0, 0x24(SP)
+	
+	LUI A0, 0x1300
+	JAL 0x277F50
+	ORI A0, A0, 0x48E0
+	SW V0, 0x28(SP)
 
 	
 	;setup loop
@@ -45,6 +50,9 @@ loop:
 	BEQ T2, T9, despawn
 	NOP
 	LW T9, 0x24(SP)
+	BEQ T2, T9, despawn
+	NOP
+	LW T9, 0x28(SP)
 	BEQ T2, T9, despawn
 	NOP
 	
