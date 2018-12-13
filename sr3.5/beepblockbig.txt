@@ -1,0 +1,93 @@
+.org 0x1203A00 //80403A00
+hex{00 09 00 00
+11 01 00 01
+2a 00 00 00 07 01 3E 50
+08 00 00 00
+0c 00 00 00 80 40 3A 20
+09 00 00 00}
+//colpointer:1203A0c
+
+
+addiu sp, sp, $ffe8
+sw ra, $0014 (SP)
+
+
+lui t0, $8036
+lw t0, $1160 (T0)
+lw t1, $0154 (T0)
+
+
+!startcol:
+ori t2, r0, $0015
+div t1, t2
+mfhi t3 //timer mod 15
+bne t3, r0, !nosound
+nop
+lw t4, $01b0 (T0)
+addiu t4, t4, $0001
+sw t4, $01b0 (T0)
+subiu t5, t4, $0004
+blez t5, !nosound
+subiu t6, t4, $0008
+bne t6, r0, !tick
+lui a0, $301f //pound
+
+!blockswitch:
+sw r0, $01b0 (T0)
+lw t9, $0188 (T0)
+beq t9, r0, !on
+nop
+//turnoff
+sw r0, $0188 (T0)
+jal $802a04c0 //change model ID
+ori a0, r0, $0036 //model ID
+beq r0, r0, !gunshot
+nop
+!on:
+ori t8, r0, $0001
+sw t8, $0188 (T0)
+jal $802a04c0 //change model ID
+ori a0, r0, $0010 //model ID
+!gunshot:
+lui a0, $304d //gunshot
+!tick:
+jal $802CA144 //play sound
+ori a0, a0, $0081
+lui t0, $8036
+lw t0, $1160 (T0)
+lw t1, $0188 (T0)
+bne t1, r0, !hollowflash
+ori a0, r0, $0036 //hollow model
+ori a0, r0, $0000 //solid model ID
+!hollowflash:
+jal $802a04c0 //change model ID
+nop
+lui t0, $8036
+lw t0, $1160 (T0)
+lw t1, $0188 (T0)
+bne t1, r0, !solid
+nop
+beq r0, r0, !end
+!nosound:
+lui t0, $8036
+lw t0, $1160 (T0)
+lw t1, $0188 (T0)
+beq t1, r0, !solidflash
+ori a0, r0, $0036 //hollow model
+ori a0, r0, $0010 //solid model ID
+!solidflash:
+jal $802a04c0 //change model ID
+nop
+lui t0, $8036
+lw t0, $1160 (T0)
+lw t1, $0188 (T0)
+beq t1, r0, !end
+nop
+!solid:
+jal $803839cc
+nop
+!end:
+lw ra, $0014 (SP)
+jr ra
+addiu sp, sp, $0018
+

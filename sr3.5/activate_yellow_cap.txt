@@ -1,0 +1,34 @@
+.org 0x61FA4//802a6fa4 (switch offset)
+
+lw t7, 0x001c (T7)
+
+
+.org 0xEB01C //8033001c (eep byte to load)
+
+hex{00 00 00 02
+00 00 00 04
+00 00 00 08
+00 00 02 00}
+
+.org 0x7C458 //802c1458 (block offset)
+
+lw t1, 0x001c (T1)
+
+.org 0x62054 //802a7054 (save offset)
+
+lw a0, 0x001c (A0)
+
+.org 0x7C320 //802c1320 (number of boxes to check eep)
+slti at, t7, 0x0004
+
+.org 0x7c360 //802c1360 (box eep offset)
+
+lw t3, 0x001c (T3)
+
+.org 0x7c474
+
+beq t2, r0, 0x7c494
+
+.org 0x51F54 //802d8d48 (set all switces to WC txt)
+
+addiu a0, r0, 0x000a
