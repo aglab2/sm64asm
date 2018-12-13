@@ -2,15 +2,31 @@
 .org 0x21F1DC
 .word 0x00090000
 .word 0x08000000
-	.word 0x0C000000
-	.word 0x80312168
+	.dd 0x0C00000080312168
 .word 0x09000000
+
+; good angles for lakitu cam
+;0900 / 441B0000
+;1E00 / 44600000
+;+0xB/+0x22
 
 ;setup 2d behaviour shit
 .org 0xCD168
+.area 0x200
 	LUI V1, 0x8036
 	LW V1, 0x1160(V1)
 	LUI T0, 0x8034
+	LUI T8, 0x8040
+	
+	LW T7, 0x154(V1)
+	BNE T7, R0, notinit
+	NOP
+	
+	LI T7, 0x0900
+	SH T7, 0x20(T8)
+	LUI T7, 0x441B
+	SW T7, 0x24(T8)
+notinit:
 	
 	LW T1, 0x0A8 (V1)
 ;set mario position
@@ -19,8 +35,41 @@
 ;lakitu cam angle
 	LH T1, 0xAFA2(T0)
 	LH T3, 0xAFA0(T0)
+	
+;set far lakitu cam angle
+	ANDI T9, T1, 0x04
+	BEQ T9, R0, nocup
+	NOP
+	
+	LH T7, 0x20(T8)
+	LI T6, 0x2200
+	ADDIU T7, T7, 0x0680 ; this is angle
+	BGE T7, T6, nocup
+	NOP
+	
+	SH T7, 0x20(T8)
+	LH T7, 0x24(T8)
+	ADDIU T7, T7, 0x0015 ; this is zooming
+	SH T7, 0x24(T8)
+
+nocup:
+	ANDI T9, T1, 0x08
+	BEQ T9, R0, nocdown
+	NOP
+	
+	LH T7, 0x20(T8)
+	SUBIU T7, T7, 0x0680 ; this is angle
+	BGE R0, T7, nocdown
+	NOP
+
+	SH T7, 0x20(T8)
+	LH T7, 0x24(T8)
+	SUBIU T7, T7, 0x0015 ; this is zooming
+	SH T7, 0x24(T8)
+	
+nocdown:
 	ANDI T1, T1, 0xFFF3
-	ANDI T3, T3, 0xFFF3
+	;ANDI T3, T3, 0xFFF3
 	
 ; handle dup properly
 	ANDI AT, T3, 0x0800
@@ -49,20 +98,20 @@
 ; emulate dup myself by setting best angle + filtering cstick and dpad
 	LI T9, 0x2000
 	BGE R0, T5, setangle
-	ADDIU T2, R0, 0xF6F2
+	ADDIU T2, R0, 0xF6FE
 	LI T9, -0x2000
 	B setangle
-	ADDIU T2, R0, 0xF5F1
+	ADDIU T2, R0, 0xF5FD
 
 nofilter:
 ; allow for some angles in between with filtering for c-stick
 	LH T8, 0xC778(T0)
 	LI T9, 0x2000
 	BGE T8, T9, setangle
-	ADDIU T2, R0, 0xFEF2
+	ADDIU T2, R0, 0xFEFE
 	LI T9, -0x2000
 	BGE T9, T8, setangle
-	ADDIU T2, R0, 0xFDF1
+	ADDIU T2, R0, 0xFDFD
 	
 	B nosetangle
 	NOP
@@ -88,3 +137,4 @@ nosetangle:
 
 	JR RA
 	NOP
+.endarea

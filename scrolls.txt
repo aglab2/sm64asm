@@ -12,7 +12,7 @@ Z: 0x46080000
 bparam1 & 2 - counts as the same
 
 A0 = 80400000 + X2 * 0x10000 + Bparam //address
-A1 = Y2 * 3							  //count
+A1 = Y2 * 4							  //count
 A2 = Z2								  //size
 A3 = (0x1000 / Z2) * Z2				  //reset to 0
 
