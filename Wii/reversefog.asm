@@ -1,0 +1,2 @@
+.orga 0x36D2C
+	lhu t1, 0x22(t7)
