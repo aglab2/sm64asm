@@ -1,0 +1,4 @@
+.orga 0xADDDC
+	LW T0, 0xF4(T9)
+	SLTI AT, T0, 6
+	BNE AT, R0, 0xADDFC

@@ -1,0 +1,45 @@
+.orga 0x21BAB0 ;1CB0
+	.dw 0x00040000
+	.dw 0x08000000
+	.dd 0x0C000000802BBB98
+	.dw 0x09000000
+
+.orga 0x76B98
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LUI T1, 0x8034
+	LW T1, 0xB17C(T1)
+	
+	LI T0, 0x1C0
+	AND T1, T0, T1
+	LI T0, 0x0C0
+	BNE T0, T1, end
+	NOP
+	
+	LUI V0, 0x8036
+	LW V0, 0x1158(V0)
+	LUI V1, 0x8036
+	LW V1, 0x1160(V1)
+
+	LWC1 F0, 0xA4(V0)
+	LWC1 F2, 0xA4(V1)
+	c.lt.s F0, F2
+	NOP
+	bc1f end
+	NOP
+	
+	ADDIU A1, R0, 0x0013
+	LUI A0, 0x8033
+	JAL 0x8024A9CC
+	ORI A0, A0, 0xB170
+	lui at, 0x8034
+	addiu t1, r0, 0x13
+	sh t1, 0xb252 (AT)
+	addiu a0, r0, 13
+	sh a0, 0xB256 (at)
+
+end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
