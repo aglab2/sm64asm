@@ -1,0 +1,65 @@
+; behav
+.orga 0x120F400
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040F500
+.dw 0x09000000
+
+.orga 0x120F500
+	ADDIU SP, SP, -0x38
+	SW RA, 0x14(SP)
+	
+	LI V1, 0x8033B170
+	
+	LUI AT, 0x8038
+	ADDIU A0, SP, 0x1C
+	
+	; get X coord
+	LWC1 F16, 0x3C(V1)
+	SWC1 F16, 0x0(A0)
+	
+	; get Y coord
+	LWC1 F16, 0x40(V1)
+	SWC1 F16, 0x4(A0)
+	
+	; get Z coord
+	LWC1 F16, 0x44(V1)
+	SWC1 F16, 0x8(A0)
+	
+	LI A1, 300.0
+	LI A2, 200.0
+	JAL 0x80251A48
+	NOP
+	
+	BEQ V0, R0, end
+	NOP
+	
+	LHU T0, 0x0(V0)
+	LI T1, 0x7B
+	BNE T0, T1, end
+	NOP
+	
+	LUI T9, 0x8034
+	LI T0, 10.0
+	MTC1 T0, F0
+	LWC1 F2, 0xB1BC(T9)
+	ADD.S F2, F2, F0
+	SWC1 F2, 0xB1BC(T9)
+	
+	LI T0, 0x03000880
+	SW T0, 0xB17C(T9)
+
+end:	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x38
+	
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP

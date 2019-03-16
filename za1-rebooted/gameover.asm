@@ -1,0 +1,26 @@
+.orga 0x120A800
+.dw 0x00090000
+.dd 0x0C0000008040A700
+.dd 0x04000000130032E4
+
+.orga 0x120A700
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x28
+	SW RA, 0x14(SP)
+
+	LW V1, 0x80361160
+	
+	LB T0, 0x80400040
+	BEQ T0, R0, kys
+	NOP
+	B end
+	NOP
+	
+kys:
+	SW R0, 0x74(V1)
+
+end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x28
+.endarea

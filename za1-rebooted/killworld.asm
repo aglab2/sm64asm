@@ -1,0 +1,18 @@
+.orga 0x120CB00
+.dw 0x00040000
+.dw 0x08000000
+	.dd 	0x0C0000008040CB80
+.dw 0x09000000
+
+.orga 0x120CB80
+.area 0x80, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LI T0, 1
+	SB T0, 0x80400040
+	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea

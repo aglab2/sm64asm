@@ -1,0 +1,64 @@
+.orga 0x120AE00
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040AF00
+.dw 0x09000000
+
+.orga 0x120AF00
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+; V0 cmds address
+	LW V1, 0x80361160
+	LW A0, 0x188(V1)
+	JAL 0x80277F50
+	NOP
+	
+; not xlu
+	LI A0, 0xC8112078
+	LI A1, 0xFF
+	
+	LWC1 F0, 0x8033B1AC
+	LI T0, -689.0
+	MTC1 T0, F2
+	NOP
+	c.lt.s F0, F2
+	NOP
+	bc1f end
+	NOP
+	LI T0, -2360.0
+	MTC1 T0, F2
+	NOP
+	c.lt.s F0, F2
+	NOP
+	bc1t end
+	NOP
+	
+	LWC1 F0, 0x8033B1B4
+	LI T0, 260.0
+	MTC1 T0, F2
+	NOP
+	c.lt.s F0, F2
+	NOP
+	bc1f end
+	NOP
+	LI T0, -2875.0
+	MTC1 T0, F2
+	NOP
+	c.lt.s F0, F2
+	NOP
+	bc1t end
+	NOP
+
+	LI A0, 0xC81049D8
+	LI A1, 0x40
+
+end:
+	SW A0, 0x4(V0)
+	SB A1, 0xF(V0)
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea ;0E0478A8

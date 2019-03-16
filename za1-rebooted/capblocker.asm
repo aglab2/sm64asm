@@ -1,0 +1,89 @@
+.orga 0x120EC00
+	.dw 0x00090000
+	.dd 0x2A00000004035D68
+	.dw 0x0E437FFF
+	.dw 0x11010001
+	.dd 0x0C0000008040EC80
+	.dw 0x08000000
+	.dd 0x0C0000008040ED00
+	;.dd 0x0C000000803839CC
+	.dw 0x09000000
+
+; 1=vc 2=mc 3=wc
+.orga 0x120EC80
+.area 0x80, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	LW T0, 0xA4(V1)
+	SW T0, 0x100(V1)
+	
+	LBU T1, 0x18A(V1)
+	MTC1 T1, F0
+	cvt.s.w F0, F0
+	LI T2, 100.0
+	MTC1 T2, F2
+	div.s F0, F0, F2
+	
+	SWC1 F0, 0x02C(V1)
+	SWC1 F0, 0x030(V1)
+	SWC1 F0, 0x034(V1)
+	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea
+
+.orga 0x120ED00
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	LB T8, 0x188(V1)
+	LI T7, 1
+	SLLV T7, T7, T8
+
+	LW T9, 0x8033B174
+	AND T0, T9, T7
+	BEQ T0, R0, noshow
+	NOP
+	
+	SW R0, 0xF0(V1)
+	
+	LI A0, 0x04035D18
+	LI T6, 3
+	SUB T6, T6, T8
+	LI T5, 0xA00
+	MULT T5, T6
+	MFLO T4
+	ADD A0, A0, T4
+	
+	LB T0, 0x189(V1)
+	BEQ T0, R0, noscroll
+	
+	LI A1, 2
+	JAL 0x8040F100
+	LI A2, 1
+
+noscroll:
+
+	JAL 0x803839CC
+	NOP
+	B end
+	NOP
+	
+noshow:
+	LI T0, 1
+	SW T0, 0xF0(V1)
+	LI A0, 15.0
+	LI A1, 15.0
+	JAL 0x8040FE00
+	LW A2, 0x100(V1)
+
+end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea

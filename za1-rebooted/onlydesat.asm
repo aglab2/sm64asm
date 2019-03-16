@@ -1,0 +1,60 @@
+;09004000-09005800
+;from 07002000=E0DB07 to E2C307=1E800
+;from 09003800 to 0900A000=6800
+
+.orga 0x120CC00
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040CD00
+.dw 0x09000000
+
+.orga 0x120CD00
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x28
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	
+	LB T0, 0x80400040
+	BEQ T0, R0, kys
+	NOP
+	
+; desat
+; A0 = segptr
+; A1 = size
+	LW A0, 0x188(V1)
+	LB A1, 0xA9(V1)
+	LBU T0, 0xA5(V1)
+	SLL T0, T0, 8
+	OR A1, A1, T0
+	LBU T0, 0xA1(V1)
+	SLL T0, T0, 16
+	OR A1, A1, T0
+	LI A2, 0x8040D300
+	JAL 0x8040D400
+	NOP
+	
+	LW T0, 0x154(V1)
+	BNE T0, R0, nomusic
+	NOP
+
+; play music
+	LI A0, 0
+	LI A1, 2
+	JAL 0x80320544
+	LI A2, 0
+	NOP
+	
+nomusic:
+	SLTI AT, T0, 20
+	BNE AT, R0, bend
+	NOP
+	
+kys:
+	SW R0, 0x74(V1)
+	
+bend:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x28
+.endarea

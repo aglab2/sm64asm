@@ -1,0 +1,17 @@
+.orga 0xF204
+	J 0x80402380
+	NOP
+
+.orga 0x1202380
+	LUI T9, 0x8034
+	LB T9, 0xB249(T9)
+	LI V1, 0x1D
+	
+	BNE V1, T9, normal
+	ADDIU T9, T5, 0xFFC0
+	ADDIU T9, T5, 0xFFA0
+
+normal:
+	SH T9, 0xAE(T6)
+	J 0x8025420C
+	NOP

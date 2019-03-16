@@ -1,0 +1,57 @@
+.orga 0x120C000
+.dw 0x00090000
+.dd 0x2A0000000E0D16F0
+.dw 0x11010001
+.dw 0x0E432000
+.dw 0x08000000
+.dd 0x0C0000008040C100
+.dw 0x09000000
+
+.orga 0x120C100
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	LW T0, 0x14C(V1)
+	BNE T0, R0, phase1
+	NOP
+	
+phase0:
+	JAL 0x802A3CFC
+	NOP
+	
+	BEQ V0, R0, end
+	NOP
+	
+	B end
+	SW V0, 0x14C(V1)
+
+phase1:
+	LW T0, 0x154(V1)
+	LI T3, 150
+	BEQ T0, T3, explode
+	NOP
+	
+	LI T1, 40
+	MULT T0, T1
+	MFLO T0
+	SW T0, (0x88+4*0x24)(V1)
+	
+	LW T1, 0xD4(V1)
+	ADD T1, T1, T0
+	B end
+	SW T1, 0xD4(V1)
+
+explode:
+	JAL 0x802E6AF8
+	NOP
+
+end:
+	JAL 0x803839CC
+	NOP
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea

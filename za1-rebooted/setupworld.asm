@@ -1,0 +1,139 @@
+.orga 0x120C480
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040C500
+.dw 0x09000000
+
+.orga 0x120C500
+.area 0x200, 0x00
+	ADDIU SP, SP, -0x28
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	
+	LB T0, 0x80400034
+	BEQ T0, R0, kys
+	NOP
+	
+; desat
+	LI A0, 0x0E035A30 ; 0E046A30-X=11000
+	LI A1, 0x11000
+	LI A2, 0x8040D300
+	JAL 0x8040D400
+	NOP
+	
+; despawn
+	JAL 0x8040D500
+	NOP
+	
+	LW T0, 0x154(V1)
+	BNE T0, R0, nosetup
+	NOP
+
+; play music
+	LI A0, 0
+	LI A1, 2
+	JAL 0x80320544
+	LI A2, 0
+	NOP
+	
+nosetup:
+	SLTI AT, T0, 20
+	BNE AT, R0, bend
+	NOP
+	
+; spawn new objects after done
+; warp to negative ending, params copied
+	ADD A0, R0, V1
+	LI A1, 0
+	LI A2, 0x13000780
+	JAL 0x8029EDCC
+	NOP
+	LI T1, 1
+	SB T1, 0x189(V0)
+; warp to other star
+	ADD A0, R0, V1
+	LI A1, 0
+	LI A2, 0x13000780
+	JAL 0x8029EDCC
+	NOP
+	LI T1, 0x5003
+	SH T1, 0x188(V0)
+	LI T1, -3892.0
+	SW T1, 0x0A0(V0)
+	LI T1, 2000.0
+	SW T1, 0x0A4(V0)
+	LI T1, -7671.0
+	SW T1, 0x0A8(V0)
+	
+	ADD A0, R0, V1
+	LI A1, 0
+	LI A2, 0x13000780
+	JAL 0x8029EDCC
+	NOP
+	LI T1, 0x5003
+	SH T1, 0x188(V0)
+	LI T1, -3387.0
+	SW T1, 0x0A0(V0)
+	LI T1, 2000.0
+	SW T1, 0x0A4(V0)
+	LI T1, -7671.0
+	SW T1, 0x0A8(V0)
+
+; blocker to different place
+	ADD A0, R0, V1
+	LI A1, 54
+	LI A2, 0x0040C700
+	JAL 0x8029EDCC
+	NOP
+	LI T1, 0x5003
+	SH T1, 0x188(V0)
+	LI T1, 668.0
+	SW T1, 0x0A0(V0)
+	LI T1, 1116.0
+	SW T1, 0x0A4(V0)
+	LI T1, 1498.0
+	SW T1, 0x0A8(V0)
+	LI T1, 32768
+	SH T1, 0xD6(V0)
+	LI T1, 32768
+	SH T1, 0xCA(V0)
+
+; coins to show where to go
+	ADD A0, R0, V1
+	LI A1, 0
+	LI A2, 0x130008EC
+	LI T0, 17
+	SH T0, 0x188(V1)
+	JAL 0x8029EDCC
+	NOP
+
+; more coins to show where to go
+	ADD A0, R0, V1
+	LI A1, 0
+	LI A2, 0x130008EC
+	LI T0, 4
+	SH T0, 0x188(V1)
+	JAL 0x8029EDCC
+	NOP
+
+	LI T1, 261.0
+	SW T1, 0x0A0(V0)
+	LI T1, 1770.0
+	SW T1, 0x0A4(V0)
+	LI T1, -1508.0
+	SW T1, 0x0A8(V0)
+	LI T1, 32768
+	SH T1, 0xD6(V0)
+	LI T1, 32768
+	SH T1, 0xCA(V0)
+	
+
+kys:
+	SW R0, 0x74(V1)
+	
+bend:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x28
+.endarea

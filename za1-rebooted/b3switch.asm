@@ -1,0 +1,81 @@
+.orga 0x120C800
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040C900
+.dw 0x09000000
+
+.orga 0x120C900
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+	LW V1, 0x80361160
+	LW T0, 0x14C(V1)
+	BNE T0, R0, desat
+
+	LW T0, 0x8033B1B0
+	LW T1, 0x8033B1E0
+	BNE T0, T1, end
+	NOP
+	
+	LW T3, 0x8033B1D8
+	LH T3, 0x0(T3)
+	LI T4, 0x7B
+	BNE T3, T4, end
+	NOP
+	
+; state switch + enable ded mode
+	SB T4, 0x80400034
+	SW T4, 0x14C(V1)
+
+; no music
+	LI A0, 0
+	LI A1, 0
+	JAL 0x80320544
+	LI A2, 0
+	NOP
+
+desat:
+	LW T0, 0x154(V1)
+	SLTI AT, T0, 200
+	BEQ AT, R0, end
+	NOP
+	
+	LI T1, 130
+	BEQ T0, T1, despawn
+	NOP
+	
+	ANDI T1, T0, 15
+	BNE T1, R0, end
+	NOP
+
+; desat
+	LI A0, 0x0E035A30 ; 0E046A30-X=11000
+	LI A1, 0x11000
+	LI A2, 0x8040D300
+	JAL 0x8040D400
+	NOP
+	
+	LI A0, 0x0E091010 ; 0E093810-X=2800
+	LI A1, 0x2800
+	LI A2, 0x8040D300
+	JAL 0x8040D400
+	NOP
+	B end
+	NOP
+
+despawn:
+; sorrow music and despawn
+	LI A0, 0
+	LI A1, 2
+	JAL 0x80320544
+	LI A2, 0
+	NOP
+	JAL 0x8040D500
+	NOP
+	
+end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea

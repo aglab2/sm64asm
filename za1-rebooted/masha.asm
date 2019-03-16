@@ -1,0 +1,20 @@
+.orga 0x120CE00
+.dw 0x00040000
+.dw 0x08000000
+.dd 	0x0C0000008040CF00
+.dw 0x09000000
+
+.orga 0x120CE80
+.asciiz "HOLD L BUTTON"
+.orga 0x120CE90
+.asciiz "TO RESET CHECKPOINT"
+
+.orga 0x120CF00
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea

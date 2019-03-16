@@ -1,0 +1,29 @@
+	{
+	case 0:
+		this.SetStarsNeeded(702995);
+		break;
+	case 1:
+		this.SetStarsNeeded(517211);
+		break;
+	case 2:
+		this.SetStarsNeeded(736967);
+		break;
+	case 3:
+		this.SetStarsNeeded(124631);
+		break;
+	case 4:
+		this.SetStarsNeeded(734411);
+		break;
+	case 5:
+		this.SetStarsNeeded(734499);
+		break;
+	case 6:
+		this.SetStarsNeeded(203163);
+		break;
+	case 7:
+		this.SetStarsNeeded(203215);
+		break;
+	case 8:
+		this.SetStarsNeeded(203267);
+		break;
+	}

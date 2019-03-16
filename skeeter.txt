@@ -1,0 +1,3 @@
+body 06000990
+
+color is 0x00FFD4FF

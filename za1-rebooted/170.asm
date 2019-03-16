@@ -1,0 +1,28 @@
+.orga 0x120BD00
+.dw 0x00060000
+.dd 0x0C0000008040BE00
+.dd 0x04000000130007A4
+
+.orga 0x120BE00
+.area 0x100, 0x00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+	LH T0, 0x8033B21A
+	SLTI AT, T0, 169
+	BEQ AT, R0, nodesp
+	NOP
+	
+	LW V1, 0x80361160
+	SW R0, 0x74(V1)
+
+nodesp:
+	;LI A0, 0x0E139BC8
+	;LI A1, 0
+	;JAL 0x8040F100
+	;LI A2, 1
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+.endarea
