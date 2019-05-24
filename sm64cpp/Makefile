@@ -1,15 +1,18 @@
 SRC_DIR = src
 OBJ_DIR = obj
 
-# Alter CPP_FILES to add more sources
+# Alter these 4 variables according to your need
 CPP_FILES = global triplet phase0 phase1 phase2 phase3 phase4 phase5 apple rng angle
-SRC_FILES = $(patsubst %, $(SRC_DIR)/%.cpp, $(CPP_FILES))
-OBJ_FILES = $(patsubst %, $(OBJ_DIR)/%.o, $(CPP_FILES))
 ROM = HumanticC.z64
 INCLUDE_PATH = C:\n64chain\sm64
 LIBRARY_PATH = C:\n64chain\ld
 
-SM64_INCLUDE = C:\n64chain\sm64
+# 19398656 = 0x1208000
+ROM_OFFSET = 19398656
+
+SRC_FILES = $(patsubst %, $(SRC_DIR)/%.cpp, $(CPP_FILES))
+OBJ_FILES = $(patsubst %, $(OBJ_DIR)/%.o, $(CPP_FILES))
+
 CC = clang++
 AR = llvm-ar
 LD = ld.lld
@@ -25,7 +28,7 @@ libhumantic.a: $(OBJ_FILES)
 	
 inject:
 	$(LD) -o tmp -lhumantic -L. -L $(LIBRARY_PATH) --oformat binary -T ldscript -M obj\phase0.o
-	dd bs=1 seek=19398656 if=tmp of=HumanticC.z64 conv=notrunc
+	dd bs=1 seek=$(ROM_OFFSET) if=tmp of=$(ROM) conv=notrunc
 	rm tmp
 
 $(OBJ_DIR):
