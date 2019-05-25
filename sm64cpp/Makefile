@@ -7,8 +7,8 @@ ROM = HumanticC.z64
 INCLUDE_PATH = C:\n64chain\sm64
 LIBRARY_PATH = C:\n64chain\ld
 
-# 19398656 = 0x1208000
-ROM_OFFSET = 19398656
+# 18907136 = 0x1208000
+ROM_OFFSET = 18907136
 
 SRC_FILES = $(patsubst %, $(SRC_DIR)/%.cpp, $(CPP_FILES))
 OBJ_FILES = $(patsubst %, $(OBJ_DIR)/%.o, $(CPP_FILES))
@@ -16,7 +16,7 @@ OBJ_FILES = $(patsubst %, $(OBJ_DIR)/%.o, $(CPP_FILES))
 CC = clang++
 AR = llvm-ar
 LD = ld.lld
-CFLAGS = -Wall -Wdouble-promotion -Os -mtune=vr4300 -march=mips32 --target=mips64-linux-elf -mabi=32 -fomit-frame-pointer -G0 -I $(INCLUDE_PATH) -mno-check-zero-division -fno-exceptions -fno-builtin -fno-rtti -fno-common -flto -mno-abicalls
+CFLAGS = -Wall -Wdouble-promotion -Os -mtune=vr4300 -march=mips2 --target=mips-img-elf -fomit-frame-pointer -G0 -I $(INCLUDE_PATH) -mno-check-zero-division -fno-exceptions -fno-builtin -fno-rtti -fno-common -mno-abicalls -flto
 
 all: $(OBJ_DIR) libhumantic.a inject
 
