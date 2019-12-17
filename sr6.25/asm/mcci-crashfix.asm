@@ -1,0 +1,27 @@
+.orga 0x57B1C
+	JAL 0x802CA8B0
+
+.orga 0x858b0
+	ADDIU SP, SP, 0xFFE8
+	SW RA, 0x0014 (SP)
+	
+	; extra commands +4
+	LUI V0, 0x8034
+	LW V0, 0xB1D8 (V0)
+	BEQ V0, R0, 0x85944
+	NOP
+
+	LUI T2, 0x8033
+	LBU T3, 0xddf9 (T2)
+
+	LUI T4, 0x802C
+	ORI T5, T4, 0xA8b0
+	ORI T4, T4, 0xA7EC
+
+	LBU T2, 0x0000 (T4)
+	BNE T3, T2, 0x85954
+	NOP
+
+	LUI V0, 0x8034
+	LW V0, 0xB1D8 (V0)
+	LH V0, 0x0000 (V0)

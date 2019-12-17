@@ -1,0 +1,34 @@
+hook for models @3f4cd00
+
+@ad4ab0 22 08 00 F6 04 04 CE 00
+
+geo @ 3f4cf00
+norm 3f4d000=0404d000
+
+Collision Pointer:	0404DAE0
+DL-Pointer:	0404D9C0 (1)
+broken 3f4dc00=0404dc00
+DL-Pointer:	0404F9E0 (1)
+
+pt1 3f50200=04050200
+DL-Pointer:	040513E0 (1)
+pt2 3f51600=04051600
+DL-Pointer:	040527E0 (1)
+pt3 3f52a00=04052a00
+DL-Pointer:	04053BE0 (1)
+pt4 3f53e00=04053e00
+DL-Pointer:	04054FE0 (1)
+pt5 3f55200=04055200
+DL-Pointer:	040563E0 (1)
+pt6 3f56600=04056600
+DL-Pointer:	040577E0 (1)
+pt7 3f57a00=04057a00
+DL-Pointer:	04058BC0 (1)
+pt8 3f58e00=04058e00
+DL-Pointer:	04059Fe0 (1)
+
+
+fireball 3f5a200=0405a200
+DL-Pointer:	0405AE60 (5)
+rock 3f5b100=0405b100
+DL-Pointer:	0405BD80 (1)

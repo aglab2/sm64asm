@@ -1,0 +1,28 @@
+INCLUDE symbols.ld
+
+ENTRY(HintsFromSegmented)
+
+SECTIONS 
+{
+  .sm64 0x80409000 : 
+  {
+    *(.text)
+    *(.text.*)
+	
+	. = . + 0x40;
+	
+    *(.data)
+    *(.data.*)
+    *(.bss)
+    *(.bss.*)
+    *(.rodata)
+    *(.rodata.*)
+  } =0x0
+  
+  .crap : { *(.shstrtab*) }
+  
+  /DISCARD/ :
+  {
+	*(*)
+  }
+}

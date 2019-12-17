@@ -1,0 +1,34 @@
+.orga 0xE2A4
+	JAL 0x80404200
+	OR A2, R0, R0
+	B 0xE2F0
+	NOP
+
+.orga 0x1204200
+	ADDIU SP, SP, 0xFFE0
+	SW RA, 0x14(SP)
+	SW S0, 0x18(SP)
+	
+	LI T0, 0x0c00023e
+	LW S0, 0xC(A0)
+	JAL 0x80252CF4
+	SUB S0, S0, T0
+	
+	BNEZ S0, nofixup
+	NOP
+	LI V0, 0
+nofixup:
+	
+	LW S0, 0x18(SP)
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x20
+	
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP

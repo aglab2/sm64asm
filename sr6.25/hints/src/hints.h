@@ -1,0 +1,1 @@
+extern "C" int HintsFromSegmented(int segptr);

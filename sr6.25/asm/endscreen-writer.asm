@@ -1,0 +1,11 @@
+.orga 0x1203f00
+	LBU V0, 0x8033B24A
+	JR RA
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP

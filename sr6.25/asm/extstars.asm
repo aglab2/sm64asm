@@ -1,0 +1,3 @@
+.orga 0x8d68
+	LB T6, 0x188(T2)
+	LB A2, 0x18B(T2)

@@ -1,0 +1,83 @@
+; switchblock/switch
+.orga 0x21d8f8
+	.dw 0x80403900
+
+.orga 0x1203900
+	ADDIU SP, SP, 0xFFE8
+	SW RA, 0x14(SP)
+
+	LW V1, 0x80361160
+	LW T1, 0x154(V1)
+	BNE T1, R0, end
+	LI T0, 6000.0
+	SW T0, 0x19C(V1)
+end:
+	JAL 0x802EF63C
+	NOP
+	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+	
+
+.orga 0x21ecb8
+	.dw 0x80403940
+
+.orga 0x1203940
+	ADDIU SP, SP, 0xFFE8
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x80361160
+	LW T1, 0x154(V1)
+	BNE T1, R0, ehd
+	LI T0, 6000.0
+	SW T0, 0x19C(V1)
+ehd:
+	JAL 0x803094F8
+	NOP
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+; panel
+.orga 0x0021A3F4
+	.dw 0x80403980
+
+.orga 0x1203980
+	ADDIU SP, SP, 0xFFE8
+	SW RA, 0x14(SP)
+
+	LW V1, 0x80361160
+	LW T1, 0x154(V1)
+	BNE T1, R0, end2
+	LI T0, 6000.0
+	SW T0, 0x19C(V1)
+end2:
+	JAL 0x804059E0
+	NOP
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+; [!] box
+.orga 0x21C074
+	.dw 0x804039c0
+
+.orga 0x12039c0
+	ADDIU SP, SP, 0xFFE8
+	SW RA, 0x14(SP)
+
+	LW V1, 0x80361160
+	LW T1, 0x154(V1)
+	BNE T1, R0, end1
+	LI T0, 10000.0
+	SW T0, 0x19C(V1)
+end1:
+	JAL 0x802C19C0
+	NOP
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18

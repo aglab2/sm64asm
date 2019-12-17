@@ -1,0 +1,38 @@
+.orga 0xDED4
+	JAL 0x80406a00
+	
+.orga 0xE128
+	JAL 0x80406a00
+	
+.orga 0x1206a00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LW T0, 0x8033B1D8
+	BEQ T0, R0, apply
+	NOP
+
+	LHU T1, 0x0(T0)
+	LI T2, 0x15
+	
+	BEQ T1, T2, noapply
+	ADDIU V0, R0, 0
+
+apply:
+	JAL 0x80251E24
+	NOP
+
+noapply:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+	
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
