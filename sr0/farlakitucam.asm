@@ -1,0 +1,43 @@
+.orga 0x3C61C
+	JAL 0x80402800
+
+.orga 0x1202800
+	ADDIU SP, SP, -0x20
+	SW RA, 0x14(SP)
+
+	LUI V1, 0x8040
+	LH A0, 0x20(V1)
+	BEQ A0, R0, set
+	NOP
+
+	LUI T9, 0x8034
+	LB T0, 0xB249(T9)	
+	ADDU T0, T0, V1
+	LB T1, 0xB24A(T9)
+	SLL T1, T1, 6
+	ADDU T0, T0, T1
+	
+	LB T0, 0x3700(T0)
+	ANDI T0, T0, 1
+
+	BNE T0, R0, end
+	NOP
+
+set:
+	LI T0, 0x0900
+	SH T0, 0x20(V1)
+	LUI T0, 0x43C8
+	SW T0, 0x24(V1)
+	
+end:
+	LWC1 F12, 0x24(V1)
+	JAL 0x80281188
+	LHU A1, 0x20(V1)
+	
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x20
+	NOP
+	NOP
+	NOP
+	NOP
