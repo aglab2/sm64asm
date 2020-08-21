@@ -1,0 +1,70 @@
+void UndefinedFunction_01200018(void)
+
+{
+  short *vptrCur;
+  int vptr;
+  uint uVar3;
+  short *psVar4;
+  int iVar5;
+  float fVar6;
+  uint ypos;
+  uint uVar8;
+  undefined4 in_fcsr;
+  byte bVar9;
+  short sVar10;
+  undefined8 vptr;
+  
+  bVar9 = (byte)in_fcsr;
+  // to segmented
+  vptr = FUN_00277f50(*(undefined4 *)(_DAT_80361160 + 0x188));
+  vptr += ((ypos >> 8 & 0xe0) >> 4));
+
+  sVar10 = 0;
+  if (((ypos >> 8 & 0x1f) == 0) &&
+     (objParam1Shifted = objParam1 + 0x1000,
+     objParam1Shifted <= (int)(objTimer * ((zpos ^ (int)zpos >> 0x1f) - ((int)zpos >> 0x1f)))
+     )) {
+    *(int *)(objParam1) = objParam1Shifted;
+    sVar10 = ((short)((int)zpos >> 0x1f) * 2 + 1) * 0x1000;
+  }
+  vptrEnd = vptr + (int)xpos * 0x10;
+  uVar3 = ypos >> 8 & 0x1f;
+  if (uVar3 != 0) { // not classic scroll
+    if (uVar3 == 1) { // sin scroll
+      off = *(float *)(((int)(objTimer * ((ypos & 0xff) * 0x20 + 0x10) & 0xffff)
+                         >> 4) * 4 + -0x7fc79000) * (float)zpos;
+      do {
+        *vptrCur = *vptrCur + off;
+        vptrCur = vptrCur + 0x10;
+      } while (vptrCur != vptrEnd);
+      return;
+    }
+    if (uVar3 == 2) { // jumpy?
+      if (objTimer != (ypos & 0xff) + 1) {
+        return;
+      }
+      sVar10 = 0;
+      iVar5 = *(int *)(objParam1) + zpos;
+      if (0xfff < iVar5) {
+        sVar10 = -0x1000;
+        iVar5 = iVar5 + -0x1000;
+      }
+      objTimer = 0;
+      if (iVar5 < -0x1000) {
+        sVar10 = 0x1000;
+        iVar5 = iVar5 + 0x1000;
+      }
+      *(int *)(objParam1) = iVar5;
+      do {
+        *vptrCur = *vptrCur + (short)zpos + sVar10;
+        vptrCur = vptrCur + 8;
+      } while (vptrCur != vptrEnd);
+      return;
+    }
+  }
+  do {
+    *vptrCur = (*vptrCur + (short)zpos) - sVar10;
+    vptrCur = vptrCur + 0x10;
+  } while (vptrCur != vptrEnd);
+  return;
+}

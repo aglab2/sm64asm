@@ -1,0 +1,29 @@
+INCLUDE symbols.ld
+
+ENTRY(_start)
+
+SECTIONS 
+{
+  .sm64 0x80408000 : 
+  {
+    *(.text._start)
+    *(.text.*)
+    *(.text)
+    *(.data)
+    *(.data.*)
+    *(.bss)
+    *(.bss.*)
+    *(.rodata)
+    *(.rodata.*)
+  }
+  
+  /DISCARD/ :
+  {
+	*(.MIPS.abiflags)
+	*(.gnu.attributes)
+	*(.mdebug.abi32)
+	*(.comment)
+	*(.pdr)
+	*(.reginfo)
+  }
+}

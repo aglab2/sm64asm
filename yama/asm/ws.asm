@@ -1,0 +1,7 @@
+.orga 0x38588
+	MFC1 T2, F18
+	LUI AT, 0xbfe4 ; -1.78125 ~ -1.777777
+	MTC1 AT, F0
+	NOP
+.orga 0x385b0
+	MUL.s F6, F4, F0

@@ -1,0 +1,21 @@
+INCLUDE symbols.ld
+
+ENTRY(_start)
+
+SECTIONS 
+{
+  .sm64 0x80400018 : 
+  {
+    *(.text*)
+    *(.data*)
+    *(.bss*)
+    *(.rodata*)
+  } =0x0
+  
+  .crap : { *(.shstrtab*) }
+  
+  /DISCARD/ :
+  {
+	*(*)
+  }
+}

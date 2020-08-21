@@ -1,0 +1,26 @@
+8040A4DC
+8040A4F0 -- yellow
+	timer 600 @0120a5ec
+8040A62C -- cyan rotating
+	timer 300
+8040A8D8 -- purple
+	timer 550 @0120a91c
+	timer 600 @120aab0
+8040AAE8 -- red
+	timer 600 @120abec
+	mult  3  @120ab04
+8040AC10 -- green
+	timer 450 @0120ac2c
+	timer 600 @0120ad4c
+	angle 120acfc
+8040AD70 -- light blue
+	timer 450 @0120ae3c
+	timer 600 @0120aefc
+	mult 3    @0120ae48
+8040AF28 -- pink
+	timer 600 @0120b038
+8040B07C -- white finale
+8040B2E0 -- transition
+8040B730
+
+int at 0x108 is buffed?
