@@ -5,9 +5,9 @@
 
 ; full protection against quad/rom manager attacks
 .orga 0xfb068
-	JAL 0x80406000
+	JAL 0x80406100
 
-.orga 0x1206000
+.orga 0x1206100
 	addiu sp, sp, -0x18
 	sw ra, 0x14(sp)
 	

@@ -23,8 +23,21 @@ nop
 ; current area
 lw t3, 0x8032ddcc
 ; warp to find
+lbu a0, 0x8033B249 
+li a1, 0xe
+bne a0, a1, @@default_warp
+nop 
+lbu a0, 0x8033B24A
+li a1, 3
+bne a0, a1, @@default_warp
+nop
+
+b @@do
+li at, 11
+@@default_warp:
 li at, 0xf1
 
+@@do:
 ; 0x14 offsetof warpNodes in Area
 ; 0x8 offsetof next in ObjectWarpNode
 ; 0xc=0x14-0x8

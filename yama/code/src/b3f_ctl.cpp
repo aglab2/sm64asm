@@ -27,6 +27,8 @@ enum Actions
     DEAD,
 };
 
+void (*B3FCtl::sActions[])(void) = { sPhase1, sTrollDeath, sAvoidance, sPhase2, sDead };
+
 struct Position { float x; float z; };
 static Position sSwitchPositions[] = {
     { 0, -900 }, 
@@ -78,17 +80,7 @@ void B3FCtl::Step()
         }
     }
 
-    switch (oAction)
-    {
-        case INIT:
-            return Phase1();
-        case TROLL_DEATH:
-            return TrollDeath();
-        case AVOIDANCE:
-            return Avoidance();
-        case PH2:
-            return Phase2();
-    }
+	obj_call_action_function(sActions);
 }
 
 void B3FCtl::Phase1()
@@ -221,6 +213,8 @@ void B3FCtl::Phase2()
         oAction = DEAD;
     }
 }
+
+void B3FCtl::Dead() { }
 
 uintptr_t B3FCtl::Behavior[] = 
 {

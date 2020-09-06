@@ -3,11 +3,10 @@
 
 ; 8033CBD0
 
-.orga 0x861C0
-	J 0x80403700
-	NOP
+.orga 0x21CCDC
+	.dd 0x0C00000080403900
 
-.orga 0x1203700
+.orga 0x1203900
 .area 0x200
 	ADDIU SP, SP, -0x18
 	SW RA, 0x14(SP)
@@ -23,10 +22,6 @@
 	BEQ T1, T0, loadstate
 	NOP
 	
-	;LW RA, 0x14(SP)
-	;JR RA
-	;ADDIU SP, SP, 0x18
-	
 	LB T0, 0xB21E (V0)
 	BEQ T0, R0, loadstate
 	NOP
@@ -34,8 +29,8 @@
 	LH T0, 0xAFA0 (V0)
 	LH T2, 0xAFA2 (V0)
 	
-	ANDI T1, T0, 0xE010
-	LI T4, 0xE010
+	ANDI T1, T0, 0x400
+	LI T4, 0x400
 	BNE T1, T4, noload
 	NOP
 

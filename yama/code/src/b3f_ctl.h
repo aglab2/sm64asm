@@ -16,12 +16,15 @@ class B3FCtl : Object
     PROXIED_FUNCTION(Init)
     PROXIED_FUNCTION(Step)
 
+    PROXIED_FUNCTION(Phase1)
+    PROXIED_FUNCTION(TrollDeath)
+    PROXIED_FUNCTION(Avoidance)
+    PROXIED_FUNCTION(Phase2)
+    PROXIED_FUNCTION(Dead)
+	
 #undef PROXIED_FUNCTION
 
-    void Phase1();
-    void TrollDeath();
-    void Avoidance();
-    void Phase2();
+	static void (*sActions[])(void);
 
 public:
     static uintptr_t Behavior[];
