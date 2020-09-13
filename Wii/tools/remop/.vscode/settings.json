@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "sm64.h": "c",
+        "sm64struct.h": "c"
+    }
+}

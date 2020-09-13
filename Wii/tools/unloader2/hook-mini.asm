@@ -1,0 +1,12 @@
+.orga 0x38914
+	JAL 0x8040bf00
+
+.orga 0x57b70
+	NOP
+	NOP
+	JAL 0x8040c000
+	NOP
+
+.orga 0x587a0
+	JAL 0x8040c0e4
+	NOP
