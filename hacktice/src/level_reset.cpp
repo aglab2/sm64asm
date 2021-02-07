@@ -3,34 +3,73 @@ extern "C"
 {
     #include "types.h"
     #include "game/game.h"
+    #include "game/level_update.h"
+    #include "game/envfx_snow.h"
 }
 #include "cfg.h"
 
+static bool sTimerRunningDeferred = false;
+
 void LevelReset::onNormal()
 {
-    if (gControllers->buttonPressed & L_TRIG)
+    if (sTimerRunningDeferred)
     {
-        auto lAction = Config::lAction();
-        if (Config::LAction::LEVEL == lAction)
-        {
-            // reset
-            *(char*) (0x8033B21E) = 0x8;
-            *(short*)(0x8033B262) = 0x0;
-            *(short*)(0x8033B218) = 0x0;
-            *(char*) (0x8033B248) = 0x2;
-            *(short*)(0x80361414) = 0x5;
+        sTimerRunningDeferred = false;
+        sTimerRunning = true;
+    }
 
-            // some other crap
-            *(short*)(0x8033B26C) = 0x00;
-        }
+    auto action = Config::action();
+    if (Config::ButtonAction::LEVEL_RESET == action)
+    {
+        gMarioStates->health = 0x880;
+        gHudDisplay.coins = 0;
+        gMarioStates->numCoins = 0;
+        sWarpDest.type = 2;
+        gSnowParticleCount = 5;
+        gHudDisplay.timer = 0;
+        sTimerRunning = true;
+        sTimerRunningDeferred = true;
+    }
+    
+    if (Config::ButtonAction::LEVEL_RESET_WARP == action)
+    {
+        gMarioStates->health = 0x880;
+        gHudDisplay.coins = 0;
+        gMarioStates->numCoins = 0;
+        sWarpDest.type = 2;
+        sWarpDest.areaIdx = 1;
+        sWarpDest.nodeId = 0xa;
+        gSnowParticleCount = 5;
+        gHudDisplay.timer = 0;
+        sTimerRunning = true;
+        sTimerRunningDeferred = true;
+    }
 
-        if (Config::LAction::ACT == lAction)
-        {
-            *(short*)(0x8033B24A) = 0x010a;
-            *(char*)(0x8033B21E)  = 0x08;
-            *(short*)(0x8033B238) = 0x0004;
-            *(char*)(0x8033B248) = 0x02;
-            *(short*)(0x8033B26C) = 0;
-        }
+    if (Config::ButtonAction::ACT_SELECT == action)
+    {
+        sWarpDest.type = 2;
+        sWarpDest.areaIdx = 1;
+        sWarpDest.nodeId = 0xa;
+        gMarioStates->health = 0x880;
+        sCurrPlayMode = 0x4;
+        gHudDisplay.timer = 0;
+        sTimerRunning = true;
+        sTimerRunningDeferred = true;
+    }
+
+    auto warp = Config::warpIdAndReset();
+    if (warp != LevelConv::PlainLevels::OFF)
+    {
+        auto sm64lvl = LevelConv::toSM64Level(warp);
+        
+        sWarpDest.levelNum = (u8) sm64lvl;
+        sWarpDest.type = 2;
+        sWarpDest.areaIdx = 1;
+        sWarpDest.nodeId = 0xa;
+        gMarioStates->health = 0x880;
+        sCurrPlayMode = 0x4;
+        gHudDisplay.timer = 0;
+        sTimerRunning = true;
+        sTimerRunningDeferred = true;
     }
 }

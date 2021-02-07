@@ -35,7 +35,7 @@ void SaveState::onNormal()
     }
     else
     {
-        if (Config::lAction() == Config::LAction::STATE && gControllers[0].buttonDown & L_TRIG)
+        if (Config::action() == Config::ButtonAction::LOAD_STATE)
         {
             if (state->area == gCurrAreaIndex && state->level == gCurrCourseNum)
             {
@@ -47,7 +47,7 @@ void SaveState::onNormal()
 
 void SaveState::onPause()
 {
-    if (gControllers[0].buttonPressed & L_TRIG)
+    if (Config::action() == Config::ButtonAction::LOAD_STATE)
     {
         mustSaveState = true;
         TextManager::addLine("STATE SET", 30);

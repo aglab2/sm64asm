@@ -3,6 +3,7 @@ extern "C"
 {
     #include "game/game.h"
     #include "game/level_update.h"
+    #include "game/print.h"
     #include "audio/external.h"
     
     extern void play_sequence(u8 player, u8 seqId, u16 fadeTimer);
@@ -21,9 +22,13 @@ void BeachTwoDCtl::Step()
     if (gMarioStates->action == 0x00001302 || gMarioStates->action == 0x00001303 || gMarioStates->action == 0x00001307)
         return;
 
-    if (gMarioStates->action == 0x00001320)
+    if (gMarioStates->action == 0x00001321)
     {
-        play_sequence(0, 57, 0);
+        if (!oShouldLimitActions)
+        {
+            play_sequence(0, 49, 0);
+            oShouldLimitActions = !oShouldLimitActions;
+        }
     }
 
     if (gMarioStates->health < 0xff)
@@ -64,6 +69,34 @@ void BeachTwoDCtl::Step()
 
 int BeachTwoDCtl::Behavior[] = {
     0x0c000000, (int) sInit,
+    0x08000000,
+    0x0c000000, (int) sStep,
+    0x09000000,
+};
+
+void BeachTwoDRevert::Step()
+{
+    if (oDistanceToMario > 450.f)
+        return;
+
+    if (gMarioObject->oPosY < oPosY)
+    {
+        print_text(120, 20, "NOPE");
+    }
+}
+
+int BeachTwoDRevert::Behavior[] = {
+    0x11010040,
+    0x08000000,
+    0x0c000000, (int) sStep,
+    0x09000000,
+};
+
+void BeachTwoDMusicFixer::Step()
+{
+}
+
+int BeachTwoDMusicFixer::Behavior[] = {
     0x08000000,
     0x0c000000, (int) sStep,
     0x09000000,

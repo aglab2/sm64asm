@@ -21,7 +21,7 @@ void TextManager::onFrame()
         if (line.timeout == 0)
             continue;
 
-        print_text_centered(160, 30 + 20 * i, line.str);
+        print_text(10, 20 + 20 * i, line.str);
         line.timeout--;
     }
 }

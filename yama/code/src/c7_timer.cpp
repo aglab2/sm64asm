@@ -51,7 +51,7 @@ void C7Timer::Step()
     }
     else
     {
-        auto targetTime = oBehParams1 ? 200 : 378;
+        auto targetTime = oBehParams1 ? 120 : 378;
         auto leftTimer = targetTime - oTimer;
         printTime(leftTimer);
         if (leftTimer <= 0)

@@ -19,3 +19,21 @@ protected:
 public:
     static int Behavior[];
 };
+
+class BeachTwoDRevert : Object
+{
+protected:
+    void Step();
+    static void sStep() { reinterpret_cast<BeachTwoDRevert*>(gCurrentObject)->Step(); }
+public:
+    static int Behavior[];
+};
+
+class BeachTwoDMusicFixer : Object
+{
+protected:
+    void Step();
+    static void sStep() { reinterpret_cast<BeachTwoDMusicFixer*>(gCurrentObject)->Step(); }
+public:
+    static int Behavior[];
+};

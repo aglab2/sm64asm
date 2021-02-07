@@ -6,11 +6,11 @@ extern "C"
 
 static const char* sMessages[] = 
 {
-    nullptr,
+    "NEAT",						  // 0 - G1
     "YOU FOUND A SECRET",         // 1 - C1
     "IMPORT HABROUR",             // 2 - C1
     "BONK",                       // 3 - C3
-    "HOW",                        // 4 - C4
+    "HOW",            			  // 4 - C4
     "NO CORNER PHYSICS KREYGASM", // 5 - C4
     "IS THIS SPRUCE STEM",        // 6 - C7
     "SHOWERTIE",                  // 7 - C8
@@ -31,20 +31,15 @@ static const char* sMessages[] =
     "YEP",                        // 22 - CW
     "PIE BUG  PIE BUG  PIE BUG",  // 23 - PIE
     "YOU SPIN ME RIGHT ROUND",    // 24 - C3
-    "EGGMANLAND",                 // 24 - B3
+    "EGGMANLAND",                 // 25 - B3
+    "PRESS L NOW",                // 26 - B1
 };
 
 void FunnyText::Step()
 {
     if (oTimer > 100)
         activeFlags = 0;
-    
-    if (oBehParams1 == 0)
-    {
-        activeFlags = 0;
-        return;
-    }
-    
+
     print_text_centered(160, 50, sMessages[oBehParams1]);
 }
 

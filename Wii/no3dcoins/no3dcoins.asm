@@ -1,4 +1,4 @@
-;00AB240C / 03000000
+;00AB240C / 03000000 / 002ABCAC  rom manager 44
 ;00AB7ACC / 030056C0 ;vertices
 ;00AB7B8C / 03005780 ;textures
 ;00AB9D4C / 03007940 ;dl
@@ -25,7 +25,7 @@
 
 .orga 0x218EDC
 	.incbin "coingeo.bin"
-.orga 0xAB7ACC
+.orga 0xAB7ACC + 0x44
 	.incbin "coindata.bin"
 .orga 0x21A630
 	.incbin "coinbehav1.bin"

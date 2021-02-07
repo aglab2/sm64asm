@@ -1,5 +1,5 @@
-;.orga 0x38914
-;	JAL 0x8040bf00
+.orga 0x38914
+	JAL 0x80407100
 
 .orga 0x1207100
 	ADDIU SP, SP, -0x18

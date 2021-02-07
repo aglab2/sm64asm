@@ -65,9 +65,9 @@ void recalculateDistance()
     if (sCullDistance > maxDistance)
         sCullDistance = maxDistance;
 
-    //print_text_fmt_int(20, 60, "N %d", sNextDrawnCount);
-    //print_text_fmt_int(20, 40, "C %d", sDrawnCount);
-    //print_text_fmt_int(20, 20, "D %d", sCullDistance / cOffset);
+    // print_text_fmt_int(20, 60, "N %d", sNextDrawnCount);
+    // print_text_fmt_int(20, 40, "C %d", sDrawnCount);
+    // print_text_fmt_int(20, 20, "D %d", sCullDistance / cOffset);
 
     sDrawnCount = 0;
     sNextDrawnCount = 0;

@@ -24,15 +24,14 @@ void CheezeCheckPoint::Step()
 
     if (oAction == INIT)
     {
-        auto action = gMarioStates->action;
-        if (action == 0 && oDistanceToMario < 150.f)
+        if (oDistanceToMario < 150.f)
         {
             oAction = WARP;
         }
     }
     else
     {
-        if (gControllers->buttonPressed & L_TRIG)
+        if (gControllers->buttonPressed & L_TRIG && gMarioStates->action != 0x00880898)
         {
             gMarioStates->pos[0] = oPosX;
             gMarioStates->pos[1] = oPosY;

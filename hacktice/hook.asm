@@ -12,10 +12,10 @@
 	NOP
 
 ; Stars always yellow
-.orga 0xAD548
-	B 0xAD56C
-.orga 0x65FC4
-	B 0x65Fd4
+;.orga 0xAD548
+;	B 0xAD56C
+;.orga 0x65FC4
+;	B 0x65Fd4
 	
 ; Centiseconds
 .orga 0x9EA63
@@ -54,17 +54,49 @@
 .orga 0x4694
 	NOP
 
-.orga 0x6194
-	ORI T2, T1, 0x40
+; timer part
+; show the timer
+;.orga 0x6194
+;	ORI T2, T1, 0x40
+; stop the timer condition
+;.orga 0x8C7C
+;	SB R0, 0xEE(T5)
 
-.orga 0x8C7C
-	SB R0, 0xEE(T5)
-	
+; dont reset timer between area
+.orga 0x5150
+	NOP
+
 .orga 0x5024
 	B 0x503C
 	
 ; hide timer text
 .orga 0x9EA24
+	nop
+	
+; 02011cc8 - 02011d50
+.orga 0x978FC
+	lw at, 0x8004e004
+	jalr at
+	nop
+	b 0x97A38
+	nop
+
+.orga 0x96838
+	lui t2, 0x0201
+	addiu t2, t2, 0x1cc8
+.orga 0x968fc
+	lui t0, 0x0201
+	addiu t0, t0, 0x1d50
+
+.orga 0x9688C
+	lw at, 0x8004e004
+	jalr at
+	nop
+	b 0x968D4
+	nop
+
+.orga 0x96984
+	b 0x96AD8
 	nop
 
 .headersize 0x80245000

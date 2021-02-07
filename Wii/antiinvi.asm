@@ -61,5 +61,5 @@ yesend:
 	jr ra
 	nop
 
-.org 0x57030
-	nop
+;.org 0x57030
+;	nop

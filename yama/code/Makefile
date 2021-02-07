@@ -2,8 +2,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Alter these 4 variables according to your need
-CPP_FILES = main boo_key book bookshelf key locked_box triplet obj_ctl wall_translucer mips mips_ctl cits_rotat particle_spawner two_d beach_2d_ctl rooms_coll red_indicator c1_moving hud_relocator c1_upwards c2_cannon c5_flying b1_fight_ctl c8_deathfloor c9_puzzle f2_scroll c9_puzzle_coin ow_rock memset cw_death c7_timer funny_text b3f_ctl b3f_platform b3f_switch b3f_fireball credits c9_door dorrie_ctl invi_wall_fixer cw_scroll cheeze_checkpoint
-ROM = HH-patched.z64
+CPP_FILES = main boo_key book bookshelf key locked_box triplet obj_ctl wall_translucer mips mips_ctl cits_rotat particle_spawner two_d beach_2d_ctl rooms_coll red_indicator c1_moving hud_relocator c1_upwards c2_cannon c5_flying b1_fight_ctl c8_deathfloor c9_puzzle f2_scroll c9_puzzle_coin ow_rock memset cw_death c7_timer funny_text b3f_ctl b3f_platform b3f_switch b3f_fireball credits c9_door dorrie_ctl invi_wall_fixer cw_scroll cheeze_checkpoint cheeze_zap
+ROM = HH.z64
 INCLUDE_PATH = C:\sm64-api\sm64
 LIBRARY_PATH = C:\sm64-api\ld
 

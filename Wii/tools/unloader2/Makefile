@@ -3,7 +3,7 @@ OBJ_DIR = obj
 
 # Alter these 4 variables according to your need
 CPP_FILES = unloader2
-ROM = rom.z64
+ROM = sr4.5.z64
 INCLUDE_PATH = C:\sm64-api\sm64
 LIBRARY_PATH = C:\sm64-api\ld
 

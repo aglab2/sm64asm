@@ -35,6 +35,7 @@
 #include "invi_wall_fixer.h"
 #include "cw_scroll.h"
 #include "cheeze_checkpoint.h"
+#include "cheeze_zap.h"
 
 #define REGISTER_BEHAVIOR(list, obj) list, 0x04000000, (int) obj::Behavior,
 
@@ -77,4 +78,6 @@ int _start[] = {
     REGISTER_BEHAVIOR(0x00040000, InviWallFixer)  // 4081A4
     REGISTER_BEHAVIOR(0x00040000, CWScroll)       // 4081B0
     REGISTER_BEHAVIOR(0x00040000, CheezeCheckPoint) // 4081BC
+    REGISTER_BEHAVIOR(0x00040000, BeachTwoDRevert) // 4081C8
+    REGISTER_BEHAVIOR(0x00090000, CheezeZap)      // 4081D4
 };

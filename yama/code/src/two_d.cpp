@@ -3,6 +3,7 @@ extern "C"
 {
     #include "PR/os_cont.h"
     #include "game/game.h"
+    #include "game/print.h"
     #include "game/level_update.h"
     #include "game/camera.h"
 
@@ -77,8 +78,11 @@ void TwoD::Step()
         CONFIG->Zooming -= 0x15;
     };
     
-    hold &= ~(U_CBUTTONS | D_CBUTTONS);
-    pressed &= ~(U_CBUTTONS | D_CBUTTONS);
+    if (gCurrLevelNum != 5)
+    {
+        hold &= ~(U_CBUTTONS | D_CBUTTONS);
+        pressed &= ~(U_CBUTTONS | D_CBUTTONS);
+    }
 
     short angle = gPlayerCameraState[0].faceAngle[1] - oBparam12;
     if (ShouldFilter(angle, pressed, hold))
@@ -116,8 +120,12 @@ void TwoD::Step()
     gControllers[0].buttonPressed = pressed;
 
     sSelectionFlags = 4;
-    if (!(gCameraMovementFlags & CAM_MOVE_INIT_CAMERA))
-       gCameraMovementFlags = 10;
+
+    if (gCurrLevelNum != 5)
+    {
+        if (!(gCameraMovementFlags & CAM_MOVE_INIT_CAMERA))
+            gCameraMovementFlags = 10;
+    }
 
     s8DirModeYawOffset += oBparam12;
 }

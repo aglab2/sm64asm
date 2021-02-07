@@ -2,8 +2,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Alter these 4 variables according to your need
-CPP_FILES = main savestate text_manager input_viewer level_reset cfg
-ROM = ../rom.z64
+CPP_FILES = main savestate text_manager input_viewer level_reset cfg level_conv strings string_conv wallkick_frame distance levitate speed timer checkpoint action
+ROM = rl.z64
 INCLUDE_PATH = C:\sm64-api\sm64
 LIBRARY_PATH = C:\sm64-api\ld
 
@@ -26,7 +26,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 inject: $(OBJ_FILES)
 	$(LD) -o tmp -L. -L $(LIBRARY_PATH) --oformat binary -T ldscript -M $^
 	dd bs=1 seek=$(ROM_OFFSET) if=tmp of=$(ROM) conv=notrunc
-	rm tmp
+#	rm tmp
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)

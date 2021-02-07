@@ -2,7 +2,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Alter these 4 variables according to your need
-CPP_FILES = flipclock flipswitch mnrblock noteblock pswitch sandblock
+CPP_FILES = flipswitch mnrblock noteblock pswitch sandblock
 ROM = sr6.25.z64
 INCLUDE_PATH = C:\n64chain\sm64
 LIBRARY_PATH = C:\n64chain\ld

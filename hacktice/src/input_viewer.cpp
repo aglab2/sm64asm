@@ -3,11 +3,15 @@ extern "C"
 {
     #include "types.h"
     #include "game/game.h"
+    #include "game/ingame_menu.h"
     #include "game/print.h"
     #include "libc/string.h"
 }
 #include "array_size.h"
 #include "cfg.h"
+
+#define ABS(x) (x > 0 ? x : -x)
+#define POSITIVE(x) (x > 0)
 
 struct ButtonDescriptor
 {
@@ -34,20 +38,25 @@ void InputViewer::onNormal()
 {
     auto stickStyle = Config::showStick();
 
-    auto x = gControllers->stickX;
-    auto y = gControllers->stickY;
+    auto x = gControllers->rawStickX;
+    auto y = gControllers->rawStickY;
     
     if (Config::StickStyle::VALUE == stickStyle)
     {
-        print_text_fmt_int(20, 40, "* %d", x);
-        print_text_fmt_int(20, 20, "Y %d", y);
+        print_text_fmt_int(30, 40, "%d", ABS(x));
+        print_text_fmt_int(30, 20, "%d", ABS(y));
+        if (x)
+            print_text(10, 40, POSITIVE(x) ? "L" : "R");
+
+        if (y)
+            print_text(10, 20, POSITIVE(y) ? "U" : "D");
     }
     if (Config::StickStyle::GRAPHICS == stickStyle)
     {
         print_text(30, 30, "0");
 
-        x = x / 64 * 20;
-        y = y / 64 * 20;
+        x = x * 20 / 80;
+        y = y * 20 / 80;
 
         print_text(30 + x, 30 + y, "0");
     }

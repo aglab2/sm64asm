@@ -120,7 +120,7 @@ void Credits::Step()
 
     if (oPart != sCreditPartCount && oTimer && 0 == oTimer % sCreditPartLength)
     {
-        auto romStart = 0x03b80000 + sCreditPartSize * oPart;
+        auto romStart = 0x2b40000 + sCreditPartSize * oPart;
         auto romEnd = romStart + sCreditPartSize;
         auto textures = segmented_to_virtual((void*) 0x0E000840);
         dma_copy(textures, (void*) romStart, (void*) romEnd);

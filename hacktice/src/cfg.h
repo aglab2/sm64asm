@@ -1,5 +1,7 @@
 #pragma once
 
+#include "level_conv.h"
+
 namespace Config
 {
     void onPause();
@@ -14,12 +16,40 @@ namespace Config
 
     bool showButtons();
 
-    enum class LAction
+    enum class ButtonAction
     {
         OFF,
-        LEVEL,
-        ACT,
-        STATE,
+        ACT_SELECT,
+        LEVEL_RESET,
+        LEVEL_RESET_WARP,
+        LEVITATE,
+        LOAD_STATE,
     };
-    LAction lAction();
+    ButtonAction action();
+
+    LevelConv::PlainLevels warpId();
+    LevelConv::PlainLevels warpIdAndReset();
+
+    bool showWallkickFrame();
+    bool showDistanceFromClosestRed();
+    bool showDistanceFromClosestSecret();
+
+    bool showSpeed();
+
+    bool timerShow();
+    enum class TimerStyle
+    {
+        GRAB,
+        XCAM,
+    };
+    TimerStyle timerStyle();
+    bool timerStopOnCoinStar();
+    
+    bool checkpointWallkick();
+    bool checkpointDoor();
+    bool checkpointPole();
+    bool checkpointLava();
+    bool checkpointGroundpound();
+    bool checkpointBurning();
+    bool checkpointCannon();
 };
