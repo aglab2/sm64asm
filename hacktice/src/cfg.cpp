@@ -217,7 +217,7 @@ static void processInputs()
             return;
         }
     }
-    if (gControllers->buttonPressed & U_JPAD)
+    if (gControllers->buttonPressed & U_CBUTTONS)
     {
         if (desc.value != desc.maxValueCount - 1)
         {
@@ -225,7 +225,7 @@ static void processInputs()
             return;
         }
     }
-    if (gControllers->buttonPressed & D_JPAD)
+    if (gControllers->buttonPressed & D_CBUTTONS)
     {
         if (desc.value != 0)
         {
