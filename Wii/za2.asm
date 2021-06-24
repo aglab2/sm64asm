@@ -1,0 +1,14 @@
+.orga 0x98cbc
+	JAL 0x80403700
+	
+.orga 0x1203734
+	JR RA
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP

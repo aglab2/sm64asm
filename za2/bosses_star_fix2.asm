@@ -1,5 +1,5 @@
 .org 0x8C4C
-	J 0x2BB988
+	JAL 0x2BB988
 	NOP
 ;ANDI T9, T8, 0x0400
 ;SLTU T0, R0, T9 -- old
@@ -37,6 +37,6 @@ yeswarp:
 	ADDIU T0, R0, 0 ;set T0 to 0 -> warp out
 
 endwarp:
-	J 0x24DC54
+	JR RA
 	NOP
 .endarea

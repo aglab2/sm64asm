@@ -55,12 +55,14 @@ void setRenderAnimation()
     cur_object_exec_behavior();
 }
 
+extern s16 gCurrLevelNum;
 void recalculateDistance()
 {
     if (gTimeStopState)
         return;
 
-    sCullDistance -= (sDrawnCount - cTargetDrawnCount) * cOffset / 3.f;
+	int target = cTargetDrawnCount;
+    sCullDistance -= (sDrawnCount - target) * cOffset / 3.f;
     sCullDistance -= (sNextDrawnCount - sDrawnCount) * cOffset / 2.f;
     if (sCullDistance > maxDistance)
         sCullDistance = maxDistance;

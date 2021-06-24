@@ -1,0 +1,11 @@
+.engine         0x0000000080378800    0x13490 load address 0x00000000000f5580
+
+d = 283280
+
+0x0000000080378f84	F5D04	4BC                mtxf_lookat
+0x0000000080379440	F61C0	1B0                mtxf_rotate_zxy_and_translate
+0x00000000803795f0	F6370	1A8                mtxf_rotate_xyz_and_translate
+0x0000000080379798	F6518	180                mtxf_billboard
+0x0000000080379918	F6698	18C                mtxf_align_terrain_normal
+0x0000000080379aa4	F6824	4BC                mtxf_align_terrain_triangle
+0x0000000080379f60	F6CE0	33C                mtxf_mul

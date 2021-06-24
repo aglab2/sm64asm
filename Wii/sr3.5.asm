@@ -1,0 +1,16 @@
+.orga 0x96a1c
+	JAL 0x80402600
+
+.orga 0x1202664
+	JR RA
+	NOP
+	
+.orga 0x918f0
+	ADDIU AT, R0, 0x0020
+	BNE A0, AT, 0x91904
+
+.orga 0x9847c
+	nop
+
+.orga 0x98488
+	b 0x98628

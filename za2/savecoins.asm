@@ -1,6 +1,6 @@
 ;instead of "need to check", let it always save :]
 .org 0x34854
-	J 0x802AE908
+	JAL 0x802AE908
 	NOP
 	
 ;idk what it is, should be unused
@@ -28,7 +28,7 @@ odysseystars_fileselectend:
 	LB T7, 0xB21D(T6)
 	SB T7, 0x06(V1)
 
-	J 0x8027985C
+	JR RA
 	NOP
 .endarea
 
