@@ -1,0 +1,1 @@
+void onCapStep(u16 seqArgs);

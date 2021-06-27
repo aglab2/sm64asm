@@ -16,12 +16,16 @@ void Ctl::Init()
 {
     oCtlState = 0;
     oCtlQSRotatSpeed = 0;
+    oCtlHealTimer = 0;
     Combiner::Find();
     save_file_set_flags(1 << 2);
 }
 
 void Ctl::Step()
 {
+    if (gMarioStates->health < 0x100)
+        return;
+
     constexpr int healthDrainRate = 0x18;
 
     if (gControllers[0].buttonPressed & L_TRIG)
@@ -34,18 +38,34 @@ void Ctl::Step()
     {
         gSequencePlayers[0].tempo = 3840 * 2;
         if (gMarioStates->health > healthDrainRate)
+        {
+            oCtlHealTimer++;
             gMarioStates->health -= healthDrainRate;
+        }
     }
     else
     {
         gSequencePlayers[0].tempo = 3840;
-        if (gMarioStates->health < 2176)
+        if (oCtlHealTimer)
         {
-            gMarioStates->health += 2 * healthDrainRate;
-        }
-        else
-        {
-            gMarioStates->health = 2176;
+            int healAmount = oCtlHealTimer == 1 ? healthDrainRate : 2 * healthDrainRate;
+            if (gMarioStates->health < 2176)
+            {
+                gMarioStates->health += healAmount;
+            }
+            else
+            {
+                gMarioStates->health = 2176;
+            }
+            
+            if (oCtlHealTimer == 1)
+            {
+                oCtlHealTimer = 0;
+            }
+            else
+            {
+                oCtlHealTimer -= 2;
+            }
         }
     }
 
@@ -56,7 +76,7 @@ void Ctl::Step()
 
     if (gMarioStates->flags & 0x00000004)
     {
-        print_text_fmt_int(20, 20, "%d", gMarioStates->capTimer / 30);
+        print_text_fmt_int(20, 20, "%d", gMarioStates->capTimer);
     }
 }
 

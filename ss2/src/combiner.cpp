@@ -5,6 +5,7 @@ extern "C"
     #include "types.h"
     #include "game/memory.h"
     #include "game/object_helpers.h"
+    #include "game/print.h"
     #include "engine/graph_node.h"
     #include "PR/os_libc.h"
 }
@@ -45,7 +46,7 @@ namespace Combiner
 #define FOUND_COMBINERS_COUNT 32
     static struct Combiner foundCombiners[FOUND_COMBINERS_COUNT];
 
-    static int combinersInDlCount[] = { 0, 3, 0, 1, 1, 3, 0 };
+    static int combinersInDlCount[] = { 0, 3, 0, 1, 1, 2, 0 };
 
 __attribute__((noinline)) // static
     CombinerTypes Decode(unsigned int* ptr)
@@ -86,10 +87,16 @@ __attribute__((noinline)) // static
         // node is GRAPH_NODE_TYPE_CULLING_RADIUS - GraphNodeCullingRadius
         auto node = gLoadedGraphNodes[id];
         // child is GRAPH_NODE_TYPE_DISPLAY_LIST - GraphNodeDisplayList 
-        auto child = node->children;
-        auto dlNode = (struct GraphNodeDisplayList*) child;
-        auto dataSegPtr = dlNode->displayList;
-        Find(pos, (int*) dataSegPtr, cnt);
+        auto graphNode = node->children;
+
+        auto curNode = graphNode;
+        do 
+        {
+            auto dlNode = (struct GraphNodeDisplayList*) curNode;
+            auto dataSegPtr = dlNode->displayList;
+            Find(pos, (int*) dataSegPtr, cnt);
+        } 
+        while ((curNode = curNode->next) != graphNode);
     }
 /*
 [0127E4C0 / 19005E40]             15 04 00 00 0E01F4D0 // Load display list 0x0E01F4D0 into layer 4
@@ -102,6 +109,8 @@ __attribute__((noinline))
     {
         bzero(foundCombiners, sizeof(foundCombiners));        
         int pos = 0;
+        
+        ParseObject(pos, 0xfb, 1);
 
         // Parse course dl
         int* geoPtr = (int*) segmented_to_virtual((void*) 0x19005E40);
@@ -120,23 +129,38 @@ __attribute__((noinline))
         }
 
         // Parse object dl
+        ParseObject(pos, 0xeb, 1);
+        ParseObject(pos, 0xec, 1);
         ParseObject(pos, 0xed, 1);
         ParseObject(pos, 0xee, 1);
         ParseObject(pos, 0xef, 1);
+        ParseObject(pos, 0xef, 1);
+        ParseObject(pos, 0xf3, 1);
+        ParseObject(pos, 0xf4, 1);
+        ParseObject(pos, 0xf5, 1);
+        ParseObject(pos, 0xf6, 1);
+        ParseObject(pos, 0xf9, 1);
+
+        if (pos >= FOUND_COMBINERS_COUNT)
+            trap();
     }
 
 __attribute__((noinline))
     void Switch(int type)
     {
-        unsigned int* targetCombiners = type ? patchedCombiners : originalCombiners;
+        unsigned int* neededCombiners = type  ? patchedCombiners : originalCombiners;
+        unsigned int* otherCombiners  = !type ? patchedCombiners : originalCombiners;
         for (int i = 0; i < FOUND_COMBINERS_COUNT; i++)
         {
             const auto& comb = foundCombiners[i];
             if (!comb.ptr)
+            {
                 return;
+            }
 
-            comb.ptr[0] = targetCombiners[0 + (int) comb.type * 2];
-            comb.ptr[1] = targetCombiners[1 + (int) comb.type * 2];
+            unsigned int* combiners = i >= 5 ? neededCombiners : otherCombiners;
+            comb.ptr[0] = combiners[0 + (int) comb.type * 2];
+            comb.ptr[1] = combiners[1 + (int) comb.type * 2];
         }
     }
 } // namespace Combiner

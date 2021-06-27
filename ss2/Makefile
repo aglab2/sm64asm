@@ -2,7 +2,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Alter these 4 variables according to your need
-CPP_FILES = main ctl qs_rotat combiner trap water_rotat
+CPP_FILES = main ctl qs_rotat combiner trap water_rotat moving propeller wind_particles wind_ctl v_switch v v_wk v_platform v_gate secret scroll cap block arrow_point arrow_hour arrow_minute bottle
 ROM = ../ss2-aglab.z64
 INCLUDE_PATH = C:\sm64-api\sm64
 LIBRARY_PATH = C:\sm64-api\ld

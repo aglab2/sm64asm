@@ -7,18 +7,32 @@ extern "C"
 }
 #include "object_fields.h"
 
-class Ctl : Object
+class MIPSCtl : Object
 {
-    using Type = Ctl;
-
-#define oCtlState OBJECT_FIELD_S32(0x1b)
-#define oCtlQSRotatSpeed OBJECT_FIELD_S32(0x1c)
-#define oCtlHealTimer OBJECT_FIELD_S32(0x1d)
+    using Type = MIPSCtl;
+    enum Actions
+    {
+        WELCOME,
+        SPIRAL,
+        ROMBS,
+        FINAL,
+    };
 
 #define PROXIED_FUNCTION(x) void x(); static void s##x() { return reinterpret_cast<Type*>(gCurrentObject)->x(); }
+
     PROXIED_FUNCTION(Init)
     PROXIED_FUNCTION(Step)
+    
+    PROXIED_FUNCTION(Welcome)
+    PROXIED_FUNCTION(Spiral)
+    PROXIED_FUNCTION(Rombs)
+    PROXIED_FUNCTION(Final)
+    
+    static void (*sProxies[])(void);
+
 #undef PROXIED_FUNCTION
+
+    void SpawnMIPS(int path);
 
 public:
     static uintptr_t Behavior[];

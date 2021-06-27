@@ -7,13 +7,21 @@ extern "C"
 }
 #include "object_fields.h"
 
-class Ctl : Object
+class VSwitch : Object
 {
-    using Type = Ctl;
+    using Type = VSwitch;
 
-#define oCtlState OBJECT_FIELD_S32(0x1b)
-#define oCtlQSRotatSpeed OBJECT_FIELD_S32(0x1c)
-#define oCtlHealTimer OBJECT_FIELD_S32(0x1d)
+    enum Actions
+    {
+        PURPLE_SWITCH_IDLE,
+        PURPLE_SWITCH_PRESSED,
+        PURPLE_SWITCH_TICKING,
+    };
+
+#define oVSwitchCtlObject OBJECT_FIELD_OBJ(0x1b)
+#define oVSwitchTimer OBJECT_FIELD_S32(0x1c)
+
+    void ScaleOverTime(s32 a0, s32 a1, f32 sp10, f32 sp14);
 
 #define PROXIED_FUNCTION(x) void x(); static void s##x() { return reinterpret_cast<Type*>(gCurrentObject)->x(); }
     PROXIED_FUNCTION(Init)

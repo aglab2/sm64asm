@@ -1,0 +1,23 @@
+.orga 0x21dd38
+	.dw 0x80407f00
+
+.orga 0x1207F00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+	LW V0, 0x80408084
+	JALR V0
+	NOP
+	
+	JAL 0x802F31BC
+	NOP 
+
+	LW RA, 0x14(SP)	
+	JR RA
+	ADDIU SP, SP, 0x18
+	
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP

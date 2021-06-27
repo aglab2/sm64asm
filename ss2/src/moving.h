@@ -7,13 +7,12 @@ extern "C"
 }
 #include "object_fields.h"
 
-class Ctl : Object
+class Moving : Object
 {
-    using Type = Ctl;
+    using Type = Moving;
 
-#define oCtlState OBJECT_FIELD_S32(0x1b)
-#define oCtlQSRotatSpeed OBJECT_FIELD_S32(0x1c)
-#define oCtlHealTimer OBJECT_FIELD_S32(0x1d)
+#define oMovingCtlObject OBJECT_FIELD_OBJ(0x1b)
+#define oMovingPropeller OBJECT_FIELD_OBJ(0x1c)
 
 #define PROXIED_FUNCTION(x) void x(); static void s##x() { return reinterpret_cast<Type*>(gCurrentObject)->x(); }
     PROXIED_FUNCTION(Init)
