@@ -4,7 +4,7 @@ ENTRY(_start)
 
 SECTIONS 
 {
-  .sm64 0x80407200 : 
+  .sm64 0x8040F200 : 
   {
     *(.text)
     *(.text.*)

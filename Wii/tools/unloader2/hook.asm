@@ -1,7 +1,7 @@
 .orga 0x38914
-	JAL 0x80407100
+	JAL 0x8040F100
 
-.orga 0x1207100
+.orga 0x120F100
 	ADDIU SP, SP, -0x18
 	SW RA, 0x14(SP)
 	
@@ -34,9 +34,9 @@ ehd:
 .orga 0x57b70
 	NOP
 	NOP
-	JAL 0x80407200
+	JAL 0x8040F200
 	NOP
 
 .orga 0x587a0
-	JAL 0x804072e4
+	JAL 0x8040F2e4
 	NOP

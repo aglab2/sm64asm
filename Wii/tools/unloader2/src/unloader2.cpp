@@ -15,7 +15,7 @@ static T distance(const T* x, const T* y)
     return ds[0] * ds[0] + ds[1] * ds[1] + ds[2] * ds[2];
 }
 
-constexpr int cTargetDrawnCount = 65;
+constexpr int cTargetDrawnCount = 50;
 constexpr float cOffset = 100000.f;
 constexpr float maxDistance = 1000 * cOffset;
 constexpr float nextMult = 1.1f;

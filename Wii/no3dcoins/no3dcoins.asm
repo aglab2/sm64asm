@@ -25,7 +25,7 @@
 
 .orga 0x218EDC
 	.incbin "coingeo.bin"
-.orga 0xAB7ACC ; + 0x44
+.orga 0xAB7ACC + 0x44
 	.incbin "coindata.bin"
 .orga 0x21A630
 	.incbin "coinbehav1.bin"
