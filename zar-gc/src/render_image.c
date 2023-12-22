@@ -13,6 +13,7 @@ static inline void* alloc(char** pool, size_t size)
 static const int xuv = 8098;
 static const int yuv = 974;
 
+static Gfx* gRenderImageGfxPool;
 static void render_piece(char** pool, int x, int y, int posW, int posH, int imW, int imH)
 {
     const int xoff = -15;
@@ -74,9 +75,36 @@ static void render_piece(char** pool, int x, int y, int posW, int posH, int imW,
     vbuf[3].v.cn[2] = 0xff;
     vbuf[3].v.cn[3] = 0xff;
 
-    gSPVertex(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(vbuf), 4, 0);
-    gSP1Triangle(gDisplayListHead++, 0, 1, 2, 0);
-    gSP1Triangle(gDisplayListHead++, 0, 2, 3, 0);
+    gSPVertex(gRenderImageGfxPool++, VIRTUAL_TO_PHYSICAL(vbuf), 4, 0);
+    gSP1Triangle(gRenderImageGfxPool++, 0, 1, 2, 0);
+    gSP1Triangle(gRenderImageGfxPool++, 0, 2, 3, 0);
+}
+
+#define	gDPLoadTextureBlock2(pkt, timg, fmt, siz, width, height,		\
+		uls, ult, lrs, lrt, pal,				\
+		cms, cmt, masks, maskt, shifts, shiftt)			\
+{									\
+	gDPSetTextureImage(pkt, fmt, siz##_LOAD_BLOCK, 1, timg);	\
+	gDPSetTile(pkt, fmt, siz,					\
+		(((((lrs)-(uls)+1) * siz##_TILE_BYTES)+7)>>3), 0,	\
+		G_TX_LOADTILE, 0 , cmt, maskt, shiftt, cms, masks,	\
+		shifts);						\
+	gDPLoadSync(pkt);						\
+	gDPLoadBlock(pkt, G_TX_LOADTILE, \
+			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
+			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
+			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\
+			(lrt)<<G_TEXTURE_IMAGE_FRAC);			\
+	gDPPipeSync(pkt);						\
+	gDPSetTile(pkt, fmt, siz,					\
+		(((((lrs)-(uls)+1) * siz##_LINE_BYTES)+7)>>3), 0,	\
+		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
+		shifts);						\
+	gDPSetTileSize(pkt, G_TX_RENDERTILE,				\
+			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
+			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
+			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\
+			(lrt)<<G_TEXTURE_IMAGE_FRAC)			\
 }
 
 void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s32 scaleX, UNUSED s32 scaleY, s32 mode) {
@@ -96,6 +124,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
     print_text_fmt_int(128, 0, "%d", yuv);
 #endif
 
+    gRenderImageGfxPool = (Gfx*) (0x80026000 + 0x30000);
     char* pool = (char*) 0x8005C000;
 
     s32 posW, posH, imW, imH, modeSC, mOne;
@@ -104,19 +133,19 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
     s32 maskW = 1;
     s32 maskH = 1;
 
-    gDPPipeSync(gDisplayListHead++);
-    gDPSetTexturePersp(gDisplayListHead++,  G_TP_NONE);
-    gDPSetCombineMode(gDisplayListHead++,   G_CC_FADEA, G_CC_FADEA);
-    gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
+    gDPPipeSync(gRenderImageGfxPool++);
+    gDPSetTexturePersp(gRenderImageGfxPool++,  G_TP_NONE);
+    gDPSetCombineMode(gRenderImageGfxPool++,   G_CC_FADEA, G_CC_FADEA);
+    gDPSetTextureFilter(gRenderImageGfxPool++, G_TF_POINT);
 
     if (mode == G_CYC_COPY) {
-        gDPSetCycleType( gDisplayListHead++, mode);
-        gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
+        gDPSetCycleType( gRenderImageGfxPool++, mode);
+        gDPSetRenderMode(gRenderImageGfxPool++, G_RM_NOOP, G_RM_NOOP2);
         modeSC = 4;
         mOne   = 1;
     } else {
-        gDPSetCycleType( gDisplayListHead++, mode);
-        gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+        gDPSetCycleType( gRenderImageGfxPool++, mode);
+        gDPSetRenderMode(gRenderImageGfxPool++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
         modeSC = 1;
         mOne   = 0;
     }
@@ -131,7 +160,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
         }
         num /= 2;
         if (num == 1) {
-            print_text(32, 32, "IMAGE WIDTH FAILURE");
+            // print_text(32, 32, "IMAGE WIDTH FAILURE");
             return;
         }
     }
@@ -147,7 +176,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
         num *= 2;
         maskW++;
         if (maskW == 9) {
-            print_text(32, 32, "WIDTH MASK FAILURE");
+            // print_text(32, 32, "WIDTH MASK FAILURE");
             return;
         }
     }
@@ -160,7 +189,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
         num *= 2;
         maskH++;
         if (maskH == 9) {
-            print_text(32, 32, "HEIGHT MASK FAILURE");
+            // print_text(32, 32, "HEIGHT MASK FAILURE");
             return;
         }
     }
@@ -178,11 +207,11 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
             posH -= peakH;
         }
 
-        gDPLoadSync(gDisplayListHead++);
-        gDPLoadTextureTile(gDisplayListHead++,
+        gDPLoadSync(gRenderImageGfxPool++);
+        gDPLoadTextureTile(gRenderImageGfxPool++,
             image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), ((posH + imH) - 1), 0, (G_TX_NOMIRROR | G_TX_WRAP), (G_TX_NOMIRROR | G_TX_WRAP), maskW, maskH, 0, 0);
 #if 0
-        gSPTextureRectangle(gDisplayListHead++,
+        gSPTextureRectangle(gRenderImageGfxPool++,
             ((x + posW) << 2),
             ((y + posH) << 2),
             (((x + posW + imW) - mOne) << 2),
@@ -198,11 +227,11 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
         posH = peakH;
         for (i = 0; i < (width / imW); i++) {
             posW = i * imW;
-            gDPLoadSync(gDisplayListHead++);
-            gDPLoadTextureTile(gDisplayListHead++,
+            gDPLoadSync(gRenderImageGfxPool++);
+            gDPLoadTextureTile(gRenderImageGfxPool++,
                 image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), (height - 1), 0, (G_TX_NOMIRROR | G_TX_WRAP), (G_TX_NOMIRROR | G_TX_WRAP), maskW, maskH, 0, 0);
 #if 0
-            gSPTextureRectangle(gDisplayListHead++,
+            gSPTextureRectangle(gRenderImageGfxPool++,
                 (x + posW) << 2,
                 (y + posH) << 2,
                 ((x + posW + imW) - mOne) << 2,
@@ -214,8 +243,11 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
         }
     }
 
-    gDPPipeSync(gDisplayListHead++);
-    gDPSetTexturePersp(gDisplayListHead++,  G_TP_PERSP);
-    gDPSetCombineMode(gDisplayListHead++,   G_CC_SHADE, G_CC_SHADE);
-    gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
+    gDPPipeSync(gRenderImageGfxPool++);
+    gDPSetTexturePersp(gRenderImageGfxPool++,  G_TP_PERSP);
+    gDPSetCombineMode(gRenderImageGfxPool++,   G_CC_SHADE, G_CC_SHADE);
+    gDPSetTextureFilter(gRenderImageGfxPool++, G_TF_BILERP);
+    gSPEndDisplayList(gRenderImageGfxPool++);
+
+    gSPDisplayList(gDisplayListHead++, 0x0026000 + 0x30000);
 }

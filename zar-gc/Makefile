@@ -3,7 +3,7 @@ OBJ_DIR = obj
 TOOL_DIR = Hacktice
 
 # Alter these 4 variables according to your need
-CPP_FILES = main image_select render_image
+CPP_FILES = main image_select render_image levels
 
 # ROM to inject into for convenient testing
 ROM = zarha.z64
@@ -40,7 +40,5 @@ $(OBJ_DIR):
 
 clean:
 	rm -rf $(OBJ_DIR)
-	rm -f $(PAYLOAD_HEADER)
-	rm -f $(PAYLOAD_DATA)
 
 .PHONY: all clean $(ROM)

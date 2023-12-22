@@ -9,4 +9,5 @@ static void onPause()
 
 uintptr_t _start[] = {
     (uintptr_t) onPause,
+    0, // pause blocked
 };
