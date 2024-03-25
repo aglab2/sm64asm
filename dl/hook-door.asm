@@ -1,0 +1,23 @@
+.orga 0x942c
+	LUI V1, 0x801d
+.orga 0x9438
+	LW V1, 0xe004(V1)
+	JALR V1
+	NOP
+	SH V0, 0x36(SP)
+
+.orga 0x9570
+	LW V1, 0x801ce014
+	LW A1, 0x40(SP)
+	JALR V1
+	LH A0, 0x36(SP)
+	SW V0, 0x24(SP)
+	B 0x9604
+	NOP
+
+.orga 0x9448
+	LW V1, 0x801ce02c
+	LW A0, 0x40(SP)
+.orga 0x9458
+	JALR V1
+	LI A1, 0

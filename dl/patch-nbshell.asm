@@ -1,0 +1,34 @@
+.orga 0x61d64
+	LI A1, 0x03000881
+	JAL 0x80405700
+	NOP
+
+.orga 0x1205700
+	ADDIU SP, SP, -0x28
+	SW RA, 0x14(SP)
+	
+	LW V1, 0x8032d5e4
+	LH T0, 0x10(V1)
+	LH T1, 0x12(V1)
+	OR T2, T1, T0
+	ANDI T3, T1, 0x4000
+	BEQZ T3, @@no_glitch_fix
+	NOP
+	LI A2, 0
+@@no_glitch_fix:
+
+	SW A1, 0x0C(A0)
+	JAL 0x8024c894
+	SW A2, 0x4c(A0)
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x28
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+

@@ -1,0 +1,124 @@
+0x3f60000 / 0x04060000
+S-Block Blue
+Collision Pointer:	04060D20
+DL-Pointer:	04060B70 (1)
+
+0x3f61000 / 0x04061000
+S-Block Red
+DL-Pointer:	04061B70 (1)
+
+0x3f62000 / 0x04062000
+Switch Blue
+Collision Pointer:	04063570
+DL-Pointer:	04063360 (1)
+
+0x3f63800 / 0x04063800
+Switch Red
+DL-Pointer:	040643E0 (1)
+
+0x3f64800 / 0x04064800
+Switch Block Outline
+DL-Pointer:	04065C70 (1)
+
+0x3f66610 / 0x04066610
+Internal Blue
+DL-Pointer:	040679E0 (1)
+
+0x3f67e00 / 0x04067e00
+Internal Red
+DL-Pointer:	040691D0 (1)
+
+0x3f5fe00 / 0x0405fe00:
+0E 00 00 04 8029DB48
+04 00 00 00
+
+0b 00 00 00
+04 00 00 00
+15 01 00 00 04060B70
+05 00 00 00
+
+0b 00 00 00
+04 00 00 00
+15 01 00 00 04065C70
+10 81 00 00 00 00 00 00 00 00 00 00 002d 00 00 040679E0
+05 00 00 00
+
+0b 00 00 00
+04 00 00 00
+15 01 00 00 04061B70
+05 00 00 00
+
+0b 00 00 00
+04 00 00 00
+15 01 00 00 04065C70
+10 81 00 00 00 00 00 00 00 00 00 00 002d 00 00 040691D0
+05 00 00 00
+
+05 00 00 00
+01 00 00 00
+
+
+0x3f69800 / 0x04069800
+FlipSwap
+DL-Pointer:	0406AB70  (1)
+
+0x3f6ae00 / 0x0406ae00
+FlipSwap CM
+Collision Pointer:	0406AE00
+
+0x3f6af00 / 0x0406af00
+FlipSwap border
+DL-Pointer:	0406BEC0 (1)
+
+
+
+
+0x3f6c200 / 0x0406c200
+switchboard
+Collision Pointer:	0406D130
+DL-Pointer:	0406CF10 (1)
+
+0x3f6d300 / 0x0406d300
+switchboard gears
+DL-Pointer:	0406EEE0 (1)
+
+
+
+
+0x3f6f600 / 0x0406f600
+Shrinks
+Collision Pointer:	040700D0
+DL-Pointer:	0406FFC0 (1)
+
+Shrink Border
+0x3f70200 / 0x04070200
+DL-Pointer:	04070E80 (1)
+
+
+0x3f71100 / 0x04071100
+nb
+Collision Pointer:	04072430
+DL-Pointer:	04072150 (1)
+
+
+0x3f72700 / 0x04072700
+spring
+DL-Pointer:	04074010 (1)
+
+
+
+
+0x3f74600 / 0x04074600
+panel 1
+Collision Pointer:	040753A0
+DL-Pointer:	040751E0 (1)
+
+0x3f75600 / 0x04075600
+panel 2
+DL-Pointer:	04076240 (1)
+
+0x3f76400 / 0x04076400
+panel 3
+DL-Pointer:	04077040 (1)
+
+geo at 0x3f75550 04075550

@@ -1,0 +1,6 @@
+.orga 0x6f58
+	LW V1, 0x801ce078
+	JALR V1
+	NOP
+	B 0x6f90
+	NOP

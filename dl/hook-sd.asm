@@ -1,0 +1,10 @@
+.orga 0x97c44
+    LW V1, 0x801ce084
+    JALR V1
+    NOP
+
+    LUI T1, 0x8033
+    LW T1, 0xD5EC (T1)
+    LHU T2, 0x0012 (T1)
+    ANDI T3, T2, 0x8000
+    BNEZ T3, 0x00097C74
