@@ -113,7 +113,7 @@ void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
     if (m->health <= 0x480)
         return;
 
-    m->hurtCounter += 0x400 / 0x40;
+    m->hurtCounter = 0x400 / 0x40;
     *warpOp = WARP_OP_TELEPORT;
     m->usedObj = &sSpoofedWarpObject;
     sSpoofedWarpObject.oBehParams = WARP_ID_SPOOFED << 16;

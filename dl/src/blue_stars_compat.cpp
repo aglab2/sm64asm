@@ -49,30 +49,29 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
     u8 textBox = 0x16;
     if (blueStarDoor)
     {
-        // - BroDute change textbox for blue stars here
-        textBox = 0x69;
+        textBox = 0x81;
     }
     else
     {
         switch (requiredNumStars)
         {
         case 1:
-            textBox = 0x18;
+            textBox = 0x01;
             break;
         case 3:
-            textBox = 0x19;
+            textBox = 0x0a;
             break;
         case 8:
-            textBox = 0x1A;
+            textBox = 0x5E;
             break;
         case 30:
-            textBox = 0x1B;
+            textBox = 0x8E;
             break;
         case 50:
-            textBox = 0x1C;
+            textBox = 0x90;
             break;
         case 70:
-            textBox = 0x1D;
+            textBox = 0xC8;
             break;
         default:
             break;

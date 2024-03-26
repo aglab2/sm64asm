@@ -1,0 +1,103 @@
+.orga 0x8db4
+	JAL 0x80405b00
+	NOP
+	NOP
+
+.orga 0x1205b00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+	LH T0, 0x8032ddf8
+	LI T1, 31 ; LEVEL_WMOTR
+	BEQ T1, T0, @@end
+	NOP
+
+	JAL 0x321D38
+	NOP
+	JAL 0x24927C
+	LI A0, 126
+	
+@@end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+.orga 0x131ec
+	JAL 0x80405b80
+	LW T2, 0x28(SP)
+	BEQ V0, R0, 0x1330C
+
+.orga 0x1205b80
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+
+	LI A2, 0x13003868
+
+	LH T0, 0x8032ddf8
+	LI T1, 31 ; LEVEL_WMOTR
+	BNE T1, T0, @@overwriter
+	LI V0, 1
+
+	JAL 0x29EDCC
+	LW A0, 0x88(T2) 
+	LI V0, 0
+
+@@overwriter:
+
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+.orga 0x5EAC
+	JAL 0x80405c00
+
+.orga 0x1205c00
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	
+	LH T0, 0x8032ddf8
+	LI T1, 31 ; LEVEL_WMOTR
+	BEQ T1, T0, @@wmotr
+	NOP
+
+@@doit:
+	JAL 0x8024922C
+	NOP
+	B @@end
+	NOP
+
+@@wmotr:
+	LH T0, 0x8033baca
+	LI T1, 6 ; area 5
+	BEQ T1, T0, @@doit
+	NOP
+
+@@end:
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
+
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
