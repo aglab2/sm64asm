@@ -1,5 +1,5 @@
 #include "stardisplay.h"
-
+#include "blue_star_mode.h"
 #include "types.h"
 extern "C" 
 {
@@ -50,6 +50,34 @@ void StarDisplay()
         case 9: DrawSegment9(); break;
         case 10: DrawSegment10(); break;
         case 11: DrawSegment11(); break;
+    }
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    if (gMarioStates->numStars >= 333)
+    {
+        {
+            // press l to toggle
+            static const u8 text[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x15, 0x9E, 0x1D, 0x18, 0x9E, 0x1D, 0x18, 0x10, 0x10, 0x15, 0x0E, 0xFF };
+            print_generic_string(20, 30, text);
+        }
+
+        if (sBlueStarModeDisabled)
+        {
+            // blue star mode disabled
+            static const u8 text[] = { 0x0B, 0x15, 0x1E, 0x0E, 0x9E, 0x1C, 0x1D, 0x0A, 0x1B, 0x9E, 0x16, 0x18, 0x0D, 0x0E, 0x9E, 0x0D, 0x12, 0x1C, 0x0A, 0x0B, 0x15, 0x0E, 0x0D, 0xFF};
+            print_generic_string(20, 14, text);
+        }
+        else
+        {
+            // blue star mode enabled
+            static const u8 text[] = { 0x0B, 0x15, 0x1E, 0x0E, 0x9E, 0x1C, 0x1D, 0x0A, 0x1B, 0x9E, 0x16, 0x18, 0x0D, 0x0E, 0x9E, 0x0E, 0x17, 0x0A, 0x0B, 0x15, 0x0E, 0x0D, 0xFF };
+            print_generic_string(20, 14, text);
+        }
+
+        if (gPlayer1Controller->buttonPressed & L_TRIG)
+        {
+            sBlueStarModeDisabled = !sBlueStarModeDisabled;
+        }
     }
 
     gSPDisplayList(gDisplayListHead++, 0x02011d50);

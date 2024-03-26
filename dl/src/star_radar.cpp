@@ -23,6 +23,8 @@ extern "C"
     extern f32 _sqrtf(f32 x);
 }
 
+#include "blue_star_mode.h"
+
 using Texture = u8;
 
 static struct Object *obj_find_nearest_object_with_behavior_and_bparam1(const BehaviorScript *behavior, int bparam1) {
@@ -340,8 +342,7 @@ static void renderBoxRadar()
     Texture* t1 = (Texture*) 0x04088800;
     Texture* t2 = (Texture*) 0x0408ac00;
 
-    bool blueStarMode = gMarioStates->numStars >= 150;
-    if (blueStarMode)
+    if (blue_star_mode_enabled())
     {
         const s32 targetFlags = 0b111111;
         s32 starFlags0 = _save_file_get_star_flags(0x100 | (gCurrSaveFileNum - 1), COURSE_COTMC - 1);
@@ -406,7 +407,10 @@ void renderHud(s32 renderCoins)
         print_text_fmt_int(0x36, -yoff + 0xbd, "%d", gHudDisplay.coins);
     }
 
-    renderStarRadar();
+    // renders the radar in bottom left corner, not render when all stars are collected because it is pointless
+    if (gMarioStates->numStars < 333)
+        renderStarRadar();
+
     renderBoxRadar();
 
     if (gHudFlash == 1 && gGlobalTimer & 8) {

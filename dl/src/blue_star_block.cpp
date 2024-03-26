@@ -1,6 +1,8 @@
 #include "blue_star_block.h"
+#include "blue_star_mode.h"
 extern "C"
 {
+    #include <game/display.h>
     #include <game/game.h>
     #include <game/level_update.h>
     #include <game/object_helpers.h>
@@ -14,33 +16,13 @@ extern "C"
 
 void BlueStarBlock::Init()
 {
-    if (gMarioStates->numStars < 150)
+    if (!blue_star_mode_enabled())
         gCurrentObject->activeFlags = 0;
 }
 
 void BlueStarBlock::Step()
 {
-    auto o = gCurrentObject;
-    if (gMarioStates->numStars >= 333)
-    {
-        if (gPlayer1Controller->buttonPressed & L_TRIG)
-        {
-            if (gCurrentObject->oDistanceToMario < 1000.f)
-                spawn_mist_particles_variable(0, 0, 100.f);
-
-            if (o->header.gfx.node.flags & GRAPH_RENDER_INVISIBLE)
-            {
-                o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
-            }
-            else
-            {
-                o->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
-            }
-        }
-    }
-
-    if (!(o->header.gfx.node.flags & GRAPH_RENDER_INVISIBLE))
-        load_object_collision_model();
+    load_object_collision_model();
 }
 
 int BlueStarBlock::Behavior[] =
@@ -49,6 +31,6 @@ int BlueStarBlock::Behavior[] =
     0x0c000000, (int) sInit,
     0x2A000000, 0x4086270,
     0x08000000,
-    0x0c000000, (int) sStep,
+    0x0c000000, (int) 0x803839cc,
     0x09000000,
 };

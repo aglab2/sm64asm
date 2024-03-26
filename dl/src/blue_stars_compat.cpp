@@ -1,4 +1,5 @@
 #include "blue_stars_compat.h"
+#include "blue_star_mode.h"
 #include <sm64.h>
 extern "C"
 {
@@ -49,35 +50,89 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
     u8 textBox = 0x16;
     if (blueStarDoor)
     {
-        textBox = 0x81;
+        switch (requiredNumStars)
+        {
+        case 1:
+            textBox = 0x81;
+            break;
+        case 169:
+            textBox = 0x82;
+            break;
+        case 175:
+            textBox = 0xA7;
+            break;
+        case 176:
+            textBox = 0xA3;
+            break;
+        default:
+            break;
+        }
     }
     else
     {
         switch (requiredNumStars)
         {
         case 1:
-            textBox = 0x01;
+            textBox = 0x18;
             break;
         case 3:
-            textBox = 0x0a;
+            textBox = 0x19;
             break;
-        case 8:
-            textBox = 0x5E;
+        case 5:
+            textBox = 0x19;
+            break;
+        case 10:
+            textBox = 0x19;
+            break;
+        case 12:
+            textBox = 0x19;
             break;
         case 30:
-            textBox = 0x8E;
+            textBox = 0x19;
+            break;
+        case 35:
+            textBox = 0x19;
             break;
         case 50:
-            textBox = 0x90;
+            textBox = 0x19;
+            break;
+        case 60:
+            textBox = 0x19;
             break;
         case 70:
-            textBox = 0xC8;
+            textBox = 0x19;
+            break;
+        case 80:
+            textBox = 0x1a;
+            break;
+        case 94:
+            textBox = 0x19;
+            break;
+        case 144:
+            textBox = 0x1c;
+            break;
+        case 145:
+            textBox = 0x1b;
+            break;
+        case 146:
+            textBox = 0x1b;
+            break;
+        case 147:
+            textBox = 0x1b;
+            break;
+        case 148:
+            textBox = 0x1b;
+            break; 
+        case 149:
+            textBox = 0x1b;
+            break;
+        case 200:
+            textBox = 0x1e;
             break;
         default:
             break;
         }
     }
-
     return textBox << 16;
 }
 
@@ -86,6 +141,12 @@ void afterStarInit()
     int bparam4 = gCurrentObject->oBehParams & 0xff;
     if (!bparam4)
         return;
+    
+    if (!blue_star_mode_enabled())
+    {
+        gCurrentObject->activeFlags = 0;
+        return;
+    }
 
     s16* requiredStarsArr = (s16*) 0x804051e0;
     s16 requiredStars = requiredStarsArr[bparam4 - 1];

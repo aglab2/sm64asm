@@ -1,4 +1,5 @@
 #include "act_select.h"
+#include "blue_star_mode.h"
 extern "C"
 {
     #include <game/area.h>
@@ -21,7 +22,7 @@ void prePlayTransition(s16 transType, u8* red, u8* green, u8* blue)
 {
     gWarpTransition.isActive = TRUE;
     gWarpTransition.type = transType;
-    if (gMarioState->numStars < 150)
+    if (!blue_star_mode_enabled())
     {
         *red = BG_BEFORE_R;
         *green = BG_BEFORE_G;
@@ -47,12 +48,7 @@ void pickBgColor(Gfx* gfx, u16 color)
 // show or hide star select
 s32 actSelectPath()
 {
-    if (gMarioStates->numStars >= 333)
-    {
-        return 1;
-    }
-
-    if (gMarioStates->numStars < 150)
+    if (!blue_star_mode_enabled())
     {
         return 1;
     }
