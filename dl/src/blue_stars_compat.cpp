@@ -127,7 +127,7 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
             textBox = 0x1b;
             break;
         case 200:
-            textBox = 0x1e;
+            textBox = 0x1d;
             break;
         default:
             break;
