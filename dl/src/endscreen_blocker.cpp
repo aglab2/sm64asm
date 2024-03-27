@@ -67,8 +67,16 @@ void EndscreenBlocker::Step()
     }
     if (0 == o->oAction && o->oTimer > SHOW_TEXT_TIME)
     {
-        printFancy(0, "PRESS L TO RETURN", o->oHealth - SHOW_TEXT_TIME);
-        printFancy(1, "TO THE CASTLE", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("PRESS L TO RETURN"));
+        if (gCurrAreaIndex == 4)
+        {
+            printFancy(0, "THANK YOU SO MUCH", o->oHealth - SHOW_TEXT_TIME);
+            printFancy(1, "FOR PLAYING THE HACK", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU SO MUCH"));
+        }
+        else
+        {
+            printFancy(0, "PRESS L TO RETURN", o->oHealth - SHOW_TEXT_TIME);
+            printFancy(1, "TO THE CASTLE", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("PRESS L TO RETURN"));
+        }
         if (gPlayer1Controller->buttonPressed & L_TRIG)
         {
             m->usedObj = o;
