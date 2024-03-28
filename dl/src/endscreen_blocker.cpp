@@ -68,15 +68,20 @@ void EndscreenBlocker::Step()
     }
     if (0 == o->oAction && o->oTimer > SHOW_TEXT_TIME)
     {
-        if (gCurrLevelNum == LEVEL_ENDING)
+        if (gMarioStates->numStars == 333)
         {
             printFancy(0, "THANK YOU SO MUCH", o->oHealth - SHOW_TEXT_TIME);
             printFancy(1, "FOR PLAYING THE HACK", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU SO MUCH"));
         }
+        else if (gMarioStates->numStars >= 150)
+        {
+            printFancy(0, "THANK YOU FOR PLAYING", o->oHealth - SHOW_TEXT_TIME);
+            printFancy(1, "TRY TO GET ALL 333 STARS", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU FOR PLAYING"));
+        }
         else
         {
-            printFancy(0, "PRESS L TO RETURN", o->oHealth - SHOW_TEXT_TIME);
-            printFancy(1, "TO THE CASTLE", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("PRESS L TO RETURN"));
+            printFancy(0, "THANK YOU FOR PLAYING", o->oHealth - SHOW_TEXT_TIME);
+            printFancy(1, "TRY TO GET ALL 150 STARS", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU FOR PLAYING"));
         }
         if (gPlayer1Controller->buttonPressed & L_TRIG)
         {
