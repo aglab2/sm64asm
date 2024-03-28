@@ -395,6 +395,9 @@ static void renderBoxRadar()
     gSPDisplayList(gDisplayListHead++, 0x2011b28); 
 }
 
+extern u8 sCurrentBackgroundMusicSeqId;
+extern int gLoopCount;
+extern int gMusicOverridePrint;
 void renderHud(s32 renderCoins)
 {
     gHudDisplay.stars = _save_file_get_total_star_count(gCurrSaveFileNum - 1, 0, 24);
@@ -423,4 +426,13 @@ void renderHud(s32 renderCoins)
         static const char blueStarPrint[] = { 0x17, 0x00 };
         renderStars(blueStarsCount, 0xd1 - 20, blueStarPrint);
     }
+
+#if 0
+    static const char kSections[] = { 0x2, 0x7, 0xc };
+    print_text_fmt_int(20, 20, "M %d", sCurrentBackgroundMusicSeqId);
+    print_text_fmt_int(20, 40, "A %d", gCurrAreaIndex);
+    print_text_fmt_int(20, 60, "W %d", kSections[(gCurrAreaIndex - 1) / 2]);
+    print_text_fmt_int(20, 80, "L %d", gLoopCount);
+    print_text_fmt_int(20, 100, "O %d", gMusicOverridePrint);
+#endif
 }

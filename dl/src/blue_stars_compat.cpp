@@ -15,6 +15,8 @@ extern "C"
     extern void print_hud_course_complete_coins(s16 x, s16 y);
     extern void play_star_fanfare_and_flash_hud(s32 arg, u8 starNum);
     extern s32 _save_file_get_total_star_count(s32 fileIndex, s32 minCourse, s32 maxCourse);
+    extern u8 sCurrentBackgroundMusicSeqId;
+    extern void seq_player_play_sequence(u8 player, u8 seqId, u16 arg2);
 }
 #include "object_fields.h"
 
@@ -163,6 +165,11 @@ void afterStarInit()
         gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_TRANSPARENT_STAR];
     } else {
         gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[0xe2];
+    }
+
+    if (gCurrCourseNum == COURSE_WMOTR && gCurrAreaIndex == 1 && sCurrentBackgroundMusicSeqId != 0xc)
+    {
+        seq_player_play_sequence(0, 0xc, 0);
     }
 }
 

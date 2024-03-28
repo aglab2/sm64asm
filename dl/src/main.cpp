@@ -15,6 +15,7 @@ extern "C"
 #include "fail_warp.h"
 #include "green_sb_resetter.h"
 #include "endscreen_blocker.h"
+#include "sound_farewell.h"
 #include "star_radar.h"
 #include "stardisplay.h"
 #include "omm.h"
@@ -33,7 +34,7 @@ static s16 selectWarp(s32 type)
     }
     else
     {
-        auto onode = area_get_warp_node(0xf1);
+        auto onode = area_get_warp_node(gCurrCourseNum == COURSE_WMOTR ? 0x1 : 0xf1);
         auto& node = onode->node;
         initiate_warp(node.destLevel, node.destArea, node.destNode, 0);
         return COURSE_NONE;
@@ -76,4 +77,6 @@ uintptr_t _start[] =
     (uintptr_t) StarDisplay,                         // 801ce084 : 33
     (uintptr_t) getBestWall,                         // 801ce088 : 34
     REGISTER_BEHAVIOR(0x00090000, WhompKing),        // 801ce08c : 35
+    (uintptr_t) soundPreJmp,                         // 801ce098 : 38
+    (uintptr_t) soundPostSequence,                   // 801ce09c : 39
 };

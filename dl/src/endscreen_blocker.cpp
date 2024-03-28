@@ -10,6 +10,7 @@ extern "C"
     #include <game/level_update.h>
     #include <game/print.h>
     #include <engine/math_util.h>
+    #include <level_table.h>
     
     void set_camera_mode_8_directions(struct Camera *c);
 }
@@ -67,7 +68,7 @@ void EndscreenBlocker::Step()
     }
     if (0 == o->oAction && o->oTimer > SHOW_TEXT_TIME)
     {
-        if (gCurrAreaIndex == 4)
+        if (gCurrLevelNum == LEVEL_ENDING)
         {
             printFancy(0, "THANK YOU SO MUCH", o->oHealth - SHOW_TEXT_TIME);
             printFancy(1, "FOR PLAYING THE HACK", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU SO MUCH"));
