@@ -57,6 +57,17 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
         case 1:
             textBox = 0x81;
             break;
+        case 161:
+            if(gMarioStates->numStars <= 151)
+            {
+                textBox = 0x81;
+                break;
+            }
+            else
+            {
+                textBox = 0x7D;
+                break;
+            }
         case 169:
             textBox = 0x82;
             break;
@@ -105,10 +116,13 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
             textBox = 0x19;
             break;
         case 80:
-            textBox = 0x1a;
+            textBox = 0x19;
             break;
         case 94:
             textBox = 0x19;
+            break;
+        case 142:
+            textBox = 0x1a;
             break;
         case 144:
             textBox = 0x1c;
