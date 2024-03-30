@@ -338,6 +338,7 @@ static void renderBoxRadar()
     if (!(flags & 0x000200 /*MOAT*/))
         return;
 
+    Texture* tx = (Texture*) 0x0408f000;
     Texture* t0 = (Texture*) 0x04086400;
     Texture* t1 = (Texture*) 0x04088800;
     Texture* t2 = (Texture*) 0x0408ac00;
@@ -381,12 +382,15 @@ static void renderBoxRadar()
 
     f32 spd = 1800.f / d;
     sTimer += (spd / 2.f);
-    Texture* startingTexture = t0;
+    Texture* startingTexture = tx;
 
-    if (spd > 0.15f)
+    if (spd > 0.11f)
+        startingTexture = t0;
+
+    if (spd > 0.23f)
         startingTexture = t1;
 
-    if (spd > 0.45f)
+    if (spd > 0.5f)
         startingTexture = t2;
 
     Texture* tex = startingTexture + 0x200 * (((unsigned) sTimer) % 18);
@@ -398,6 +402,7 @@ static void renderBoxRadar()
 extern u8 sCurrentBackgroundMusicSeqId;
 extern int gLoopCount;
 extern int gMusicOverridePrint;
+extern int gPC;
 void renderHud(s32 renderCoins)
 {
     gHudDisplay.stars = _save_file_get_total_star_count(gCurrSaveFileNum - 1, 0, 24);
@@ -434,5 +439,6 @@ void renderHud(s32 renderCoins)
     print_text_fmt_int(20, 60, "W %d", kSections[(gCurrAreaIndex - 1) / 2]);
     print_text_fmt_int(20, 80, "L %d", gLoopCount);
     print_text_fmt_int(20, 100, "O %d", gMusicOverridePrint);
+    print_text_fmt_int(20, 120, "PC %x", gPC);
 #endif
 }
