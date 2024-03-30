@@ -271,7 +271,7 @@ void renderStarRadar()
                             f32 y = star->oPosY - gMarioObject->oPosY;
                             f32 z = star->oPosZ - gMarioObject->oPosZ;
 
-                            f32 d = _sqrtf(x * x + y * y + z * z * 3.f);
+                            f32 d = _sqrtf(x * x + y * y * 3.f + z * z);
                             if (d < 100.f)
                                 d = 100.f;
 
@@ -376,7 +376,7 @@ static void renderBoxRadar()
     f32 y = box->oPosY - gMarioObject->oPosY;
     f32 z = box->oPosZ - gMarioObject->oPosZ;
 
-    f32 d = _sqrtf(x * x + y * y + z * z * 3.f);
+    f32 d = _sqrtf(x * x * 1.5f  + y * y * 3.f + z * z * 1.5f);
     if (d < 100.f)
         d = 100.f;
 
