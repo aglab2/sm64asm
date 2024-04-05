@@ -1,0 +1,39 @@
+Gfx *BGList[] = {
+    &c8background_BG_mesh[0],
+    &cloudBG_Cloudbackground_mesh[0],
+    &background_Plane_008_mesh[0],
+    &cloudbg_Cloudbackground_mesh[0],
+    &background2_Plane_006_mesh[0],
+};
+
+Gfx *geo_render_INFBG(s32 callContext, IGNORE struct GraphNode *node, IGNORE f32 b[4][4]) {
+    Mat4 mat;
+    Mtx *mtx = alloc_display_list(sizeof(*mtx));
+    s32 i;
+    f32 pos[3];
+    struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
+    if (callContext == GEO_CONTEXT_RENDER) {
+#define FARAWAYNESS .99f // the closer to 1 the further away
+
+        for (i = 0; i < 3; i++) {
+            pos[i] = gCurGraphNodeCamera->pos[i] * FARAWAYNESS;
+        }
+
+        mtxf_translate(mat, pos);
+        mtxf_to_mtx(mtx, mat);
+        if (gCurGraphNodeMasterList != 0) {
+            struct DisplayListNode *listNode =
+                alloc_only_pool_alloc(gDisplayListHeap, sizeof(struct DisplayListNode));
+            listNode->transform = mtx;
+            listNode->displayList = BGList[asGenerated->parameter];
+            listNode->next = 0;
+            if (gCurGraphNodeMasterList->listHeads[0]) {
+                gCurGraphNodeMasterList->listTails[0]->next = listNode;
+            } else {
+                gCurGraphNodeMasterList->listHeads[0] = listNode;
+            }
+            gCurGraphNodeMasterList->listTails[0] = listNode;
+        }
+    }
+    return 0;
+}

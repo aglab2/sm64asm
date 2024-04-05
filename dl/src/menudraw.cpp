@@ -115,6 +115,24 @@ static void DrawF(int line, int column)
     DrawStr(line, column, segmentStr);
 }
 
+static void Draw0Star(int line)
+{
+    s32 flags = save_file_get_flags();
+    gDPSetEnvColor(gDisplayListHead++, 0, 255, 255, gDialogTextAlpha);
+    static const u8 desc0[] = { 0x19, 0x0a, 0x1e, 0x1c, 0x12, 0x17, 0x10, 0x9e, 0x0a, 0x15, 0x1b, 0x0e, 0x0a, 0x0d, 0x22, 0x3f, 0x3f, 0x3f, 0x9e, 0x10, 0x0e, 0x1d, 0x9e, 0x01, 0x9e, 0x1c, 0x1d, 0x0a, 0x1b, 0x9e, 0x0f, 0x12, 0x1b, 0x1c, 0x1d, 0xFF};
+    static const u8 descK[] = { 0x1C, 0x19, 0x0E, 0x0E, 0x0D, 0x1B, 0x1E, 0x17, 0x9E, 0x1D, 0x12, 0x16, 0x0E, 0xFF };
+    if ((flags & (0x000010 | 0x000040)) || (flags & (0x000020 | 0x000080)) || (flags & 0x000200))
+    {
+        DrawStr(line, 114, descK);
+        gDPSetEnvColor(gDisplayListHead++, 255, 0, 200, gDialogTextAlpha);
+    }
+    else
+    {
+        DrawStr(line, 58, desc0);
+        gDPSetEnvColor(gDisplayListHead++, 255, 0, 0, gDialogTextAlpha);
+    }
+}
+
 enum Levels
 {
     OW = 0,
@@ -413,15 +431,11 @@ void DrawSegment1()
 {
     if (gMarioStates->numStars == 0)
     {
-        gDPSetEnvColor(gDisplayListHead++, 0, 255, 255, gDialogTextAlpha);
-        {
-            static const u8 desc[] = { 0x19, 0x0a, 0x1e, 0x1c, 0x12, 0x17, 0x10, 0x9e, 0x0a, 0x15, 0x1b, 0x0e, 0x0a, 0x0d, 0x22, 0x3f, 0x3f, 0x3f, 0x9e, 0x10, 0x0e, 0x1d, 0x9e, 0x01, 0x9e, 0x1c, 0x1d, 0x0a, 0x1b, 0x9e, 0x0f, 0x12, 0x1b, 0x1c, 0x1d, 0xFF};
-            DrawStr(3, 58, desc);
-        }
-        gDPSetEnvColor(gDisplayListHead++, 255, 0, 0, gDialogTextAlpha);
+        Draw0Star(3);
         {
             static const u8 desc[] = { 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xFF};
             DrawStr(6, 120, desc);
+            DrawStr(10, 120, desc);
         }
         {
             static const u8 desc[] = { 0x21, 0x21, 0x21, 0x21, 0xFF};
@@ -430,22 +444,12 @@ void DrawSegment1()
         {
             static const u8 desc[] = { 0x21, 0x21, 0x21,  0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xFF};
             DrawStr(8, 120, desc);
-        }
-        {
-            static const u8 desc[] = { 0x21, 0x21, 0x21,  0x21,0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xFF};
             DrawStr(9, 120, desc);
-        }
-        {
-            static const u8 desc[] = { 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0x21, 0xFF};
-            DrawStr(10, 120, desc);
         }
         {
             static const u8 desc[] = { 0x21, 0x21, 0xFF};
             DrawStr(11, 120, desc);
-        }
-        {
-            static const u8 desc[] = { 0x21, 0x21, 0xFF};
-            DrawStr(11, 155, desc);
+            DrawStr(11, 162, desc);
         }
         gDPSetEnvColor(gDisplayListHead++, 0, 0, 255, gDialogTextAlpha);
         {
@@ -509,8 +513,10 @@ void DrawSegment2()
 
 void DrawSegment3()
 {
+    s32 flags = save_file_get_flags();
     DrawOW3(2);
     int starCount = 0;
+    int MaxStars = 11;
     gDPSetEnvColor(gDisplayListHead++, COLOR_YELLOW_R, COLOR_YELLOW_G, COLOR_YELLOW_B, gDialogTextAlpha);
 
     starCount += DrawStarLine(6, 2, 0, 0b10000100);
@@ -520,17 +526,21 @@ void DrawSegment3()
         static const u8 desc[] = { 0x1f, 0x0c, 0xFF};
         DrawStr(9, 104, desc);
     }
-    starCount += DrawStarLine(10, 44, WC, 0b00000010);
+    if ((gMarioStates->numStars >= 94) || (flags & 0x000200))
     {
-        static const u8 desc[] = { 0x10, 0x1c, 0xFF};
-        DrawStr(10, 104, desc);
+        MaxStars = 12;
+        starCount += DrawStarLine(10, 44, WC, 0b00000010);
+        {
+            static const u8 desc[] = { 0x10, 0x1c, 0xFF};
+            DrawStr(10, 104, desc);
+        }
+        DrawSwitch(10, 134, 3);
     }
 
-    DrawStarCount(starCount, 12);
+    DrawStarCount(starCount, MaxStars);
     DrawBoxInicator(6, 184, VC, 0b1);
     DrawBoxInicator(9, 143, MC, 0b1000);
     DrawSwitch(9, 143, 2);
-    DrawSwitch(10, 134, 3);
 }
 
 void DrawSegment4()

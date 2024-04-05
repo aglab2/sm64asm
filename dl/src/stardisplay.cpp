@@ -6,6 +6,7 @@ extern "C"
     #include "game/game.h"
     #include "game/level_update.h"
     #include "game/ingame_menu.h"
+    #include "game/save_file.h"
 }
 #include "menudraw.h"
 
@@ -13,6 +14,7 @@ static s8 menuPicked = 1;
 
 void StarDisplay()
 {
+        s32 flags = save_file_get_flags();
     gSPDisplayList(gDisplayListHead++, 0x02011cc8);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
     
@@ -20,15 +22,15 @@ void StarDisplay()
     {
         handle_menu_scrolling(1, &menuPicked, 1, 1);
     }
-    else if (gMarioStates->numStars <= 93)
-    {
-        handle_menu_scrolling(1, &menuPicked, 1, 4);
-    }
-    else if (gMarioStates->numStars <= 149)
+    else if ((flags & 0x000200) && (gMarioStates->numStars < 150))
     {
         handle_menu_scrolling(1, &menuPicked, 1, 5);
     }
-    else if (gMarioStates->numStars <= 318)
+    else if (gMarioStates->numStars < 150)
+    {
+        handle_menu_scrolling(1, &menuPicked, 1, 4);
+    }
+    else if (gMarioStates->numStars < 319)
     {
         handle_menu_scrolling(1, &menuPicked, 1, 10);
     }

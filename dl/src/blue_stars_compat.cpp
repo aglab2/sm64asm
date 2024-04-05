@@ -46,6 +46,7 @@ s16 setDoorStarCurrent(struct Object *o, int from, int to)
 
 u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
 {
+    s32 flags = save_file_get_flags();
     s16 bparam4 = o->OBJECT_FIELD_U32(0x40) & 0xff;
     bool blueStarDoor = 0 != bparam4;
 
@@ -58,7 +59,7 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
             textBox = 0x81;
             break;
         case 161:
-            if(gMarioStates->numStars <= 151)
+            if(gMarioStates->numStars < 150)
             {
                 textBox = 0x81;
                 break;
@@ -83,6 +84,12 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
     }
     else
     {
+        if ((gMarioStates->numStars == 0) && ((flags & (0x000010 | 0x000040)) || (flags & (0x000020 | 0x000080)) || (flags & 0x000200)))
+        {
+            textBox = 0x08;
+        }
+        else
+        {
         switch (requiredNumStars)
         {
         case 1:
@@ -95,8 +102,16 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
             textBox = 0x19;
             break;
         case 10:
-            textBox = 0x19;
-            break;
+            if (gMarioStates->numStars == 0)
+            {
+                textBox = 0x08;
+                break;
+            }
+            else
+            {
+                textBox = 0x19;
+                break;
+            }
         case 12:
             textBox = 0x19;
             break;
@@ -147,6 +162,7 @@ u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o)
             break;
         default:
             break;
+        }
         }
     }
     return textBox << 16;

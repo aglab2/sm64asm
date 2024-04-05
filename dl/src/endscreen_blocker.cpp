@@ -78,11 +78,16 @@ void EndscreenBlocker::Step()
             printFancy(0, "THANK YOU FOR PLAYING", o->oHealth - SHOW_TEXT_TIME);
             printFancy(1, "TRY TO GET ALL 333 STARS", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU FOR PLAYING"));
         }
-        else
+        else if (gMarioStates->numStars > 0)
         {
             printFancy(0, "THANK YOU FOR PLAYING", o->oHealth - SHOW_TEXT_TIME);
             printFancy(1, "TRY TO GET ALL 150 STARS", o->oHealth - SHOW_TEXT_TIME - FRAMES_PER_LETTER * sizeof("THANK YOU FOR PLAYING"));
         }
+        else 
+        {
+            printFancy(0, "NICE SPEEDRUN YOU GOT THERE", o->oHealth - SHOW_TEXT_TIME);
+        }
+
         if (gPlayer1Controller->buttonPressed & L_TRIG)
         {
             m->usedObj = o;
