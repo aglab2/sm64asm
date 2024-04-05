@@ -112,6 +112,12 @@ void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
 
     if (m->health <= 0x480)
         return;
+    
+    m->health = (m->health & (~0xff)) + 0x80;
+    if (m->action == ACT_BURNING_JUMP || m->action == ACT_BURNING_FALL || m->action == ACT_BURNING_GROUND)
+    {
+        drop_and_set_mario_action(m, ACT_FREEFALL, 0);
+    }
 
     m->hurtCounter = 0x400 / 0x40;
     *warpOp = WARP_OP_TELEPORT;
