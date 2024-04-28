@@ -15,7 +15,8 @@ extern "C"
     void set_camera_mode_8_directions(struct Camera *c);
 }
 
-#define SHOW_TEXT_TIME 135
+#define SHOW_TEXT_TIME 40
+#define ALLOW_L_PRESS 145
 #define FRAMES_PER_LETTER 2
 
 void EndscreenBlocker::Init()
@@ -88,7 +89,7 @@ void EndscreenBlocker::Step()
             printFancy(0, "NICE SPEEDRUN YOU GOT THERE", o->oHealth - SHOW_TEXT_TIME);
         }
 
-        if (gPlayer1Controller->buttonPressed & L_TRIG)
+        if ((o->oTimer > ALLOW_L_PRESS) && (gPlayer1Controller->buttonPressed & L_TRIG))
         {
             m->usedObj = o;
             o->oBehParams = 0xa << 16;

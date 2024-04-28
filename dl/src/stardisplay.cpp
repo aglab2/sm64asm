@@ -14,47 +14,83 @@ static s8 menuPicked = 1;
 
 void StarDisplay()
 {
-        s32 flags = save_file_get_flags();
+    static bool A_Press = true;
+    int A_Allowed = 0;
+    s32 flags = save_file_get_flags();
     gSPDisplayList(gDisplayListHead++, 0x02011cc8);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
-    
+
+    if (gPlayer1Controller->buttonPressed & R_TRIG)
+    {
+        A_Press = !A_Press;
+    }
+
     if (gMarioStates->numStars == 0)
     {
+        A_Allowed = 0;
         handle_menu_scrolling(1, &menuPicked, 1, 1);
     }
     else if ((flags & 0x000200) && (gMarioStates->numStars < 150))
     {
+        A_Allowed = 0;
         handle_menu_scrolling(1, &menuPicked, 1, 5);
     }
     else if (gMarioStates->numStars < 150)
     {
+        A_Allowed = 0;
         handle_menu_scrolling(1, &menuPicked, 1, 4);
     }
     else if (gMarioStates->numStars < 319)
     {
-        handle_menu_scrolling(1, &menuPicked, 1, 10);
+        A_Allowed = 1;
+        handle_menu_scrolling(1, &menuPicked, 1, 5);
     }
     else
     {
-        handle_menu_scrolling(1, &menuPicked, 1, 11);
+        A_Allowed = 1;
+        handle_menu_scrolling(1, &menuPicked, 1, 6);
     }
 
-    switch (menuPicked)
+    if ((A_Allowed == 0) || (A_Press))
     {
-        case 1: DrawSegment1(); break;
-        case 2: DrawSegment2(); break;
-        case 3: DrawSegment3(); break;
-        case 4: DrawSegment4(); break;
-        case 5: DrawSegment5(); break;
-        case 6: DrawSegment6(); break;
-        case 7: DrawSegment7(); break;
-        case 8: DrawSegment8(); break;
-        case 9: DrawSegment9(); break;
-        case 10: DrawSegment10(); break;
-        case 11: DrawSegment11(); break;
+        switch (menuPicked)
+        {
+            case 1: DrawSegment1(); break;
+            case 2: DrawSegment2(); break;
+            case 3: DrawSegment3(); break;
+            case 4: DrawSegment4(); break;
+            case 5: DrawSegment5(); break;
+            case 6: DrawSegment11(); break;
+        }
+    }
+    else
+    {
+        switch (menuPicked)
+        {
+            case 1: DrawSegment6(); break;
+            case 2: DrawSegment7(); break;
+            case 3: DrawSegment8(); break;
+            case 4: DrawSegment9(); break;
+            case 5: DrawSegment10(); break;
+            case 6: DrawSegment11(); break;
+        }
+    }
+
+    if (A_Allowed == 1)
+    {
+        gDPSetEnvColor(gDisplayListHead++, 255, 235, 20, gDialogTextAlpha);
+        if (A_Press)
+        {
+            gDPSetEnvColor(gDisplayListHead++, 0, 107, 247, gDialogTextAlpha);
+        }
+        static const u8 R_Text[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x1B, 0x9E, 0x0F, 0x18, 0x1B, 0x9E, 0xFa, 0xFF };
+        print_generic_string(116, 210, R_Text);
     }
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    static const u8 Version[] = { 0x39, 0x01, 0x3F, 0x00, 0x3F, 0x05, 0xFF };
+    print_generic_string(280, 14, Version);
+
     if (gMarioStates->numStars >= 333)
     {
         {
