@@ -8,12 +8,18 @@ extern "C"
     #include <game/mario.h>
     #include <game/memory.h>
     #include <game/print.h>
+    #include <game/display.h>
+    #include <game/game.h>
+    #include <game/ingame_menu.h>
+    #include <libc/math.h>
+    #include <level_commands.h>
     #include <surface_terrains.h>
     void set_camera_mode_8_directions(struct Camera *c);
 
     extern s16 s8DirModeYawOffset;
 }
 #include "object_fields.h"
+#include "blue_star_mode.h"
 
 #define SURFACE_IS_INSTANT_WARP(cmd)            (((cmd) >= SURFACE_INSTANT_WARP_1B) && ((cmd) < SURFACE_INSTANT_WARP_1B + INSTANT_WARP_INDEX_STOP))
 #define SURFACE_IS_WARP(cmd)                    (((cmd) == SURFACE_LOOK_UP_WARP) || ((cmd) == SURFACE_WOBBLING_WARP) || SURFACE_IS_PAINTING_WARP(cmd) || SURFACE_IS_INSTANT_WARP(cmd))
@@ -103,6 +109,8 @@ struct ObjectWarpNode* areaGetWarpNode(u8 id)
 
 void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
 {
+    int Damage = 0;
+    int NoReturn = 0;
     sDelayedWarpArg = 0;
     sDelayedWarpOp = *warpOp;
     if (*warpOp != WARP_OP_DEATH && *warpOp != WARP_OP_WARP_FLOOR)
@@ -110,16 +118,32 @@ void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
         return;
     }
 
-    if (m->health <= 0x480)
+    if ((gCurrLevelNum == LEVEL_COTMC) || (gCurrLevelNum == LEVEL_VCUTM) || (gCurrLevelNum == LEVEL_ENDING))
+    {
+        Damage = 0x100;
+        NoReturn = 0x180;
+    }
+    else if (blue_star_mode_enabled())
+    {
+        Damage = 0x200;
+        NoReturn = 0x280;
+    }
+    else
+    {
+        Damage = 0x400;
+        NoReturn = 0x480;
+    }
+
+    if (m->health <= NoReturn)
         return;
-    
+
     m->health = (m->health & (~0xff)) + 0x80;
-    if (m->action == ACT_BURNING_JUMP || m->action == ACT_BURNING_FALL || m->action == ACT_BURNING_GROUND)
+    if ((m->action == ACT_BURNING_JUMP) || (m->action == ACT_BURNING_FALL) || (m->action == ACT_BURNING_GROUND))
     {
         drop_and_set_mario_action(m, ACT_FREEFALL, 0);
     }
 
-    m->hurtCounter = 0x400 / 0x40;
+    m->hurtCounter = Damage / 0x40;
     *warpOp = WARP_OP_TELEPORT;
     m->usedObj = &sSpoofedWarpObject;
     sSpoofedWarpObject.oBehParams = WARP_ID_SPOOFED << 16;

@@ -96,7 +96,7 @@ static void DrawS(int line, int column)
 
 static void DrawDW(int line, int column)
 {
-    gDPSetEnvColor(gDisplayListHead++, 0, 255, 0, gDialogTextAlpha);
+    gDPSetEnvColor(gDisplayListHead++, 56, 220, 0, gDialogTextAlpha);
     static const u8 segmentStr[] = { 0x0d, 0x0e, 0x0a, 0x1d, 0x11, 0x9e, 0x20, 0x12, 0x17, 0x0d, 0xFF };
     DrawStr(line, column, segmentStr);
 }
@@ -398,7 +398,7 @@ void DrawBoxInicator(int line, int column, int level, int target)
     }
     else
     {
-        gDPSetEnvColor(gDisplayListHead++, 0, 255, 0, gDialogTextAlpha);
+        gDPSetEnvColor(gDisplayListHead++, 56, 220, 0, gDialogTextAlpha);
     }
 
     if(level >= 56)
