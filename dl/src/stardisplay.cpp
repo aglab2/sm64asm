@@ -10,12 +10,46 @@ extern "C"
 }
 #include "menudraw.h"
 
+#define YCounter 14
+#define X1 4
+#define XL1 X1+44
+#define X2 120
+#define XL2 X2+52
+#define X3 245
+#define XL3 X3+32
+#define XStar 24
+
 static s8 menuPicked = 1;
+
+static void SPrintInt3(u8* str, int val)
+{
+    int_to_str(val, str);
+    str[3] = 0xff;
+}
+
+int Offsetter(int val)
+{
+    if (val >= 100)
+    {
+        return 0;
+    }
+    else if (val >= 10)
+    {
+        return 7;
+    }
+    else
+    {
+        return 14;
+    }
+}
 
 void StarDisplay()
 {
     static bool A_Press = true;
     int A_Allowed = 0;
+    int AvailableStars = 1;
+    int MaxStars = 150;
+    int Mover = 0;
     s32 flags = save_file_get_flags();
     gSPDisplayList(gDisplayListHead++, 0x02011cc8);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
@@ -89,7 +123,113 @@ void StarDisplay()
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
     static const u8 Version[] = { 0x39, 0x01, 0x3F, 0x00, 0x3F, 0x05, 0xFF };
-    print_generic_string(280, 14, Version);
+    print_generic_string(280, 220, Version);
+
+    if (gMarioStates->numStars < 333)
+    {
+
+        if (gMarioStates->numStars == 0)
+        {
+            AvailableStars = 1;
+            MaxStars = 150;            
+        }
+        else if (gMarioStates->numStars >= 150+169)
+        {
+            AvailableStars = 333;
+            MaxStars = 333;
+        }
+        else if (gMarioStates->numStars >= 150+163)
+        {
+            AvailableStars = 150+169;
+            MaxStars = 333;
+        }
+        else if (gMarioStates->numStars >= 150+161)
+        {
+            AvailableStars = 150+163;
+            MaxStars = 333;
+        }
+        else if (gMarioStates->numStars >= 150)
+        {
+            AvailableStars = 150+161;
+            MaxStars = 333;
+        }
+        else if (gMarioStates->numStars >= 144)
+        {
+            AvailableStars = 150;
+            MaxStars = 150;
+        }
+        else if (gMarioStates->numStars >= 142)
+        {
+           AvailableStars = 144;
+           MaxStars = 150;
+        }
+        else if (gMarioStates->numStars == 141)
+        {
+           AvailableStars = 142;
+           MaxStars = 150;
+        }
+        else if ((flags & 0x000200) && (gMarioStates->numStars < 141))
+        {
+            AvailableStars = 141;
+            MaxStars = 150;
+        }
+        else if (gMarioStates->numStars >= 94)
+        {
+            AvailableStars = 129;
+            MaxStars = 150;
+            gDPSetEnvColor(gDisplayListHead++, 0, 255, 255, gDialogTextAlpha);
+            static const u8 Hint[] = { 0x0C, 0x2B, 0x28, 0x26, 0x2E, 0x9E, 0xD1, 0x9E, 0x1C, 0x2B, 0x28, 0x27, 0x9E, 0x29, 0x32, 0x35, 0x9E, 0x24, 0x9E, 0x09, 0x04, 0x9E, 0x1C, 0x37, 0x24, 0x35, 0x9E, 0x0D, 0x32, 0x32, 0x35, 0xFF };
+            print_generic_string(70, 220, Hint);
+        }
+        else if (flags & (0x000020 | 0x000080) && gMarioStates->numStars < 94)
+        {
+            AvailableStars = 128;
+            MaxStars = 150;
+        }
+        else if (flags & (0x000010 | 0x000040))
+        {
+            AvailableStars = 79;
+            MaxStars = 150;
+        }
+        else if (!(flags & (0x000010 | 0x000040)) && gMarioStates->numStars <= 34)
+        {
+            AvailableStars = 34;
+        }
+        else // more than 0 stars and no keys or gray switch
+        {
+            AvailableStars = gMarioStates->numStars;
+        }
+
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+        u8 Number[] = { 0x0, 0x0, 0x0, 0x9E, 0xFF };
+
+        Mover = Offsetter(gMarioStates->numStars);
+        SPrintInt3(Number + 0, gMarioStates->numStars);
+        Number[3] = 0x9E;
+        print_generic_string(XL1 + Mover, YCounter, Number);
+
+        Mover = Offsetter(AvailableStars);
+        SPrintInt3(Number + 0, AvailableStars);
+        Number[3] = 0x9E;
+        print_generic_string(XL2 + Mover, YCounter, Number);
+
+        SPrintInt3(Number + 0, MaxStars);
+        Number[3] = 0x9E;
+        print_generic_string(XL3, YCounter, Number);
+
+        static const u8 StarIcon[] = { 0xFa, 0x36, 0xFF };
+        static const u8 Line1[] = { 0x0C, 0x38, 0x35, 0x35, 0x28, 0x31, 0x37, 0xE6, 0xFF };
+        static const u8 Line2[] = { 0x0A, 0x39, 0x24, 0x2C, 0x2F, 0x24, 0x25, 0x2F, 0x28, 0xE6, 0xFF };
+        static const u8 Line3[] = { 0x1D, 0x32, 0x37, 0x24, 0x2F, 0xE6, 0xFF };
+
+        print_generic_string(XL1 + XStar, YCounter, StarIcon);
+        print_generic_string(XL2 + XStar, YCounter, StarIcon);
+        print_generic_string(XL3 + XStar, YCounter, StarIcon);
+        print_generic_string(X1, YCounter, Line1);
+        print_generic_string(X2, YCounter, Line2);
+        print_generic_string(X3, YCounter, Line3);
+
+    }
 
     if (gMarioStates->numStars >= 333)
     {

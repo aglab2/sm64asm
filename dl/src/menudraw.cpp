@@ -477,11 +477,9 @@ void DrawSegment1()
             static const u8 desc[] = { 0x0F, 0x12, 0x17, 0x0A, 0x15, 0x9E, 0x0B, 0x18, 0x1C, 0x1C, 0xFF};
             DrawStr(6, 194, desc);
         }
-
         DrawStarCount(starCount, 49);
         DrawBoxInicator(9, 140, MC, 0b10000);
         DrawBoxInicator(10, 140, MC, 0b100000);
-        DrawStarCount(starCount, 49);
     }
 }
 
