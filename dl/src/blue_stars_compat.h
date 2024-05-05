@@ -8,4 +8,5 @@ s16 setDoorStarCurrent(struct Object *o, int from, int to);
 u32 getTextBoxForStarCount(s16 requiredNumStars, struct Object *o);
 void afterStarInit();
 s32 renderCourseCompleteBlueStar();
-
+s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o);
+void starAfterStarDanceNonStop(struct MarioState *m, s32 isInWater);

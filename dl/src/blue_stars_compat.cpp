@@ -1,8 +1,10 @@
 #include "blue_stars_compat.h"
 #include "blue_star_mode.h"
+#include "fail_warp.h"
 #include <sm64.h>
 extern "C"
 {
+    #include <game/interaction.h>
     #include <game/ingame_menu.h>
     #include <game/game.h>
     #include <game/level_update.h>
@@ -226,4 +228,44 @@ s32 renderCourseCompleteBlueStar()
     gSPDisplayList(gDisplayListHead++, 0x0000000002011d50);
 
     return 0;
+}
+
+enum class NonStopState
+{
+    REGULAR,
+    WARP_TO_SAFE_POS,
+};
+static NonStopState gNonStopState = NonStopState::REGULAR;
+
+s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
+{
+    // returns noExit variable
+    gNonStopState = NonStopState::REGULAR;
+
+    // If it is explicitly marked as a nonstop, return noExit=true
+    if (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT)
+        return 1;
+
+    s16 bparam4 = o->OBJECT_FIELD_U32(0x40) & 0xff;
+    bool blueStar = 0 != bparam4;
+
+    // all gold stars are noExit=true
+    if (!blueStar)
+        return 0;
+
+    // add conditions here, currently all blues are nonstop + warp to safe pos
+    gNonStopState = NonStopState::WARP_TO_SAFE_POS;
+    return 1; // no exit==true
+}
+
+void starAfterStarDanceNonStop(struct MarioState *m, s32 isInWater)
+{
+    if (gNonStopState == NonStopState::REGULAR)
+    {
+        set_mario_action(m, isInWater ? ACT_WATER_IDLE : ACT_IDLE, 0);
+    }
+    else
+    {
+        triggerFailWarp(m);
+    }
 }

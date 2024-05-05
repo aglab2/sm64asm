@@ -107,6 +107,13 @@ struct ObjectWarpNode* areaGetWarpNode(u8 id)
     }
 }
 
+static void spoofWarp(struct MarioState *m)
+{
+    m->usedObj = &sSpoofedWarpObject;
+    sSpoofedWarpObject.oBehParams = WARP_ID_SPOOFED << 16;
+    sSpoofedWarpObject.oBehParams2ndByte = WARP_ID_SPOOFED;
+}
+
 void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
 {
     int Damage = 0;
@@ -145,9 +152,7 @@ void preLevelTriggerWarp(struct MarioState *m, s32* warpOp)
 
     m->hurtCounter = Damage / 0x40;
     *warpOp = WARP_OP_TELEPORT;
-    m->usedObj = &sSpoofedWarpObject;
-    sSpoofedWarpObject.oBehParams = WARP_ID_SPOOFED << 16;
-    sSpoofedWarpObject.oBehParams2ndByte = WARP_ID_SPOOFED;
+    spoofWarp(m);
 }
 
 void initMarioAfterQuickWarp(struct MarioState *m)
@@ -161,4 +166,10 @@ void initMarioAfterQuickWarp(struct MarioState *m)
     bool slideTerrain = (m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE;
     if (slideTerrain)
         level_control_timer(TIMER_CONTROL_HIDE);
+}
+
+void triggerFailWarp(struct MarioState* m)
+{
+    spoofWarp(m);
+    level_trigger_warp(m, WARP_OP_TELEPORT);
 }

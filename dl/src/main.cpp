@@ -79,4 +79,6 @@ uintptr_t _start[] =
     REGISTER_BEHAVIOR(0x00090000, WhompKing),        // 801ce08c : 35
     (uintptr_t) soundPreJmp,                         // 801ce098 : 38
     (uintptr_t) soundPostSequence,                   // 801ce09c : 39
+    (uintptr_t) starNoExitSelect,                    // 801ce0a0 : 40
+    (uintptr_t) starAfterStarDanceNonStop,           // 801ce0a4 : 41
 };
