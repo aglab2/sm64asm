@@ -3,6 +3,8 @@
 #include "types.h"
 extern "C" 
 {
+    #include <level_commands.h>
+    #include <game/area.h>
     #include "game/game.h"
     #include "game/level_update.h"
     #include "game/ingame_menu.h"
@@ -21,6 +23,22 @@ extern "C"
 
 static s8 menuPicked = 1;
 
+int SetFloor()
+{
+    if ((gMarioStates->numStars == 0)
+    || (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex > 1))
+        return 1;
+    else if ((gCurrLevelNum == LEVEL_CASTLE && gCurrAreaIndex == 1))
+        return 2;
+    else if ((gCurrLevelNum == LEVEL_CASTLE_GROUNDS && gCurrAreaIndex == 1)
+    || (gCurrLevelNum == LEVEL_CASTLE && gCurrAreaIndex == 2))
+        return 3;
+    else if ((gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 1))
+        return 4;
+    else
+        return 5;
+}
+
 static void SPrintInt3(u8* str, int val)
 {
     int_to_str(val, str);
@@ -30,17 +48,11 @@ static void SPrintInt3(u8* str, int val)
 int Offsetter(int val)
 {
     if (val >= 100)
-    {
         return 0;
-    }
     else if (val >= 10)
-    {
         return 7;
-    }
     else
-    {
         return 14;
-    }
 }
 
 void StarDisplay()
@@ -58,6 +70,16 @@ void StarDisplay()
     {
         A_Press = !A_Press;
     }
+
+    static bool initialized;
+    if (!initialized)
+    {
+        menuPicked = SetFloor();
+        initialized = true;
+    }
+
+    if ((gPlayer1Controller->buttonPressed & START_BUTTON)||(gPlayer1Controller->buttonPressed & A_BUTTON))
+        initialized = false;
 
     if (gMarioStates->numStars == 0)
     {
@@ -122,8 +144,8 @@ void StarDisplay()
     }
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
-    static const u8 Version[] = { 0x39, 0x01, 0x3F, 0x00, 0x3F, 0x05, 0xFF };
-    print_generic_string(280, 220, Version);
+    static const u8 Version[] = { 0x39, 0x01, 0x3F, 0x01, 0xFF };
+    print_generic_string(294, 220, Version);
 
     if (gMarioStates->numStars < 333)
     {
