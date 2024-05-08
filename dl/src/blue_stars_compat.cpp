@@ -4,6 +4,8 @@
 #include <sm64.h>
 extern "C"
 {
+    #include <level_commands.h>
+    #include <game/area.h>
     #include <game/interaction.h>
     #include <game/ingame_menu.h>
     #include <game/game.h>
@@ -249,11 +251,28 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     s16 bparam4 = o->OBJECT_FIELD_U32(0x40) & 0xff;
     bool blueStar = 0 != bparam4;
 
-    // all gold stars are noExit=true
-    if (!blueStar)
-        return 0;
+    if (!blueStar) // all yellow stars
+    {
+        if ((gCurrLevelNum == LEVEL_WMOTR && gCurrAreaIndex < 6) || (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 3))
+            return 1;
+        else
+            return 0;
+    }
 
-    // add conditions here, currently all blues are nonstop + warp to safe pos
+    if ((gCurrLevelNum == LEVEL_COTMC) || (gCurrLevelNum == LEVEL_VCUTM) || (gCurrLevelNum == LEVEL_ENDING)
+    || (gCurrLevelNum == LEVEL_WMOTR)
+    || (gCurrLevelNum == LEVEL_WF  && gCurrAreaIndex == 3)
+    || (gCurrLevelNum == LEVEL_LLL  && gCurrAreaIndex == 2)
+    || (gCurrLevelNum == LEVEL_SSL  && gCurrAreaIndex == 4)
+    || (gCurrLevelNum == LEVEL_SL  && gCurrAreaIndex == 3)
+    || (gCurrLevelNum == LEVEL_TTC  && gCurrAreaIndex == 2)
+    || (gCurrLevelNum == LEVEL_BITDW) || (gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 1) || (gCurrLevelNum == LEVEL_BITS)
+    || (gCurrLevelNum == LEVEL_TOTWC))
+        return 0;
+    
+    if (gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 2)
+        return 1; 
+
     gNonStopState = NonStopState::WARP_TO_SAFE_POS;
     return 1; // no exit==true
 }

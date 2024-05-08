@@ -149,7 +149,6 @@ void renderStarRadar()
     Texture* yellowTexture = (Texture*) 0x0407CA00;
     Texture* redTexture = (Texture*) 0x0407EE00;
     Texture* blueTexture = (Texture*) 0x0407A600;
-    int BaseOffset = 0;
 
     if (gCurrLevelNum != LEVEL_BOWSER_1 && gCurrLevelNum != LEVEL_BOWSER_2 && gCurrLevelNum != LEVEL_BOWSER_3)
     {
@@ -237,21 +236,23 @@ void renderStarRadar()
             return;
         }
 
+        float BaseOffset = 0;
+
         if ((starMask == 0b1111111) || (starMask == (1 << 7) - 1))
         {
             BaseOffset = 0;
         }
         else if (starMask == 0b111111)
         {
-            BaseOffset = 1;
+            BaseOffset = 0.75;
         }
         else if (starMask == 0b11111)
         {
-            BaseOffset = 2;
+            BaseOffset = 1;
         }
         else if (gCurrLevelNum == LEVEL_TOTWC && gCurrAreaIndex < 4)
         {
-            BaseOffset = 5;
+            BaseOffset = 2.5;
         }
         else
         {
@@ -334,7 +335,7 @@ void renderStarRadar()
                     }
                     else
                     {
-                        render_hud_tex_lut(104 + 16 * (off + BaseOffset / 2), 208, tex);
+                        render_hud_tex_lut(104 + 16 * (off + BaseOffset), 208, tex);
                     }
                 }
                 off++;
