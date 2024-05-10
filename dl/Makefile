@@ -3,7 +3,7 @@ OBJ_DIR = obj
 TOOL_DIR = Hacktice
 
 # Alter these 4 variables according to your need
-CPP_FILES = main endscreen_blocker star_radar omm omm_geo change_music green_sb_resetter blue_star_block puffer fail_warp ex_objects blue_stars_compat act_select stardisplay menudraw wall_cucking whomp_king blue_star_mode sound_farewell
+CPP_FILES = main endscreen_blocker star_radar omm omm_geo change_music green_sb_resetter blue_star_block puffer fail_warp ex_objects blue_stars_compat act_select stardisplay menudraw wall_cucking whomp_king blue_star_mode sound_farewell bully_lava_death
 
 # ROM to inject into for convenient testing
 ROM = ../dl.z64

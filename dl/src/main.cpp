@@ -10,6 +10,7 @@ extern "C"
 #include "act_select.h"
 #include "blue_star_block.h"
 #include "blue_stars_compat.h"
+#include "bully_lava_death.h"
 #include "change_music.h"
 #include "ex_objects.h"
 #include "fail_warp.h"
@@ -81,4 +82,8 @@ uintptr_t _start[] =
     (uintptr_t) soundPostSequence,                   // 801ce09c : 39
     (uintptr_t) starNoExitSelect,                    // 801ce0a0 : 40
     (uintptr_t) starAfterStarDanceNonStop,           // 801ce0a4 : 41
+    (uintptr_t) objLavaDeathBullyThreeBullies,       // 801ce0a8 : 42
+    (uintptr_t) objLavaDeathBullySingleBully,        // 801ce0ac : 43
+    REGISTER_BEHAVIOR(0x00090000, ResetDeathFlags),  // 801ce0b0 : 44
+    (uintptr_t) preStarSpawnInit,                    // 801ce0bc : 47
 };
