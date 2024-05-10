@@ -47,3 +47,9 @@ nope:
 	NOP
 	NOP
 	NOP
+
+; red star spawners
+.orga 0xadddc
+	lw t0, 0xf4(t9)
+	slti at, t0, 6
+	bne at, r0, 0xaddfc
