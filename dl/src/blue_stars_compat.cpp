@@ -246,7 +246,10 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
 
     // If it is explicitly marked as a nonstop, return noExit=true
     if (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT)
+    {
+        m->health = 0x880;
         return 1;
+    }
 
     s16 bparam4 = o->OBJECT_FIELD_U32(0x40) & 0xff;
     bool blueStar = 0 != bparam4;
@@ -254,25 +257,32 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     if (!blueStar) // all yellow stars
     {
         if ((gCurrLevelNum == LEVEL_WMOTR && gCurrAreaIndex < 6) || (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 3))
+        {
+            m->health = 0x880;
             return 1;
+        }  
         else
             return 0;
     }
 
-    if ((gCurrLevelNum == LEVEL_COTMC) || (gCurrLevelNum == LEVEL_VCUTM) || (gCurrLevelNum == LEVEL_ENDING)
+    if ((gCurrLevelNum == LEVEL_COTMC) || (gCurrLevelNum == LEVEL_VCUTM) || (gCurrLevelNum == LEVEL_ENDING && gCurrAreaIndex == 1)
     || (gCurrLevelNum == LEVEL_WMOTR)
     || (gCurrLevelNum == LEVEL_WF  && gCurrAreaIndex == 3)
     || (gCurrLevelNum == LEVEL_LLL  && gCurrAreaIndex == 2)
     || (gCurrLevelNum == LEVEL_SSL  && gCurrAreaIndex == 4)
     || (gCurrLevelNum == LEVEL_SL  && gCurrAreaIndex == 3)
     || (gCurrLevelNum == LEVEL_TTC  && gCurrAreaIndex == 2)
-    || (gCurrLevelNum == LEVEL_BITDW) || (gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 1) || (gCurrLevelNum == LEVEL_BITS)
     || (gCurrLevelNum == LEVEL_TOTWC))
         return 0;
     
-    if (gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 2)
+    if ((gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 2)
+    || (gMarioStates->flags & MARIO_WING_CAP)) 
+    {
+        m->health = 0x880;
         return 1; 
+    }
 
+    m->health = 0x880;
     gNonStopState = NonStopState::WARP_TO_SAFE_POS;
     return 1; // no exit==true
 }

@@ -84,6 +84,20 @@ static bool hasAnyWithBparam4(const BehaviorScript *behavior)
     return false;
 }
 
+static float verticalCheck(float multi)
+{
+    if ((gCurrLevelNum == LEVEL_BITFS)
+    || (gCurrLevelNum == LEVEL_BITS)
+    || (gCurrLevelNum == LEVEL_BBH && gCurrAreaIndex == 1)
+    || (gCurrLevelNum == LEVEL_SSL && gCurrAreaIndex == 3)
+    || (gCurrLevelNum == LEVEL_TTC)
+    || (gCurrLevelNum == LEVEL_RR)
+    )
+        return multi;
+    else
+        return 1.f;
+}
+
 static int sLastCheckedLevel = 0;
 static bool sRenderStarRadar = false;
 
@@ -295,7 +309,7 @@ void renderStarRadar()
                             f32 y = star->oPosY - gMarioObject->oPosY;
                             f32 z = star->oPosZ - gMarioObject->oPosZ;
 
-                            f32 d = _sqrtf(x * x + y * y * 3.f + z * z);
+                            f32 d = _sqrtf(x * x + y * y * verticalCheck(3.f) + z * z);
                             if (d < 100.f)
                                 d = 100.f;
 
@@ -409,7 +423,7 @@ static void renderBoxRadar()
     f32 y = box->oPosY - gMarioObject->oPosY;
     f32 z = box->oPosZ - gMarioObject->oPosZ;
 
-    f32 d = _sqrtf(x * x * 1.5f  + y * y * 3.f + z * z * 1.5f);
+    f32 d = _sqrtf(x * x * 1.5f  + y * y * 1.5f * verticalCheck(1.5f) + z * z * 1.5f);
     if (d < 100.f)
         d = 100.f;
 

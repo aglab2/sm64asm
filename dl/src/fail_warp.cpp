@@ -23,7 +23,7 @@ extern "C"
 
 #define SURFACE_IS_INSTANT_WARP(cmd)            (((cmd) >= SURFACE_INSTANT_WARP_1B) && ((cmd) < SURFACE_INSTANT_WARP_1B + INSTANT_WARP_INDEX_STOP))
 #define SURFACE_IS_WARP(cmd)                    (((cmd) == SURFACE_LOOK_UP_WARP) || ((cmd) == SURFACE_WOBBLING_WARP) || SURFACE_IS_PAINTING_WARP(cmd) || SURFACE_IS_INSTANT_WARP(cmd))
-#define SURFACE_IS_UNSAFE(cmd)                  (((cmd) == SURFACE_BURNING) || SURFACE_IS_QUICKSAND(cmd) || SURFACE_IS_WARP(cmd) || ((cmd) == SURFACE_DEATH_PLANE) || ((cmd) == SURFACE_SLIPPERY))
+#define SURFACE_IS_UNSAFE(cmd)                  (((cmd) == SURFACE_BURNING) || SURFACE_IS_QUICKSAND(cmd) || SURFACE_IS_WARP(cmd) || ((cmd) == SURFACE_DEATH_PLANE) || ((cmd) == SURFACE_NOISE_DEFAULT) || ((cmd) == SURFACE_SLIPPERY))
 
 #define WARP_ID_SPOOFED 0xf4
 
