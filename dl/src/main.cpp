@@ -11,6 +11,7 @@ extern "C"
 #include "blue_star_block.h"
 #include "blue_stars_compat.h"
 #include "bully_lava_death.h"
+#include "camera_y.h"
 #include "change_music.h"
 #include "ex_objects.h"
 #include "fail_warp.h"
@@ -88,4 +89,5 @@ uintptr_t _start[] =
     (uintptr_t) preStarSpawnInit,                    // 801ce0bc : 47
     (uintptr_t) redCoinStarSpawnInit,                // 801ce0c0 : 48
     (uintptr_t) spawnDialogBoxForNonStopStar,        // 801ce0c4 : 49
+    (uintptr_t) cameraApproachY,                     // 801ce0c8 : 50
 };
