@@ -317,10 +317,13 @@ void spawnDialogBoxForNonStopStar(u8 lastCompletedStarNum)
 {
     if (gNonStopIsBlueStar)
     {
-        create_dialog_box_with_response(11 << 16);
+        create_dialog_box_with_response(56 << 16);
     }
     else
     {
-        create_dialog_box_with_response((lastCompletedStarNum == 7 ? 13 : 14) << 16);
+        if (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 3)
+            create_dialog_box_with_response(14 << 16);
+        else
+            create_dialog_box_with_response((lastCompletedStarNum == 7 ? 13 : 14) << 16);
     }
 }
