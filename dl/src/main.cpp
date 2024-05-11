@@ -86,4 +86,5 @@ uintptr_t _start[] =
     (uintptr_t) objLavaDeathBullySingleBully,        // 801ce0ac : 43
     REGISTER_BEHAVIOR(0x00090000, ResetDeathFlags),  // 801ce0b0 : 44
     (uintptr_t) preStarSpawnInit,                    // 801ce0bc : 47
+    (uintptr_t) redCoinStarSpawnInit,                // 801ce0c0 : 48
 };

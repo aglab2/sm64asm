@@ -22,3 +22,4 @@ public:
 };
 
 bool preStarSpawnInit(void);
+void redCoinStarSpawnInit(void);

@@ -4,6 +4,7 @@ extern "C"
 {
     #include <audio_defines.h>
     #include <game/area.h>
+    #include <game/ingame_menu.h>
     #include <game/object_helpers.h>
     #include <game/object_list_processor.h>
     #include <game/spawn_sound.h>
@@ -99,6 +100,14 @@ bool preStarSpawnInit(void)
     {
         return true;
     }
+}
+
+void redCoinStarSpawnInit(void)
+{
+    struct Object* o = gCurrentObject;
+    gRedCoinsCollected = o->oHiddenStarTriggerCounter;
+    o->oSpinyTargetYaw++;
+    gBlockSpawnAnimation = o->oSpinyTargetYaw < 6;
 }
 
 void ResetDeathFlags::Init()

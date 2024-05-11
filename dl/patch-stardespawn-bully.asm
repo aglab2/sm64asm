@@ -63,3 +63,9 @@ nope:
 	LW RA, 0x14(SP)
 	JR RA
 	ADDIU SP, SP, 0x18
+
+.orga 0xadd98
+	LW V1, 0x801ce0c0
+	JALR V1
+	NOP
+	NOP
