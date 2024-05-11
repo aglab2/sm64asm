@@ -175,7 +175,10 @@ void initMarioAfterQuickWarp(struct MarioState *m)
 void initMarioAfterQuickWarpResetCamera(struct ObjectWarpNode *spawnNode)
 {
     if (spawnNode != &sSpoofedWarpNode)
+    {
         reset_camera(gCurrentArea->camera);
+        s8DirModeYawOffset = (gMarioStates->faceAngle[1] + 0x9000) & 0xe000;
+    }
 }
 
 void triggerFailWarp(struct MarioState* m)
