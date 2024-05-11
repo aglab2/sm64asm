@@ -31,6 +31,7 @@ static int sSafePosArea = 0;
 static int sSafePosLevel = 0;
 static Vec3s sSafePos{};
 static s16 sSafePosAngle;
+static s16 sSafePosCameraYaw;
 void setSafePos(struct MarioState *m)
 {
     // print_text_fmt_int(20, 20, "X %d", (int) m->pos[0]);
@@ -40,6 +41,7 @@ void setSafePos(struct MarioState *m)
     sSafePos[1] = m->pos[1];
     sSafePos[2] = m->pos[2];
     sSafePosAngle = m->faceAngle[1];
+    sSafePosCameraYaw = s8DirModeYawOffset;
     sSafePosArea = gCurrAreaIndex;
     sSafePosLevel = gCurrLevelNum;
 }
@@ -160,12 +162,18 @@ void initMarioAfterQuickWarp(struct MarioState *m)
     set_mario_action(m, ACT_IDLE, 0);
     auto camera = gCurrentArea->camera;
     set_camera_mode_8_directions(camera);
-    s8DirModeYawOffset = sSafePosAngle & 0xe000;
     reset_camera(camera);
-    
+    s8DirModeYawOffset = sSafePosCameraYaw & 0xe000;
     bool slideTerrain = (m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE;
     if (slideTerrain)
         level_control_timer(TIMER_CONTROL_HIDE);
+}
+
+void initMarioAfterQuickWarpResetCamera(struct ObjectWarpNode *spawnNode)
+{
+    reset_camera(gCurrentArea->camera);
+    if (spawnNode == &sSpoofedWarpNode)
+        s8DirModeYawOffset = sSafePosCameraYaw & 0xe000;
 }
 
 void triggerFailWarp(struct MarioState* m)
