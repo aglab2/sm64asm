@@ -7,7 +7,6 @@ extern "C"
     #include <level_commands.h>
     #include <game/area.h>
     #include <game/interaction.h>
-    #include <game/ingame_menu.h>
     #include <game/game.h>
     #include <game/level_update.h>
     #include <game/mario.h>
@@ -19,8 +18,15 @@ extern "C"
     extern void print_hud_course_complete_coins(s16 x, s16 y);
     extern void play_star_fanfare_and_flash_hud(s32 arg, u8 starNum);
     extern s32 _save_file_get_total_star_count(s32 fileIndex, s32 minCourse, s32 maxCourse);
-    extern u8 sCurrentBackgroundMusicSeqId;
     extern void seq_player_play_sequence(u8 player, u8 seqId, u16 arg2);
+    extern void create_dialog_box_with_response(s32 dialog);
+    extern void print_generic_string(s16 x, s16 y, const u8 *str);
+    extern void print_hud_lut_string(s8 fontLut, s16 x, s16 y, const u8 *str);
+    
+    extern u8 sCurrentBackgroundMusicSeqId;
+    extern u16 gDialogTextAlpha;
+    
+#define HUD_LUT_GLOBAL 2
 }
 #include "object_fields.h"
 
@@ -237,6 +243,7 @@ enum class NonStopState
     REGULAR,
     WARP_TO_SAFE_POS,
 };
+static bool gNonStopIsBlueStar = false;
 static NonStopState gNonStopState = NonStopState::REGULAR;
 
 s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
@@ -247,18 +254,19 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     // If it is explicitly marked as a nonstop, return noExit=true
     if (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT)
     {
-        m->health = 0x880;
+        gNonStopIsBlueStar = false;
+        m->healCounter = 31;
         return 1;
     }
 
     s16 bparam4 = o->OBJECT_FIELD_U32(0x40) & 0xff;
-    bool blueStar = 0 != bparam4;
+    gNonStopIsBlueStar = 0 != bparam4;
 
-    if (!blueStar) // all yellow stars
+    if (!gNonStopIsBlueStar) // all yellow stars
     {
         if ((gCurrLevelNum == LEVEL_WMOTR && gCurrAreaIndex < 6) || (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 3))
         {
-            m->health = 0x880;
+            m->healCounter = 31;
             return 1;
         }  
         else
@@ -278,7 +286,7 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     if ((gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 2)
     || (gMarioStates->flags & MARIO_WING_CAP)) 
     {
-        m->health = 0x880;
+        m->healCounter = 31;
         return 1; 
     }
 
@@ -296,5 +304,17 @@ void starAfterStarDanceNonStop(struct MarioState *m, s32 isInWater)
     else
     {
         triggerFailWarp(m);
+    }
+}
+
+void spawnDialogBoxForNonStopStar(u8 lastCompletedStarNum)
+{
+    if (gNonStopIsBlueStar)
+    {
+        create_dialog_box_with_response(11 << 16);
+    }
+    else
+    {
+        create_dialog_box_with_response((lastCompletedStarNum == 7 ? 13 : 14) << 16);
     }
 }

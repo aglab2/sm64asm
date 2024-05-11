@@ -10,3 +10,4 @@ void afterStarInit();
 s32 renderCourseCompleteBlueStar();
 s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o);
 void starAfterStarDanceNonStop(struct MarioState *m, s32 isInWater);
+void spawnDialogBoxForNonStopStar(u8 lastCompletedStarNum);

@@ -87,4 +87,5 @@ uintptr_t _start[] =
     REGISTER_BEHAVIOR(0x00090000, ResetDeathFlags),  // 801ce0b0 : 44
     (uintptr_t) preStarSpawnInit,                    // 801ce0bc : 47
     (uintptr_t) redCoinStarSpawnInit,                // 801ce0c0 : 48
+    (uintptr_t) spawnDialogBoxForNonStopStar,        // 801ce0c4 : 49
 };

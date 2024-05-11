@@ -1,0 +1,9 @@
+.orga 0x132d0
+	LUI A0, 0x8033
+	LBU A0, 0xdd84(A0)
+	LW V1, 0x801ce0c4
+	JALR V1
+	NOP
+	NOP
+	NOP
+	NOP
