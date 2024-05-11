@@ -246,6 +246,12 @@ enum class NonStopState
 static bool gNonStopIsBlueStar = false;
 static NonStopState gNonStopState = NonStopState::REGULAR;
 
+static void heal(struct MarioState *m)
+{
+    m->healCounter = 31;
+    m->hurtCounter = 0;
+}
+
 s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
 {
     // returns noExit variable
@@ -255,7 +261,7 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     if (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT)
     {
         gNonStopIsBlueStar = false;
-        m->healCounter = 31;
+        heal(m);
         return 1;
     }
 
@@ -266,7 +272,7 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     {
         if ((gCurrLevelNum == LEVEL_WMOTR && gCurrAreaIndex < 6) || (gCurrLevelNum == LEVEL_CASTLE_COURTYARD && gCurrAreaIndex == 3))
         {
-            m->healCounter = 31;
+            heal(m);
             return 1;
         }  
         else
@@ -286,11 +292,11 @@ s32 starNoExitSelect(struct MarioState *m, u32 interactType, struct Object *o)
     if ((gCurrLevelNum == LEVEL_BITFS && gCurrAreaIndex == 2)
     || (gMarioStates->flags & MARIO_WING_CAP)) 
     {
-        m->healCounter = 31;
+        heal(m);
         return 1; 
     }
 
-    m->health = 0x880;
+    heal(m);
     gNonStopState = NonStopState::WARP_TO_SAFE_POS;
     return 1; // no exit==true
 }

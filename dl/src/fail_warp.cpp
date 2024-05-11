@@ -164,6 +164,9 @@ void initMarioAfterQuickWarp(struct MarioState *m)
     set_camera_mode_8_directions(camera);
     reset_camera(camera);
     s8DirModeYawOffset = sSafePosCameraYaw & 0xe000;
+    // makes paracam not trigger after escaping water
+    *((u32*) 0x80286d20) = 0x80286CC4U;
+
     bool slideTerrain = (m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE;
     if (slideTerrain)
         level_control_timer(TIMER_CONTROL_HIDE);
@@ -171,9 +174,8 @@ void initMarioAfterQuickWarp(struct MarioState *m)
 
 void initMarioAfterQuickWarpResetCamera(struct ObjectWarpNode *spawnNode)
 {
-    reset_camera(gCurrentArea->camera);
-    if (spawnNode == &sSpoofedWarpNode)
-        s8DirModeYawOffset = sSafePosCameraYaw & 0xe000;
+    if (spawnNode != &sSpoofedWarpNode)
+        reset_camera(gCurrentArea->camera);
 }
 
 void triggerFailWarp(struct MarioState* m)
