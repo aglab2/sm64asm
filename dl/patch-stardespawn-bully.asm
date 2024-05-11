@@ -53,3 +53,13 @@ nope:
 	lw t0, 0xf4(t9)
 	slti at, t0, 6
 	bne at, r0, 0xaddfc
+	
+; boo star despawnies
+.orga 0x7FDD4
+	ADDIU SP, SP, -0x18
+	SW RA, 0x14(SP)
+	JAL 0x802a057c
+	NOP
+	LW RA, 0x14(SP)
+	JR RA
+	ADDIU SP, SP, 0x18
