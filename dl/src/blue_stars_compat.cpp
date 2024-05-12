@@ -248,6 +248,9 @@ static NonStopState gNonStopState = NonStopState::REGULAR;
 
 static void heal(struct MarioState *m)
 {
+    if (m->health < 0x800)
+        return;
+
     m->healCounter = 31;
     m->hurtCounter = 0;
 }
