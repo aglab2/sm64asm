@@ -2,4 +2,5 @@
 
 #include "types.h"
 
-void cameraApproachY(void*);
+void cameraApproachYLakitu(void*);
+void cameraApproachYMario(struct Camera* c, f32 camFloorHeight);

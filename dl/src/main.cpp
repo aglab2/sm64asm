@@ -89,6 +89,7 @@ uintptr_t _start[] =
     (uintptr_t) preStarSpawnInit,                    // 801ce0bc : 47
     (uintptr_t) redCoinStarSpawnInit,                // 801ce0c0 : 48
     (uintptr_t) spawnDialogBoxForNonStopStar,        // 801ce0c4 : 49
-    (uintptr_t) cameraApproachY,                     // 801ce0c8 : 50
+    (uintptr_t) cameraApproachYLakitu,               // 801ce0c8 : 50
     (uintptr_t) initMarioAfterQuickWarpResetCamera,  // 801ce0cc : 51
+    (uintptr_t) cameraApproachYMario,                // 801ce0d0 : 52
 };
