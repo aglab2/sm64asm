@@ -37,6 +37,12 @@ static const u8 uWarpToCourse[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x15, 0x
 static const u8 uThanksForPLaying[] = { 0x1D, 0x11, 0x0A, 0x17, 0x14, 0x9E, 0x22, 0x18, 0x1E, 0x9E, 0x0F, 0x18, 0x1B, 0x9E, 0x19, 0x15, 0x0A, 0x22, 0x12, 0x17, 0x10, 0xFF };
 static const u8 uMadeBy[] = { 0x16, 0x0A, 0x0D, 0x0E, 0x9E, 0x0B, 0x22, 0x9E, 0x18, 0x23, 0x23, 0x12, 0x0E, 0x9E, 0x0A, 0x17, 0x0D, 0x9E, 0x0A, 0x10, 0x15, 0x0A, 0x0B, 0x02, 0xFF };
 
+static const u8 uBowser1Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x01, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
+static const u8 uBowser2Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x02, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
+static const u8 uBowser3Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x03, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
+
+static const u8* uExtraCoursesNames[] = { uBowser1Fight, uBowser2Fight, uBowser3Fight };
+
 #define dl_ia_text_begin 0x02011cc8
 #define dl_ia_text_end   0x02011d50
 
@@ -207,7 +213,23 @@ static void render_star_select()
     }
 }
 
+static const int kSelectedWarpLimit = 28;
+
 extern struct WarpDest sWarpDest;
+
+static const u8* get_course_name(int course)
+{
+    if (course < 25)
+    {
+        u8** courseNameTbl = (u8**) segmented_to_virtual((void*) 0x02010f68);
+        return (u8*) segmented_to_virtual(courseNameTbl[course]);
+    }
+    else
+    {
+        return uExtraCoursesNames[course - 25];
+    }
+}
+
 static void render_course_select()
 {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
@@ -221,8 +243,8 @@ static void render_course_select()
         gSelectedWarpTarget--;
     }
 
-    gSelectedWarpTarget += 25;
-    gSelectedWarpTarget %= 25;
+    gSelectedWarpTarget += kSelectedWarpLimit;
+    gSelectedWarpTarget %= kSelectedWarpLimit;
 
     {
         int controllerDistance = (int)gPlayer3Controller->rawStickX * (int)gPlayer3Controller->rawStickX + (int)gPlayer3Controller->rawStickY * (int)gPlayer3Controller->rawStickY;
@@ -230,15 +252,14 @@ static void render_course_select()
         {
             u16 angle = atan2s(gPlayer3Controller->rawStickY, gPlayer3Controller->rawStickX);
             float normalizedAngle = (float) angle / (float) 0x10000;
-            gSelectedWarpTarget = (int) (normalizedAngle * 25);
+            gSelectedWarpTarget = (int) (normalizedAngle * kSelectedWarpLimit);
         }
     }
 
     print_generic_string_centered_aligned(uControlStickToWarpTarget, 85 - 10);
     print_generic_string_centered_aligned(uWarpToCourse, 85 - 14 - 10);
 
-    u8** courseNameTbl = (u8**) segmented_to_virtual((void*) 0x02010f68);
-    u8* courseName = (u8*) segmented_to_virtual(courseNameTbl[gSelectedWarpTarget]);
+    u8* courseName = get_course_name(gSelectedWarpTarget);
     int off = 40 - 12;
     print_generic_string_centered_aligned(courseName, off);
     print_generic_string_centered_aligned(uUp, off + 15);

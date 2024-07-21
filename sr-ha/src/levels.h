@@ -32,6 +32,10 @@ typedef enum LevelConv_PlainLevels
     LevelConv_PlainLevels_S1,
     LevelConv_PlainLevels_S2,
     LevelConv_PlainLevels_S3,
+
+    LevelConv_PlainLevels_F1,
+    LevelConv_PlainLevels_F2,
+    LevelConv_PlainLevels_F3,
 } LevelConv_PlainLevels;
 
 typedef enum LevelConv_SM64Levels
@@ -66,6 +70,10 @@ typedef enum LevelConv_SM64Levels
     LevelConv_SM64Levels_S1 = 0x1f,
     LevelConv_SM64Levels_S2 = 0x14,
     LevelConv_SM64Levels_S3 = 0x19,
+
+    LevelConv_SM64Levels_F1 = 30,
+    LevelConv_SM64Levels_F2 = 33,
+    LevelConv_SM64Levels_F3 = 34,
 } LevelConv_SM64Levels;
 
 LevelConv_SM64Levels LevelConv_toSM64Level(LevelConv_PlainLevels);
