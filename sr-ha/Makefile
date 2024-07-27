@@ -3,7 +3,7 @@ OBJ_DIR = obj
 TOOL_DIR = Hacktice
 
 # Alter these 4 variables according to your need
-CPP_FILES = main image_select render_image levels
+CPP_FILES = main image_select render_image levels gp_box
 
 # ROM to inject into for convenient testing
 ROM = srha.z64

@@ -311,7 +311,7 @@ static void switch_star_lr()
 extern uintptr_t _start[];
 extern void play_sequence(u8 player, u8 seqId, u16 fadeTimer);
 extern u8 sCurrentBackgroundMusicSeqId;
-void imageSelect()
+void imageSelect(void)
 {
     u8* ramPtr = (u8 *)0x80026000;
     u32 width = 192;
@@ -358,7 +358,7 @@ void imageSelect()
             gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            render_multi_image(ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
+            render_multi_image(&gDisplayListHead, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
             _start[1] = 1;
 
             if (gPlayer3Controller->buttonPressed & B_BUTTON)
@@ -393,7 +393,25 @@ void imageSelect()
         gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-        render_multi_image(ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
+        render_multi_image(&gDisplayListHead, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
         _start[1] = 1;
+    }
+}
+
+void titleDraw(Gfx* gfx, int alpha)
+{
+    u8* ramPtr = (u8 *)0x80026000;
+    u32 width = 192;
+    u32 height = 128;
+
+    {
+        if (gSelectedStar != 31)
+        {
+            gSelectedStar = 31;
+            load_image();
+        }
+
+        gDPSetEnvColor(gfx++, 255, 255, 255, alpha);
+        render_multi_image(&gfx, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 5, 5, G_CYC_1CYCLE);
     }
 }

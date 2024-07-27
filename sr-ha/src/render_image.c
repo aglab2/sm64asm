@@ -14,7 +14,7 @@ static const int xuv = 8098;
 static const int yuv = 974;
 
 static Gfx* gRenderImageGfxPool;
-static void render_piece(char** pool, int x, int y, int posW, int posH, int imW, int imH)
+static void render_piece(char** pool, int x, int y, int posW, int posH, int imW, int imH, int scale)
 {
     const int xoff = -15;
     const int yoff = 352;
@@ -25,10 +25,11 @@ static void render_piece(char** pool, int x, int y, int posW, int posH, int imW,
     int x1 = xoff + (x + posW) + imW;
     int y1 = yoff - (y + posH) + imH;
 
-    x0 /= 1.5f;
-    x1 /= 1.5f;
-    y0 /= 1.5f;
-    y1 /= 1.5f;
+    f32 fscale = 1.5f / scale;
+    x0 /= fscale;
+    x1 /= fscale;
+    y0 /= fscale;
+    y1 /= fscale;
 
     Vtx* vbuf = (Vtx*) alloc(pool, 4 * 16);
     vbuf[0].v.ob[0] = x0;
@@ -107,7 +108,7 @@ static void render_piece(char** pool, int x, int y, int posW, int posH, int imW,
 			(lrt)<<G_TEXTURE_IMAGE_FRAC)			\
 }
 
-void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s32 scaleX, UNUSED s32 scaleY, s32 mode) {
+void render_multi_image(Gfx** dlGfx, u8 *image, s32 x, s32 y, s32 width, s32 height, s32 scaleX, UNUSED s32 scaleY, s32 mode) {
 #if 0
     if (gPlayer1Controller->buttonPressed & L_JPAD)
         xuv += 1;
@@ -218,7 +219,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
             (((y + posH + imH) - mOne) << 2),
             G_TX_RENDERTILE, 0, 0, (modeSC << 10), (1 << 10));
 #else
-        render_piece(&pool, x, y, posW, posH, imW, imH);
+        render_piece(&pool, x, y, posW, posH, imW, imH, scaleX);
 #endif
     }
     // If there's a remainder on the vertical side, then it will cycle through that too.
@@ -238,7 +239,7 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
                 ((y + posH + imH) - mOne) << 2,
                 G_TX_RENDERTILE, 0, 0, modeSC << 10, 1 << 10);
 #else
-        render_piece(&pool, x, y, posW, posH, imW, imH);
+        render_piece(&pool, x, y, posW, posH, imW, imH, scaleX);
 #endif
         }
     }
@@ -249,5 +250,5 @@ void render_multi_image(u8 *image, s32 x, s32 y, s32 width, s32 height, UNUSED s
     gDPSetTextureFilter(gRenderImageGfxPool++, G_TF_BILERP);
     gSPEndDisplayList(gRenderImageGfxPool++);
 
-    gSPDisplayList(gDisplayListHead++, 0x0026000 + 0x30000);
+    gSPDisplayList((*dlGfx)++, 0x0026000 + 0x30000);
 }
