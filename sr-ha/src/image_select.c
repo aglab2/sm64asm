@@ -405,9 +405,9 @@ void titleDraw(Gfx* gfx, int alpha)
     u32 height = 128;
 
     {
-        if (gSelectedStar != 31)
+        // if (gSelectedStar != 1)
         {
-            gSelectedStar = 31;
+            gSelectedStar = 5;
             load_image();
         }
 
