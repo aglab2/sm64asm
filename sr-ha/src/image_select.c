@@ -273,15 +273,10 @@ static void render_course_select()
         sWarpDest.levelNum = (u8) sm64lvl;
         sWarpDest.type = 2;
         sWarpDest.areaIdx = 1;
-        sWarpDest.nodeId = 0xa;
+        sWarpDest.nodeId = sm64lvl == LevelConv_SM64Levels_C3 ? 1 : 0xa;
         gMarioStates->health = 0x880;
         sCurrPlayMode = 0x4;
         gHudDisplay.timer = 0;
-
-        if (gSelectedWarpTarget == LevelConv_PlainLevels_C15)
-        {
-            sWarpDest.areaIdx = 5; 
-        }
     }
 }
 
