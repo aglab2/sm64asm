@@ -2,7 +2,10 @@
 
 LevelConv_SM64Levels LevelConv_toSM64Level(LevelConv_PlainLevels pl)
 {
-    static char levels[] = 
+    if (LevelConv_PlainLevels_OW == pl)
+        return LevelConv_SM64Levels_OFF;
+
+    static const char levels[] = 
     {
         // LevelConv_SM64Levels_OFF,
         LevelConv_SM64Levels_C1,

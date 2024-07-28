@@ -40,52 +40,12 @@ static const u8 uMadeBy[] = { 0x16, 0x0A, 0x0D, 0x0E, 0x9E, 0x0B, 0x22, 0x9E, 0x
 static const u8 uBowser1Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x01, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
 static const u8 uBowser2Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x02, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
 static const u8 uBowser3Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x03, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
+static const u8 uEnding[] = { 0x0E, 0x17, 0x0D, 0x12, 0x17, 0x10, 0xFF };
 
 static const u8* uExtraCoursesNames[] = { uBowser1Fight, uBowser2Fight, uBowser3Fight };
 
 #define dl_ia_text_begin 0x02011cc8
 #define dl_ia_text_end   0x02011d50
-
-static u32 sROMPointers[] = {
-/* 0 */ 0x01441000,
-/* 1 */ 0x014d1000,
-/* 2 */ 0x01503000,
-/* 3 */ 0x01535000,
-/* 4 */ 0x01583000,
-/* 5 */ 0x015b5000,
-/* 6 */ 0x015e7000,
-/* 7 */ 0x019e3000,
-/* 8 */ 0x01d90000,
-/* 9 */ 0x01dc2000,
-/* 10 */ 0x01df4000,
-/* 11 */ 0x01f64000,
-/* 12 */ 0x02044000,
-/* 13 */ 0x02076000,
-/* 14 */ 0x020a8000,
-/* 15 */ 0x020e3000,
-/* 16 */ 0x022b1000,
-/* 17 */ 0x022e3000,
-/* 18 */ 0x02315000,
-/* 19 */ 0x02347000,
-/* 20 */ 0x02383000,
-/* 21 */ 0x024ce000,
-/* 22 */ 0x02623000,
-/* 23 */ 0x02655000,
-/* 24 */ 0x0272f000,
-/* 25 */ 0x02761000,
-/* 26 */ 0x02793000,
-/* 27 */ 0x0285f000,
-/* 28 */ 0x028c3000,
-/* 29 */ 0x028f5000,
-/* 30 */ 0x02a4d000,
-/* 31 */ 0x02bb8000,
-/* 32 */ 0x02bea000,
-/* 33 */ 0x02f92000,
-/* 34 */ 0x02fc4000,
-/* 35 */ 0x02ff6000,
-/* 36 */ 0x03131000,
-/* 37 */ 0x03163000,
-};
 
 struct StarInLevelDesc
 {
@@ -94,36 +54,36 @@ struct StarInLevelDesc
 };
 
 static const struct StarInLevelDesc sStarsInLevels[] = {
-    { LevelConv_PlainLevels_S2, 0, },
-    { LevelConv_PlainLevels_C1, 0, },
-    { LevelConv_PlainLevels_C9, 0, },
-    { LevelConv_PlainLevels_C6, 0, },
-    { LevelConv_PlainLevels_Slide, 0, },
-    { LevelConv_PlainLevels_S1, 0, },
-    { LevelConv_PlainLevels_C5, 0, },
-    { LevelConv_PlainLevels_C14, 0, },
-    { LevelConv_PlainLevels_C13, 0, },
     { LevelConv_PlainLevels_C12, 0, },
-    { LevelConv_PlainLevels_S3, 0, },
-    { LevelConv_PlainLevels_C11, 0, },
-    { LevelConv_PlainLevels_WC, 0, },
-    { LevelConv_PlainLevels_C7, 0, },
-    { LevelConv_PlainLevels_C8, 0, },
-    { LevelConv_PlainLevels_MC, 0, },
-    { LevelConv_PlainLevels_C5, 1, },
-    { LevelConv_PlainLevels_C2, 0, },
-    { LevelConv_PlainLevels_C3, 1, },
-    { LevelConv_PlainLevels_B1, 0, },
-    { LevelConv_PlainLevels_C10, 0, },
-    { LevelConv_PlainLevels_B2, 0, },
-    { LevelConv_PlainLevels_C5, 2, },
-    { LevelConv_PlainLevels_C15, 0, },
+    { LevelConv_PlainLevels_S1, 0, },
+    { LevelConv_PlainLevels_C4, 1, },
     { LevelConv_PlainLevels_C3, 0, },
+    { LevelConv_PlainLevels_S2, 0, },
+    { LevelConv_PlainLevels_S3, 0, },
+    { LevelConv_PlainLevels_C15, 0, },
+    { LevelConv_PlainLevels_B1, 0, },
+    { LevelConv_PlainLevels_OW, 0, },
+    { LevelConv_PlainLevels_C6, 0, },
+    { LevelConv_PlainLevels_B2, 0, },
+    { LevelConv_PlainLevels_C1, 0, },
+    { LevelConv_PlainLevels_C11, 0, },
+    { LevelConv_PlainLevels_C14, 0, },
     { LevelConv_PlainLevels_B3, 0, },
-    { LevelConv_PlainLevels_C9, 1, },
     { LevelConv_PlainLevels_C4, 0, },
-    { LevelConv_PlainLevels_C1, 1, },
     { LevelConv_PlainLevels_VC, 0, },
+    { LevelConv_PlainLevels_WC, 0, },
+    { LevelConv_PlainLevels_Slide, 0, },
+    { LevelConv_PlainLevels_C10, 0, },
+    { LevelConv_PlainLevels_B2, 1, },
+    { LevelConv_PlainLevels_C8, 0, },
+    { LevelConv_PlainLevels_C7, 0, },
+    { LevelConv_PlainLevels_OW, 1, },
+    { LevelConv_PlainLevels_MC, 0, },
+    { LevelConv_PlainLevels_C6, 1, },
+    { LevelConv_PlainLevels_C2, 0, },
+    { LevelConv_PlainLevels_C9, 0, },
+    { LevelConv_PlainLevels_C5, 0, },
+    { LevelConv_PlainLevels_C13, 0, },
 };
 
 static void print_generic_string_centered(const u8* str, int x, int y)
@@ -149,9 +109,9 @@ static void load_image()
 
 static int has_star(int idx)
 {
-    struct StarInLevelDesc desc = sStarsInLevels[idx];
-    s32 flags = save_file_get_star_flags(gCurrSaveFileNum - 1, desc.level);
-    return flags & (1 << desc.starId);
+    const struct StarInLevelDesc* desc = &sStarsInLevels[idx];
+    s32 flags = save_file_get_star_flags(gCurrSaveFileNum - 1, desc->level);
+    return flags & (1 << desc->starId);
 }
 
 static void render_star_select()
@@ -259,7 +219,12 @@ static void render_course_select()
     print_generic_string_centered_aligned(uControlStickToWarpTarget, 85 - 10);
     print_generic_string_centered_aligned(uWarpToCourse, 85 - 14 - 10);
 
-    u8* courseName = get_course_name(gSelectedWarpTarget);
+    const u8* courseName = get_course_name(gSelectedWarpTarget);
+    if (0xff == courseName[0])
+    {
+        courseName = uEnding;
+    }
+
     int off = 40 - 12;
     print_generic_string_centered_aligned(courseName, off);
     print_generic_string_centered_aligned(uUp, off + 15);

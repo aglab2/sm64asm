@@ -2,8 +2,8 @@
 
 typedef enum LevelConv_PlainLevels
 {
-    // LevelConv_PlainLevels_OW,
-    LevelConv_PlainLevels_C1,
+    LevelConv_PlainLevels_OW = -1,
+    LevelConv_PlainLevels_C1 = 0,
     LevelConv_PlainLevels_C2,
     LevelConv_PlainLevels_C3,
     LevelConv_PlainLevels_C4,
@@ -40,7 +40,8 @@ typedef enum LevelConv_PlainLevels
 
 typedef enum LevelConv_SM64Levels
 {
-    // LevelConv_SM64Levels_OFF = 0,
+    LevelConv_SM64Levels_OFF = 0,
+
     LevelConv_SM64Levels_C1 = 0x9,
     LevelConv_SM64Levels_C2 = 0x18,
     LevelConv_SM64Levels_C3 = 0x0c,

@@ -6,6 +6,7 @@
 
 #include "game/area.h"
 #include "game/interaction.h"
+#include "game/print.h"
 #include "game/mario.h"
 #include "game/sound_init.h"
 #include "sm64.h"
@@ -73,9 +74,25 @@ static s32 onWaterCancels(struct MarioState *m)
     return FALSE;
 }
 
+static u8 sGpTimer = 0;
+
 s32 onAirborneCancels(struct MarioState *m) {
     if (m->action == ACT_GROUND_POUND)
-        return FALSE;
+    {
+        if (m->actionTimer < 10)
+        {
+            sGpTimer = 0;
+        }
+        else
+        {
+            sGpTimer++;
+        }
+
+        if (sGpTimer < 10)
+        {
+            return FALSE;
+        }
+    }
 
     if (m->pos[1] < m->waterLevel - 100) {
         return set_water_plunge_action(m);
