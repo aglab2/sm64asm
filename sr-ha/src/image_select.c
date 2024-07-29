@@ -49,16 +49,16 @@ static const u8* uExtraCoursesNames[] = { uBowser1Fight, uBowser2Fight, uBowser3
 
 struct StarInLevelDesc
 {
-    u8 level;
+    s8 level;
     u8 starId;
 };
 
 static const struct StarInLevelDesc sStarsInLevels[] = {
     { LevelConv_PlainLevels_C12, 0, },
-    { LevelConv_PlainLevels_S1, 0, },
+    { LevelConv_PlainLevels_S2, 0, },
     { LevelConv_PlainLevels_C4, 1, },
     { LevelConv_PlainLevels_C3, 0, },
-    { LevelConv_PlainLevels_S2, 0, },
+    { LevelConv_PlainLevels_S1, 0, },
     { LevelConv_PlainLevels_S3, 0, },
     { LevelConv_PlainLevels_C15, 0, },
     { LevelConv_PlainLevels_B1, 0, },
@@ -367,11 +367,11 @@ void titleDraw(Gfx* gfx, int alpha)
     {
         // if (gSelectedStar != 1)
         {
-            gSelectedStar = 5;
+            gSelectedStar = 31;
             load_image();
         }
 
         gDPSetEnvColor(gfx++, 255, 255, 255, alpha);
-        render_multi_image(&gfx, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 5, 5, G_CYC_1CYCLE);
+        render_multi_image(&gfx, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 3, 3, G_CYC_1CYCLE);
     }
 }

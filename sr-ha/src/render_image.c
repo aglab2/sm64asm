@@ -25,11 +25,19 @@ static void render_piece(char** pool, int x, int y, int posW, int posH, int imW,
     int x1 = xoff + (x + posW) + imW;
     int y1 = yoff - (y + posH) + imH;
 
-    f32 fscale = 1.5f / scale;
+    f32 fscale = 1.5f * scale;
     x0 /= fscale;
     x1 /= fscale;
     y0 /= fscale;
     y1 /= fscale;
+
+    if (scale != 1)
+    {
+        x0 += 190;
+        y0 += 70;
+        x1 += 190;
+        y1 += 70;
+    }
 
     Vtx* vbuf = (Vtx*) alloc(pool, 4 * 16);
     vbuf[0].v.ob[0] = x0;

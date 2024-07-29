@@ -12,6 +12,7 @@
 #include "sm64.h"
 
 extern void *alloc_display_list(u32 size);
+extern u32 gGlobalTimer;
 
 #define REGISTER_BEHAVIOR(list, beh) list, 0x04000000, ((int) beh) - 0x80000000
 
@@ -20,15 +21,67 @@ static void onPause()
     imageSelect();
 }
 
+// TODO: Remove this trash
+// 0x02014470 - 0x020144B0
+static const Mtx matrix_identity = {
+#ifndef GBI_FLOATS
+    {{0x00010000, 0x00000000,
+      0x00000001, 0x00000000},
+     {0x00000000, 0x00010000,
+      0x00000000, 0x00000001},
+     {0x00000000, 0x00000000,
+      0x00000000, 0x00000000},
+     {0x00000000, 0x00000000,
+      0x00000000, 0x00000000}}
+#else
+    {{1.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f, 1.0f, 0.0f},
+    {0.0f, 0.0f, 0.0f, 1.0f}}
+#endif
+};
+
+
+// 0x020144B0 - 0x020144F0
+static const Mtx matrix_fullscreen = {
+#ifndef GBI_FLOATS
+    {{0x00000000, 0x00000000,
+      0x00000000, 0x00000000},
+     {0x00000000, 0xffff0000,
+      0xffffffff, 0xffff0001},
+     {((65536 * 2 / SCREEN_WIDTH) << 16) | 0, 0x00000000,
+      (0 << 16) | (65536 * 2 / SCREEN_HEIGHT), 0x00000000},
+     {0x00000000, 0x00000000,
+      0x00000000, 0x00000000}}
+#else
+    {{2.0f / SCREEN_WIDTH, 0.0f, 0.0f, 0.0f},
+    {0.0f, 2.0f / SCREEN_HEIGHT, 0.0f, 0.0f},
+    {0.0f, 0.0f, -1.0f, 0.0f},
+    {-1.0f, -1.0f, -1.0f, 1.0f}}
+#endif
+};
+
+static const Gfx dl_proj_mtx_fullscreen[] = {
+    gsDPPipeSync(),
+    gsSPClearGeometryMode(G_LIGHTING),
+    gsSPMatrix(&matrix_identity, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH),
+    gsSPMatrix(&matrix_fullscreen, G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH),
+    gsSPMatrix(&matrix_identity, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH),
+    gsSPPerspNormalize(0xFFFF),
+    gsSPEndDisplayList(),
+};
+
+static int sTitleScreenAlpha = 0;
 static Gfx* onTitleScreen(s32 state, struct GraphNode *node, void *context)
 {
     Gfx* dl = NULL;
     if (state != 1)
     {
+        sTitleScreenAlpha = 0;
     }
     else
     {
-        node->flags = (node->flags & 0xFF) | (1 << 8);
+        node->flags = (node->flags & 0xFF) | (5 << 8);
         dl = alloc_display_list(5 * sizeof(*dl));
         gSPEndDisplayList(dl);
         gSPEndDisplayList(dl + 1);
@@ -36,9 +89,17 @@ static Gfx* onTitleScreen(s32 state, struct GraphNode *node, void *context)
         gSPEndDisplayList(dl + 3);
         gSPEndDisplayList(dl + 4);
 
+        if (gGlobalTimer >= 19) {
+            sTitleScreenAlpha += 26;
+            if (sTitleScreenAlpha > 255) {
+                sTitleScreenAlpha = 255;
+            }
+        }
+
         Gfx* dlIter = dl;
-        gDPSetRenderMode(dlIter++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
-        titleDraw(dlIter, 0xa0);
+        gSPDisplayList(dlIter++, dl_proj_mtx_fullscreen);
+        gDPSetRenderMode(dlIter++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+        titleDraw(dlIter, sTitleScreenAlpha);
     }
     return dl;
 }
@@ -88,7 +149,7 @@ s32 onAirborneCancels(struct MarioState *m) {
             sGpTimer++;
         }
 
-        if (sGpTimer < 10)
+        if (sGpTimer < 15)
         {
             return FALSE;
         }
@@ -112,7 +173,7 @@ s32 onAirborneCancels(struct MarioState *m) {
 
 s32 isHeavy(struct MarioState* m)
 {
-    if (gCurrCourseNum == LevelConv_SM64Levels_VC)
+    if (gCurrCourseNum == 0x16)
         return 0;
 
     return m->heldObj->oInteractionSubtype & INT_SUBTYPE_GRABS_MARIO;
