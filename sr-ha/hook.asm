@@ -36,3 +36,7 @@ blck:
 fin:
 	JR RA
 	NOP
+
+.orga 0x97b6c
+	JAL 0x8040ca00
+	NOP

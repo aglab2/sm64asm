@@ -6,9 +6,11 @@
 
 #include "game/area.h"
 #include "game/interaction.h"
+#include "game/object_helpers.h"
 #include "game/print.h"
 #include "game/mario.h"
 #include "game/sound_init.h"
+#include "engine/behavior_script.h"
 #include "sm64.h"
 
 extern void *alloc_display_list(u32 size);
@@ -104,6 +106,7 @@ static Gfx* onTitleScreen(s32 state, struct GraphNode *node, void *context)
     return dl;
 }
 
+static s8 sShowHintProgress = 0;
 static s32 onWaterCancels(struct MarioState *m)
 {
     if (m->pos[1] > m->waterLevel - 80) {
@@ -128,7 +131,16 @@ static s32 onWaterCancels(struct MarioState *m)
         set_mario_action(m, ACT_DROWNING, 0);
     }
 
+    if (-1 != sShowHintProgress)
+    {
+        if (sShowHintProgress < 30)
+            sShowHintProgress++;
+
+        print_text_centered(160, sShowHintProgress, "TRY TO GROUNDPOUND");
+    }
+
     if (m->health >= 0x100 && m->input & INPUT_Z_PRESSED) {
+        sShowHintProgress = -1;
         set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -138,6 +150,22 @@ static s32 onWaterCancels(struct MarioState *m)
 static u8 sGpTimer = 0;
 
 s32 onAirborneCancels(struct MarioState *m) {
+    if (gCurrCourseNum == 0x16 && !m->heldObj)
+    {
+        f32 d;
+        struct Object* chuckya = obj_find_nearest_object_with_behavior((const BehaviorScript*) 0x13000528, &d);
+        if (chuckya)
+        {
+            if (0 == (chuckya->oTimer % 16))
+            {
+                struct Object* sparkle = spawn_object(chuckya, MODEL_SPARKLES, (const BehaviorScript*) 0x13000a14);
+                sparkle->oPosX = chuckya->oPosX + (RandomFloat() * 200.0f) - 100.0f;
+                sparkle->oPosY = chuckya->oPosY + 100.0f;
+                sparkle->oPosZ = chuckya->oPosZ + (RandomFloat() * 200.0f) - 100.0f;
+            }
+        }
+    }
+
     if (m->action == ACT_GROUND_POUND)
     {
         if (m->actionTimer < 10)
