@@ -14,3 +14,6 @@
     SW T7, 0x0(T5)
 .orga 0x21fe0c
     SW R0, 0x4(T8)
+
+.orga 0x26A1EC
+	.dw 0x8016F984

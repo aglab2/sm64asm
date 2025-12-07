@@ -40,3 +40,8 @@ fin:
 .orga 0x97b6c
 	JAL 0x8040ca00
 	NOP
+	BEQ T2, R0, 0x97B94
+
+; location in Y
+.orga 0x97B88
+	LI A1, 0x5d - 25

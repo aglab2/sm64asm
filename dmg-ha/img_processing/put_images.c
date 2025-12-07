@@ -37,12 +37,14 @@ unsigned char* readWholeFile(const char* path, size_t sz)
     return buffer;
 }
 
+const char path[] = "./dmgha.z64";
+
 int main() {
-    unsigned char* buffer = readWholeFile("../zarha.z64", 64 * 1024 * 1024);
-    for (int i = 0; i < 30; i++)
+    unsigned char* buffer = readWholeFile(path, 64 * 1024 * 1024);
+    for (int i = 0; i < 42; i++)
     {
         char pathBuf[256];
-        sprintf(pathBuf, "../hints_converted/%d.png.bin", i + 1);
+        sprintf(pathBuf, "./hints_converted/%d.png.bin", i + 1);
         unsigned char* imgBuf = readWholeFile(pathBuf, 0x30000);
         uint32_t romPtr = 0x03000000;
         romPtr += i * 0x30000;
@@ -50,7 +52,7 @@ int main() {
         free(imgBuf);
     }
 
-    FILE* file = fopen("../zarha.z64", "wb");
+    FILE* file = fopen(path, "wb");
     fwrite(buffer, 64 * 1024 * 1024, 1, file);
     fclose(file);
 
