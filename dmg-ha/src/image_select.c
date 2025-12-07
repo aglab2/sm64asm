@@ -22,9 +22,9 @@ enum State
     SHOW_IMAGE,
 };
 
-static int gState = SELECT_STAR;
-static int gSelectedStar = 0;
-static int gSelectedWarpTarget = 0;
+static s8 gState = SELECT_STAR;
+static s8 gSelectedStar = 0;
+static s8 gSelectedWarpTarget = 0;
 
 static const u8 uPressBToShowTheHintArt[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x0B, 0x9E, 0x1D, 0x18, 0x9E, 0x1C, 0x11, 0x18, 0x20, 0x9E, 0x1D, 0x11, 0x0E, 0x9E, 0x11, 0x12, 0x17, 0x1D, 0x9E, 0x0A, 0x1B, 0x1D, 0xFF };
 static const u8 uPressBToHideTheHint[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x0B, 0x9E, 0x1D, 0x18, 0x9E, 0x11, 0x12, 0x0D, 0x0E, 0x9E, 0x1D, 0x11, 0x0E, 0x9E, 0x11, 0x12, 0x17, 0x1D, 0x9E, 0x0A, 0x1B, 0x1D, 0xFF };
@@ -39,13 +39,6 @@ static const u8 uWarpToCourse[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x15, 0x
 static const u8 uThanksForPLaying[] = { 0x1D, 0x11, 0x0A, 0x17, 0x14, 0x9E, 0x22, 0x18, 0x1E, 0x9E, 0x0F, 0x18, 0x1B, 0x9E, 0x19, 0x15, 0x0A, 0x22, 0x12, 0x17, 0x10, 0xFF };
 static const u8 uMadeBy[] = { 0x16, 0x0A, 0x0D, 0x0E, 0x9E, 0x0B, 0x22, 0x9E, 0x18, 0x23, 0x23, 0x12, 0x0E, 0x9E, 0x0A, 0x17, 0x0D, 0x9E, 0x0A, 0x10, 0x15, 0x0A, 0x0B, 0x02, 0xFF };
 
-static const u8 uBowser1Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x01, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
-static const u8 uBowser2Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x02, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
-static const u8 uBowser3Fight[] = { 0X0B, 0x18, 0x20, 0x1C, 0x0E, 0x1B, 0x9E, 0x03, 0x9E, 0x0F, 0x12, 0x10, 0x11, 0x1D, 0xFF };
-static const u8 uEnding[] = { 0x0E, 0x17, 0x0D, 0x12, 0x17, 0x10, 0xFF };
-
-static const u8* uExtraCoursesNames[] = { uBowser1Fight, uBowser2Fight, uBowser3Fight };
-
 #define dl_ia_text_begin 0x02011cc8
 #define dl_ia_text_end   0x02011d50
 
@@ -56,36 +49,7 @@ struct StarInLevelDesc
 };
 
 static const struct StarInLevelDesc sStarsInLevels[] = {
-    { LevelConv_PlainLevels_C12, 0, },
-    { LevelConv_PlainLevels_S2, 0, },
-    { LevelConv_PlainLevels_C4, 1, },
-    { LevelConv_PlainLevels_C3, 0, },
-    { LevelConv_PlainLevels_S1, 0, },
-    { LevelConv_PlainLevels_S3, 0, },
-    { LevelConv_PlainLevels_C15, 0, },
-    { LevelConv_PlainLevels_B1, 0, },
-    { LevelConv_PlainLevels_OW, 0, },
-    { LevelConv_PlainLevels_C6, 0, },
-    { LevelConv_PlainLevels_B2, 0, },
-    { LevelConv_PlainLevels_C1, 0, },
-    { LevelConv_PlainLevels_C11, 0, },
-    { LevelConv_PlainLevels_C14, 0, },
-    { LevelConv_PlainLevels_B3, 0, },
-    { LevelConv_PlainLevels_C4, 0, },
-    { LevelConv_PlainLevels_VC, 0, },
-    { LevelConv_PlainLevels_WC, 0, },
-    { LevelConv_PlainLevels_Slide, 0, },
-    { LevelConv_PlainLevels_C10, 0, },
-    { LevelConv_PlainLevels_B2, 1, },
-    { LevelConv_PlainLevels_C8, 0, },
-    { LevelConv_PlainLevels_C7, 0, },
-    { LevelConv_PlainLevels_OW, 1, },
-    { LevelConv_PlainLevels_MC, 0, },
-    { LevelConv_PlainLevels_C6, 1, },
-    { LevelConv_PlainLevels_C2, 0, },
-    { LevelConv_PlainLevels_C9, 0, },
-    { LevelConv_PlainLevels_C5, 0, },
-    { LevelConv_PlainLevels_C13, 0, },
+    #include "_config_star_ids.h"
 };
 
 static void print_generic_string_centered(const u8* str, int x, int y)
@@ -175,20 +139,21 @@ static void render_star_select()
     }
 }
 
-static const int kSelectedWarpLimit = 28;
+#include "_config_level_warps.h"
 
 extern struct WarpDest sWarpDest;
 
 static const u8* get_course_name(int course)
 {
-    if (course < 25)
+    const u8* out = override_course_name(course);
+    if (out)
     {
-        u8** courseNameTbl = (u8**) segmented_to_virtual((void*) 0x02010f68);
-        return (u8*) segmented_to_virtual(courseNameTbl[course]);
+        return out;
     }
     else
     {
-        return uExtraCoursesNames[course - 25];
+        u8** courseNameTbl = (u8**) segmented_to_virtual((void*) 0x02010f68);
+        return (u8*) segmented_to_virtual(courseNameTbl[course]);
     }
 }
 
@@ -221,7 +186,9 @@ static void render_course_select()
     print_generic_string_centered_aligned(uControlStickToWarpTarget, 85 - 10);
     print_generic_string_centered_aligned(uWarpToCourse, 85 - 14 - 10);
 
-    const u8* courseName = get_course_name(gSelectedWarpTarget);
+    int levelIdx = sLevelWarpLevels[gSelectedWarpTarget];
+
+    const u8* courseName = get_course_name(levelIdx);
     if (0xff == courseName[0])
     {
         courseName = uEnding;
@@ -235,7 +202,7 @@ static void render_course_select()
     if (gPlayer3Controller->buttonPressed & L_TRIG)
     {
         gPlayer3Controller->buttonPressed |= START_BUTTON;
-        LevelConv_SM64Levels sm64lvl = LevelConv_toSM64Level(gSelectedWarpTarget);
+        LevelConv_SM64Levels sm64lvl = LevelConv_toSM64Level(levelIdx);
         
         sWarpDest.levelNum = (u8) sm64lvl;
         sWarpDest.type = 2;

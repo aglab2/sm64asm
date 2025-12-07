@@ -16,15 +16,18 @@ ROM_OFFSET = 18915600
 
 SRC_FILES = $(patsubst %, $(SRC_DIR)/%.c, $(CPP_FILES))
 OBJ_FILES = $(patsubst %, $(OBJ_DIR)/%.o, $(CPP_FILES))
+DEP_FILES = $(patsubst %, $(OBJ_DIR)/%.d, $(CPP_FILES))
 
 PAYLOAD = $(OBJ_DIR)/payload
 
 CC = mips-n64-gcc
 AR = mips-n64-ar
 LD = mips-n64-ld
-CFLAGS = -DF3D_OLD=1 -DBINARY -Wall -Wdouble-promotion -Os -march=vr4300 -mfix4300 -fomit-frame-pointer -G0 -I $(INCLUDE_PATH) -I $(INCLUDE_PATH)/libc -mno-check-zero-division -fno-exceptions -fno-builtin -fno-rtti -fno-common -mno-abicalls -DTARGET_N64 -mabi=32 -mhard-float
+CFLAGS = -MMD -DF3D_OLD=1 -DBINARY -Wall -Wdouble-promotion -Os -march=vr4300 -mfix4300 -fomit-frame-pointer -G0 -I $(INCLUDE_PATH) -I $(INCLUDE_PATH)/libc -mno-check-zero-division -fno-exceptions -fno-builtin -fno-rtti -fno-common -mno-abicalls -DTARGET_N64 -mabi=32 -mhard-float
 
 all: $(OBJ_DIR) $(ROM)
+
+-include $(DEP_FILES)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $< -c -o $@
