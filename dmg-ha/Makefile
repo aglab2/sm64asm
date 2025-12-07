@@ -30,7 +30,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $< -c -o $@
 
 $(PAYLOAD): $(OBJ_FILES)
-	$(LD) -o $@ -L. -L $(LIBRARY_PATH) --oformat binary -T ldscript -Map $(OBJ_DIR)/ha.map -M $^
+	$(LD) -o $@ -L. -L $(LIBRARY_PATH) --oformat binary -T ldscript -Map $(OBJ_DIR)/ha.map $^
 
 $(ROM): $(PAYLOAD)
 	dd bs=1 seek=$(ROM_OFFSET) if=$^ of=$@ conv=notrunc
