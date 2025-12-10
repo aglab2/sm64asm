@@ -201,9 +201,6 @@ s32 onAirborneCancels(struct MarioState *m) {
 
 s32 isHeavy(struct MarioState* m)
 {
-    if (gCurrCourseNum == 0x16)
-        return 0;
-
     return m->heldObj->oInteractionSubtype & INT_SUBTYPE_GRABS_MARIO;
 }
 

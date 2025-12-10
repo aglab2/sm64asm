@@ -23,7 +23,7 @@ enum State
 };
 
 static s8 gState = SELECT_STAR;
-static s8 gSelectedStar = 0;
+static s8 gSelectedStar = 1;
 static s8 gSelectedWarpTarget = 0;
 
 static const u8 uPressBToShowTheHintArt[] = { 0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x9E, 0x0B, 0x9E, 0x1D, 0x18, 0x9E, 0x1C, 0x11, 0x18, 0x20, 0x9E, 0x1D, 0x11, 0x0E, 0x9E, 0x11, 0x12, 0x17, 0x1D, 0x9E, 0x0A, 0x1B, 0x1D, 0xFF };
@@ -183,8 +183,8 @@ static void render_course_select()
         }
     }
 
-    print_generic_string_centered_aligned(uControlStickToWarpTarget, 85 - 10);
-    print_generic_string_centered_aligned(uWarpToCourse, 85 - 14 - 10);
+    print_generic_string_centered_aligned(uControlStickToWarpTarget, 85 - 10 - 5);
+    print_generic_string_centered_aligned(uWarpToCourse, 85 - 14 - 10 - 5);
 
     int levelIdx = sLevelWarpLevels[gSelectedWarpTarget];
 
@@ -194,7 +194,7 @@ static void render_course_select()
         courseName = uEnding;
     }
 
-    int off = 40 - 12;
+    int off = 40 - 12 - 5;
     print_generic_string_centered_aligned(courseName, off);
     print_generic_string_centered_aligned(uUp, off + 15);
     print_generic_string_centered_aligned(uDown, off - 15);
@@ -334,10 +334,11 @@ void titleDraw(Gfx* gfx, int alpha)
     u32 height = 128;
 
     {
-        // if (gSelectedStar != 1)
+        if (gSelectedStar == 1)
         {
             gSelectedStar = HINTS_COUNT + 1;
             load_image();
+            gSelectedStar = 0;
         }
 
         gDPSetEnvColor(gfx++, 255, 255, 255, alpha);
