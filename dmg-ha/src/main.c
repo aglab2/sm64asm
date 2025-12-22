@@ -204,12 +204,18 @@ s32 isHeavy(struct MarioState* m)
     return m->heldObj->oInteractionSubtype & INT_SUBTYPE_GRABS_MARIO;
 }
 
+void onSetPlungeAction(struct MarioState* m)
+{
+    // m->pos[1] = m->waterLevel - 100;
+}
+
 uintptr_t _start[] __attribute__((section(".data._start"))) = {
-    (uintptr_t) onPause, 
-    0, // pause blocked
+    (uintptr_t) onPause,           // 10
+    0, // pause blocked               14
     REGISTER_BEHAVIOR(0x00060000, gpBoxBehavior),
-    (uintptr_t) onTitleScreen, 
-    (uintptr_t) onWaterCancels,
-    (uintptr_t) onAirborneCancels,
-    (uintptr_t) isHeavy,
+    (uintptr_t) onTitleScreen,     // 24
+    (uintptr_t) onWaterCancels,    // 28
+    (uintptr_t) onAirborneCancels, // 2C
+    (uintptr_t) isHeavy,           // 30
+    (uintptr_t) onSetPlungeAction, // 34
 };
