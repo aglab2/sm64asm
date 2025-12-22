@@ -47,16 +47,34 @@ static const u8 uEnding[] = { 0x0E, 0x17, 0x0D, 0x12, 0x17, 0x10, 0xFF };
 
 static const u8* override_course_name(int course)
 {
+    // Generic override for extra courses, maybe remove this?
     if (course >= 25)
     {
         static const u8* uExtraCoursesNames[] = { uBowser1Fight, uBowser2Fight, uBowser3Fight };
         return uExtraCoursesNames[course - 25];
     }
 
+    // DMG Anihasa village part where you get warped to Andrew
     if (course == LevelConv_PlainLevels_S2)
     {
         return uAndrewSM64;
     }
 
     return NULL;
+}
+
+static int override_warp_node_target(int sm64lvl)
+{
+    return 0;
+}
+
+static int override_warp_area_target(int sm64lvl)
+{
+    // DMG C9 has starting area in area 3
+    if (sm64lvl == LevelConv_SM64Levels_C9)
+    {
+        return 3;
+    }
+
+    return 0;
 }

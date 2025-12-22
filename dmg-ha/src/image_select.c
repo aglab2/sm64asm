@@ -157,6 +157,32 @@ static const u8* get_course_name(int course)
     }
 }
 
+static int get_warp_node_target(int sm64lvl)
+{
+    int out = override_warp_node_target(sm64lvl);
+    if (out != 0)
+    {
+        return out;
+    }
+    else
+    {
+        return 0xa;
+    }
+}
+
+static int get_warp_area_target(int sm64lvl)
+{
+    int out = override_warp_area_target(sm64lvl);
+    if (out != 0)
+    {
+        return out;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 static void render_course_select()
 {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
@@ -206,8 +232,8 @@ static void render_course_select()
         
         sWarpDest.levelNum = (u8) sm64lvl;
         sWarpDest.type = 2;
-        sWarpDest.areaIdx = 1;
-        sWarpDest.nodeId = sm64lvl == LevelConv_SM64Levels_C3 ? 1 : 0xa;
+        sWarpDest.areaIdx = get_warp_area_target(sm64lvl);
+        sWarpDest.nodeId = get_warp_node_target(sm64lvl);
         gMarioStates->health = 0x880;
         sCurrPlayMode = 0x4;
         gHudDisplay.timer = 0;
