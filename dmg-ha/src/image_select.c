@@ -2,14 +2,19 @@
 #include "render_image.h"
 #include "types.h"
 #include "levels.h"
+#include "ustr.h"
 
 #include "audio/internal.h"
 #include "game/area.h"
+#include "game/camera.h"
 #include "game/display.h"
 #include "game/game.h"
 #include "game/ingame_menu.h"
 #include "game/level_update.h"
+#include "game/sound_init.h"
 #include "engine/math_util.h"
+
+extern void set_play_mode(s16 playMode);
 
 #define HINTS_COUNT 40
 
@@ -143,18 +148,21 @@ static void render_star_select()
 
 extern struct WarpDest sWarpDest;
 
-static const u8* get_course_name(int course)
+static const u8* get_course_name(int course, u8* auxBuffer)
 {
-    const u8* out = override_course_name(course);
-    if (out)
+    const u8* name = override_course_name(course);
+    int overriden = 0;
+    if (!name)
     {
-        return out;
+        const u8** courseNameTbl = (const u8**) segmented_to_virtual((void*) 0x02010f68);
+        name = (const u8*) segmented_to_virtual(courseNameTbl[course]);
     }
     else
     {
-        u8** courseNameTbl = (u8**) segmented_to_virtual((void*) 0x02010f68);
-        return (u8*) segmented_to_virtual(courseNameTbl[course]);
+        overriden = 1;
     }
+
+    return mangle_course_name(course, overriden, name, auxBuffer);
 }
 
 static int get_warp_node_target(int sm64lvl)
@@ -182,6 +190,8 @@ static int get_warp_area_target(int sm64lvl)
         return 1;
     }
 }
+
+#define kSelectedWarpLimit (sizeof(sLevelWarpLevels) / sizeof(sLevelWarpLevels[0]))
 
 static void render_course_select()
 {
@@ -214,7 +224,8 @@ static void render_course_select()
 
     int levelIdx = sLevelWarpLevels[gSelectedWarpTarget];
 
-    const u8* courseName = get_course_name(levelIdx);
+    u8 _courseNameAuxBuffer[100];
+    const u8* courseName = get_course_name(levelIdx, _courseNameAuxBuffer);
     if (0xff == courseName[0])
     {
         courseName = uEnding;
@@ -227,6 +238,10 @@ static void render_course_select()
 
     if (gPlayer3Controller->buttonPressed & L_TRIG)
     {
+        func_80248CB8 /*raise_background_noise*/(1);
+        gCameraMovementFlags &= ~CAM_MOVE_PAUSE_SCREEN;
+        set_play_mode(0 /*PLAY_MODE_NORMAL*/);
+
         gPlayer3Controller->buttonPressed |= START_BUTTON;
         LevelConv_SM64Levels sm64lvl = LevelConv_toSM64Level(levelIdx);
         
@@ -280,8 +295,7 @@ void imageSelect(void)
             gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
             render_star_select();
-            if (gCurrCourseNum == 0)
-                render_course_select();
+            render_course_select();
 
             gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 

@@ -150,22 +150,6 @@ static s32 onWaterCancels(struct MarioState *m)
 static u8 sGpTimer = 0;
 
 s32 onAirborneCancels(struct MarioState *m) {
-    if (gCurrCourseNum == 0x16 && !m->heldObj)
-    {
-        f32 d;
-        struct Object* chuckya = obj_find_nearest_object_with_behavior((const BehaviorScript*) 0x13000528, &d);
-        if (chuckya)
-        {
-            if (0 == (chuckya->oTimer % 16))
-            {
-                struct Object* sparkle = spawn_object(chuckya, MODEL_SPARKLES, (const BehaviorScript*) 0x13000a14);
-                sparkle->oPosX = chuckya->oPosX + (RandomFloat() * 200.0f) - 100.0f;
-                sparkle->oPosY = chuckya->oPosY + 100.0f;
-                sparkle->oPosZ = chuckya->oPosZ + (RandomFloat() * 200.0f) - 100.0f;
-            }
-        }
-    }
-
     if (m->action == ACT_GROUND_POUND)
     {
         if (m->actionTimer < 10)
