@@ -278,14 +278,15 @@ static void switch_star_lr()
     }
 }
 
+#define IMAGE_WIDTH 384
+#define IMAGE_HEIGHT 256
+
 extern uintptr_t _start[];
 extern void play_sequence(u8 player, u8 seqId, u16 fadeTimer);
 extern u8 sCurrentBackgroundMusicSeqId;
 void imageSelect(void)
 {
     u8* ramPtr = (u8 *)0x80026000;
-    u32 width = 192;
-    u32 height = 128;
 
     _start[1] = 0;
     if (gMarioState->numStars < HINTS_COUNT)
@@ -326,8 +327,7 @@ void imageSelect(void)
             print_generic_string(300, 120, uRight);
             gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            render_multi_image(&gDisplayListHead, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
+            draw_sprite(&gDisplayListHead, ramPtr, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, IMAGE_WIDTH, IMAGE_HEIGHT, 32, 33, IMAGE_WIDTH / 1.5f, IMAGE_HEIGHT / 1.5f, 255);
             _start[1] = 1;
 
             if (gPlayer3Controller->buttonPressed & B_BUTTON)
@@ -361,8 +361,7 @@ void imageSelect(void)
         print_generic_string_centered_aligned(uMadeBy, 15);
         gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
-        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-        render_multi_image(&gDisplayListHead, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 1, 1, G_CYC_1CYCLE);
+        draw_sprite(&gDisplayListHead, ramPtr, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, IMAGE_WIDTH, IMAGE_HEIGHT, 32, 33, IMAGE_WIDTH / 1.5f, IMAGE_HEIGHT / 1.5f, 255);
         _start[1] = 1;
     }
 }
@@ -370,8 +369,6 @@ void imageSelect(void)
 void titleDraw(Gfx* gfx, int alpha)
 {
     u8* ramPtr = (u8 *)0x80026000;
-    u32 width = 192;
-    u32 height = 128;
 
     {
         if (gSelectedStar == 1)
@@ -381,7 +378,6 @@ void titleDraw(Gfx* gfx, int alpha)
             gSelectedStar = 0;
         }
 
-        gDPSetEnvColor(gfx++, 255, 255, 255, alpha);
-        render_multi_image(&gfx, ramPtr, (320 - width) / 2, (240 - height) / 2, width * 2, height * 2, 3, 3, G_CYC_1CYCLE);
+        draw_sprite(&gfx, ramPtr, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, IMAGE_WIDTH, IMAGE_HEIGHT, 172, 120, IMAGE_WIDTH / 3.f, IMAGE_HEIGHT / 3.f, alpha);
     }
 }
